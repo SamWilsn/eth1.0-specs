@@ -6,11 +6,9 @@ import json
 from eth1spec import spec, trie
 from eth1spec.eth_types import Address, Uint
 
-# sys.setrecursionlimit(10000)
-
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser = argparse.ArgumentParser(description="Run a state transition.")
 
     parser.add_argument("--input.alloc", dest="alloc", action="store")
     parser.add_argument("--input.env", dest="env", action="store")
