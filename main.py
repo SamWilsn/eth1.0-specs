@@ -3,8 +3,8 @@
 import argparse
 import json
 
-from . import spec, trie
-from .eth_types import Address, Uint
+from eth1spec import spec, trie
+from eth1spec.eth_types import Address, Uint
 
 # sys.setrecursionlimit(10000)
 
@@ -12,9 +12,7 @@ from .eth_types import Address, Uint
 def main() -> None:
     parser = argparse.ArgumentParser(description="Process some integers.")
 
-    parser.add_argument(
-        "--input.allocation", dest="allocation", action="store"
-    )
+    parser.add_argument("--input.alloc", dest="alloc", action="store")
     parser.add_argument("--input.env", dest="env", action="store")
     parser.add_argument("--input.txs", dest="txs", action="store")
 
@@ -39,13 +37,14 @@ def main() -> None:
     gas_used, receipts, state = spec.apply_body(
         state,
         Address(bytes.fromhex(env["currentCoinbase"][2:])),
-        Uint(int(env["blockNumber"])),
+        Uint(int(env["currentNumber"], 16)),
         Uint(int(env["currentGasLimit"], 16)),
-        Uint(int(env["blockTime"])),
-        Uint(int(env["blockDifficulty"])),
+        Uint(int(env["currentTimestamp"], 16)),
+        Uint(int(env["currentDifficulty"], 16)),
         [],
         [],
     )
+
     print(gas_used)
     print(receipts.hex())
     print(trie.TRIE(trie.y(state)).hex())
