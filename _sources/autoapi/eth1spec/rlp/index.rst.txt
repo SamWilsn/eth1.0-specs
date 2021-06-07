@@ -1,0 +1,247 @@
+:mod:`eth1spec.rlp`
+===================
+
+.. py:module:: eth1spec.rlp
+
+Recursive Length Prefix (RLP) Encoding
+--------------------------------------
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.rlp.encode
+   eth1spec.rlp.R_b
+   eth1spec.rlp.BE
+   eth1spec.rlp.R_l
+   eth1spec.rlp.s
+   eth1spec.rlp.decode
+   eth1spec.rlp.R_b_inverse
+   eth1spec.rlp.BE_inverse
+   eth1spec.rlp.R_l_inverse
+   eth1spec.rlp.s_inverse
+   eth1spec.rlp.decode_length
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.rlp.verbose
+   eth1spec.rlp.debug
+   eth1spec.rlp.RLP
+
+
+Module Details
+---------------
+.. data:: verbose
+   :annotation: = False
+
+   
+
+.. data:: debug
+   :annotation: = False
+
+   
+
+.. data:: RLP
+   
+
+   
+
+
+encode
+~~~~~~
+
+Encodes `x` into a sequence of bytes using RLP.
+
+
+.. function:: encode(x: RLP) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 19-42
+
+
+R_b
+~~~
+
+Encodes `x`, a sequence of bytes, using RLP.
+
+
+.. function:: R_b(x: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 46-68
+
+
+BE
+~~
+
+Converts an arbitrarily sized unsigned integer `x` into its big endian
+
+
+.. function:: BE(x: eth1spec.eth_types.Uint) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 71-94
+
+
+R_l
+~~~
+
+Encodes `x`, a list of RLP encodable objects, using RLP.
+
+
+.. function:: R_l(x: List[RLP]) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 98-122
+
+
+s
+~
+
+Partially encodes `x`, a list of RLP encodable objects, using RLP,
+
+
+.. function:: s(x: List[RLP]) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 127-147
+
+
+decode
+~~~~~~
+
+Decodes an integer, byte sequence, or list of RLP encodable objects from
+
+
+.. function:: decode(b: eth1spec.eth_types.Bytes) -> RLP
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 153-175
+
+
+R_b_inverse
+~~~~~~~~~~~
+
+Decodes a byte sequence from the byte sequence `b`, using RLP.
+
+
+.. function:: R_b_inverse(b: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 178-201
+
+
+BE_inverse
+~~~~~~~~~~
+
+Converts a sequence of bytes into an arbitrarily sized unsigned integer `x`
+
+
+.. function:: BE_inverse(b: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Uint
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 204-225
+
+
+R_l_inverse
+~~~~~~~~~~~
+
+Decodes `b` into a list of RLP encodable objects, using RLP.
+
+
+.. function:: R_l_inverse(b: eth1spec.eth_types.Bytes) -> List[RLP]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 228-253
+
+
+s_inverse
+~~~~~~~~~
+
+Decodes `b`, a partially encoded list of RLP encodable objects, excluding
+
+
+.. function:: s_inverse(b: eth1spec.eth_types.Bytes) -> List[RLP]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 256-284
+
+
+decode_length
+~~~~~~~~~~~~~
+
+Decodes the length prefix from the byte sequence `b`.
+
+
+.. function:: decode_length(b: eth1spec.eth_types.Bytes) -> Tuple[eth1spec.eth_types.Uint, eth1spec.eth_types.Uint]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/rlp.py
+   :language: python
+   :lines: 290-325
+

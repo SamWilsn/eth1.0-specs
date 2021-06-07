@@ -1,0 +1,178 @@
+:mod:`eth1spec.trie`
+====================
+
+.. py:module:: eth1spec.trie
+
+State Trie
+----------
+
+The state trie is the structure responsible for storing
+`eth1spec.eth_types.Account` objects.
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.trie.HP
+   eth1spec.trie.f
+   eth1spec.trie.HP_inverse
+   eth1spec.trie.y
+   eth1spec.trie.TRIE
+   eth1spec.trie.n
+   eth1spec.trie.c
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.trie.debug
+   eth1spec.trie.verbose
+   eth1spec.trie.T
+
+
+Module Details
+---------------
+.. data:: debug
+   :annotation: = False
+
+   
+
+.. data:: verbose
+   :annotation: = False
+
+   
+
+
+HP
+~~
+
+Hex prefix encoding.
+
+
+.. function:: HP(x: eth1spec.eth_types.Bytes, t: Union[bool, int]) -> bytearray
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 18-48
+
+
+f
+~
+
+Encodes `t` as a bit flag.
+
+
+.. function:: f(t: Union[bool, int]) -> int
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 51-68
+
+
+HP_inverse
+~~~~~~~~~~
+
+Hex prefix decoding.
+
+
+.. function:: HP_inverse(buffer: eth1spec.eth_types.Bytes) -> Tuple[str, bool]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 71-94
+
+.. data:: T
+   
+
+   
+
+
+y
+~
+
+TODO
+
+
+.. function:: y(J: Mapping[eth1spec.eth_types.Bytes, T]) -> Mapping[eth1spec.eth_types.Bytes64, T]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 100-124
+
+
+TRIE
+~~~~
+
+Computes the root hash of the storage trie.
+
+
+.. function:: TRIE(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Account, eth1spec.eth_types.Bytes, eth1spec.eth_types.Receipt]]) -> eth1spec.eth_types.Root
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 127-143
+
+
+n
+~
+
+Node composition function.
+
+
+.. function:: n(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt]], i: eth1spec.eth_types.U256) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 146-170
+
+
+c
+~
+
+Structural composition function.
+
+
+.. function:: c(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt]], i: eth1spec.eth_types.Uint) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/trie.py
+   :language: python
+   :lines: 173-277
+

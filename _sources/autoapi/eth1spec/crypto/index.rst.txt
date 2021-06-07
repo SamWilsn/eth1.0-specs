@@ -1,0 +1,78 @@
+:mod:`eth1spec.crypto`
+======================
+
+.. py:module:: eth1spec.crypto
+
+Cryptographic Functions
+-----------------------
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.crypto.keccak256
+   eth1spec.crypto.keccak512
+   eth1spec.crypto.secp256k1_recover
+
+
+
+Module Details
+---------------
+
+keccak256
+~~~~~~~~~
+
+Computes the keccak256 hash of the input `buffer`.
+
+
+.. function:: keccak256(buffer: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Hash32
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/crypto.py
+   :language: python
+   :lines: 12-26
+
+
+keccak512
+~~~~~~~~~
+
+Computes the keccak512 hash of the input `buffer`.
+
+
+.. function:: keccak512(buffer: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Hash64
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/crypto.py
+   :language: python
+   :lines: 29-43
+
+
+secp256k1_recover
+~~~~~~~~~~~~~~~~~
+
+Recovers the public key from a given signature.
+
+
+.. function:: secp256k1_recover(r: eth1spec.eth_types.Uint, s: eth1spec.eth_types.Uint, v: eth1spec.eth_types.Uint, msg_hash: eth1spec.eth_types.Hash32) -> eth1spec.eth_types.Bytes
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/crypto.py
+   :language: python
+   :lines: 46-77
+

@@ -1,0 +1,38 @@
+:mod:`eth1spec.main`
+====================
+
+.. py:module:: eth1spec.main
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.main.main
+
+
+
+Module Details
+---------------
+
+main
+~~~~
+
+
+
+.. function:: main() -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/main.py
+   :language: python
+   :lines: 12-51
+

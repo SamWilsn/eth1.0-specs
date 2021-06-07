@@ -1,0 +1,27 @@
+:mod:`eth1spec`
+===============
+
+.. py:module:: eth1spec
+
+Ethereum Specification
+----------------------
+
+Core specifications for Ethereum clients.
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   crypto/index.rst
+   eth_types/index.rst
+   evm/index.rst
+   main/index.rst
+   number/index.rst
+   rlp/index.rst
+   spec/index.rst
+   trie/index.rst
+
+

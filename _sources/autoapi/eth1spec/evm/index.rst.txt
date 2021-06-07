@@ -1,0 +1,188 @@
+:mod:`eth1spec.evm`
+===================
+
+.. py:module:: eth1spec.evm
+
+Ethereum Virtual Machine (EVM)
+------------------------------
+
+The abstract computer which runs the code stored in an
+`eth1spec.eth_types.Account`.
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.evm.Environment
+   eth1spec.evm.Evm
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.evm.process_call
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.evm.ADD
+
+
+Module Details
+---------------
+.. data:: ADD
+   :annotation: = b'\x01'
+
+   Opcode for the addition (`+`) instruction.
+
+
+
+Environment
+~~~~~~~~~~~
+
+Items external to the virtual machine itself, provided by the environment.
+
+
+.. class:: Environment
+
+   .. attribute:: caller
+      :annotation: :eth1spec.eth_types.Address
+
+      
+
+   .. attribute:: block_hashes
+      :annotation: :List[eth1spec.eth_types.Hash32]
+
+      
+
+   .. attribute:: origin
+      :annotation: :eth1spec.eth_types.Address
+
+      
+
+   .. attribute:: coinbase
+      :annotation: :eth1spec.eth_types.Address
+
+      
+
+   .. attribute:: number
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: gas_limit
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: gas_price
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: time
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: difficulty
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: state
+      :annotation: :eth1spec.eth_types.State
+
+      
+
+
+
+Evm
+~~~
+
+The internal state of the virtual machine.
+
+
+.. class:: Evm
+
+   .. attribute:: pc
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: stack
+      :annotation: :List[eth1spec.eth_types.U256]
+
+      
+
+   .. attribute:: memory
+      :annotation: :bytes
+
+      
+
+   .. attribute:: gas_left
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: current
+      :annotation: :eth1spec.eth_types.Address
+
+      
+
+   .. attribute:: caller
+      :annotation: :eth1spec.eth_types.Address
+
+      
+
+   .. attribute:: data
+      :annotation: :bytes
+
+      
+
+   .. attribute:: value
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: depth
+      :annotation: :eth1spec.number.Uint
+
+      
+
+   .. attribute:: env
+      :annotation: :Environment
+
+      
+
+
+
+process_call
+~~~~~~~~~~~~
+
+Executes a call from the `caller` to the `target` in a new EVM instance.
+
+
+.. function:: process_call(caller: eth1spec.eth_types.Address, target: eth1spec.eth_types.Address, data: bytes, value: eth1spec.number.Uint, gas: eth1spec.number.Uint, depth: eth1spec.number.Uint, env: Environment) -> Tuple[eth1spec.number.Uint, List[eth1spec.eth_types.Log]]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/evm.py
+   :language: python
+   :lines: 55-112
+

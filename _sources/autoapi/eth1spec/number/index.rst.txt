@@ -1,0 +1,134 @@
+:mod:`eth1spec.number`
+======================
+
+.. py:module:: eth1spec.number
+
+Numeric Types
+-------------
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.number.Uint
+
+
+
+
+Module Details
+---------------
+
+Uint
+~~~~
+
+Unsigned positive integer.
+
+
+.. class:: Uint
+
+
+   Bases: :py:obj:`int`
+
+   .. attribute:: __slots__
+      :annotation: = []
+
+      
+
+   .. method:: __radd__(self, left: int) -> Uint
+
+      Return value+self.
+
+
+   .. method:: __add__(self, right: int) -> Uint
+
+      Return self+value.
+
+
+   .. method:: __iadd__(self, right: int) -> Uint
+
+
+   .. method:: __sub__(self, right: int) -> Uint
+
+      Return self-value.
+
+
+   .. method:: __rsub__(self, left: int) -> Uint
+
+      Return value-self.
+
+
+   .. method:: __isub__(self, right: int) -> Uint
+
+
+   .. method:: __mul__(self, right: int) -> Uint
+
+      Return self*value.
+
+
+   .. method:: __rmul__(self, left: int) -> Uint
+
+      Return value*self.
+
+
+   .. method:: __imul__(self, right: int) -> Uint
+
+
+   .. method:: __floordiv__(self, right: int) -> Uint
+
+      Return self//value.
+
+
+   .. method:: __rfloordiv__(self, left: int) -> Uint
+
+      Return value//self.
+
+
+   .. method:: __ifloordiv__(self, right: int) -> Uint
+
+
+   .. method:: __mod__(self, right: int) -> Uint
+
+      Return self%value.
+
+
+   .. method:: __rmod__(self, left: int) -> Uint
+
+      Return value%self.
+
+
+   .. method:: __imod__(self, right: int) -> Uint
+
+
+   .. method:: __divmod__(self, right: int) -> Tuple[Uint, Uint]
+
+      Return divmod(self, value).
+
+
+   .. method:: __rdivmod__(self, left: int) -> Tuple[Uint, Uint]
+
+      Return divmod(value, self).
+
+
+   .. method:: __pow__(self, right: int, modulo: Optional[int] = None) -> Uint
+
+      Return pow(self, value, mod).
+
+
+   .. method:: __rpow__(self, left: int, modulo: Optional[int] = None) -> Uint
+
+      Return pow(value, self, mod).
+
+
+   .. method:: __ipow__(self, right: int, modulo: Optional[int] = None) -> Uint
+
+
+   .. method:: to_big_endian(self) -> bytes
+      :abstractmethod:
+
+
+

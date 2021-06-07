@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>eth1spec.trie &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="eth1spec.spec" href="../spec/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-eth1spec.trie">
+<span id="eth1spec-trie"></span><h1><a class="reference internal" href="#module-eth1spec.trie" title="eth1spec.trie"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.trie</span></code></a><a class="headerlink" href="#module-eth1spec.trie" title="Permalink to this headline">¶</a></h1>
+<section id="state-trie">
+<h2>State Trie<a class="headerlink" href="#state-trie" title="Permalink to this headline">¶</a></h2>
+<p>The state trie is the structure responsible for storing
+<cite>eth1spec.eth_types.Account</cite> objects.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.HP" title="eth1spec.trie.HP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HP</span></code></a></p></td>
+<td><p>Hex prefix encoding.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.trie.f" title="eth1spec.trie.f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f</span></code></a></p></td>
+<td><p>Encodes <cite>t</cite> as a bit flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.HP_inverse" title="eth1spec.trie.HP_inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HP_inverse</span></code></a></p></td>
+<td><p>Hex prefix decoding.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.trie.y" title="eth1spec.trie.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>TODO</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.TRIE" title="eth1spec.trie.TRIE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRIE</span></code></a></p></td>
+<td><p>Computes the root hash of the storage trie.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.trie.n" title="eth1spec.trie.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p>Node composition function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.c" title="eth1spec.trie.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
+<td><p>Structural composition function.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.debug" title="eth1spec.trie.debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.trie.verbose" title="eth1spec.trie.verbose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbose</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.trie.T" title="eth1spec.trie.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h2>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="eth1spec.trie.debug">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#eth1spec.trie.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="eth1spec.trie.verbose">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#eth1spec.trie.verbose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<section id="hp">
+<h3>HP<a class="headerlink" href="#hp" title="Permalink to this headline">¶</a></h3>
+<p>Hex prefix encoding.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.HP">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">HP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bytearray</span><a class="headerlink" href="#eth1spec.trie.HP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">HP</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hex prefix encoding.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `eth1spec.eth_types.Bytes`</span>
+<span class="sd">        Array of values less than 16.</span>
+<span class="sd">    t : `Union[bool, int]`</span>
+<span class="sd">        Any of `0`, `1`, `False`, or `True`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    encoded : `bytearray`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HP(&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+    <span class="c1"># x = bytes([int(d,16) for d in x.hex()])</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># ie even length</span>
+        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HP() returning&quot;</span><span class="p">,</span> <span class="n">encoded</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">encoded</span>
+</pre></div>
+</div>
+</section>
+<section id="f">
+<h3>f<a class="headerlink" href="#f" title="Permalink to this headline">¶</a></h3>
+<p>Encodes <cite>t</cite> as a bit flag.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.f">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#eth1spec.trie.f" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Encodes `t` as a bit flag.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : `Union[bool, int]`</span>
+<span class="sd">        Arbitrary boolean.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    flag : `int`</span>
+<span class="sd">        `t` encoded as a bit flag.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mb">0b10</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="hp-inverse">
+<h3>HP_inverse<a class="headerlink" href="#hp-inverse" title="Permalink to this headline">¶</a></h3>
+<p>Hex prefix decoding.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.HP_inverse">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">HP_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#eth1spec.trie.HP_inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">HP_inverse</span><span class="p">(</span><span class="n">buffer</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hex prefix decoding.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    buffer : `Bytes`</span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nibbles : `str`</span>
+<span class="sd">        Decoded prefix</span>
+<span class="sd">    t : `bool`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nibbles</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">odd_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># sixth lowest bit</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span>  <span class="c1"># fifth lowest bit</span>
+    <span class="k">if</span> <span class="n">odd_length</span><span class="p">:</span>
+        <span class="n">nibbles</span> <span class="o">+=</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">nibbles</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">b</span><span class="p">])</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">nibbles</span><span class="p">,</span> <span class="n">t</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="eth1spec.trie.T">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#eth1spec.trie.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="y">
+<h3>y<a class="headerlink" href="#y" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.y">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#eth1spec.trie.T" title="eth1spec.trie.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes64" title="eth1spec.eth_types.Bytes64"><span class="pre">eth1spec.eth_types.Bytes64</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#eth1spec.trie.T" title="eth1spec.trie.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#eth1spec.trie.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="n">J</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Bytes64</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TODO</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    J : `Dict[Bytes, Bytes]`</span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">yJ</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">kn</span> <span class="ow">in</span> <span class="n">J</span><span class="p">:</span>
+        <span class="n">kn_</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">kn</span><span class="p">)</span>
+        <span class="n">knprime</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">kn_</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">kn_</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># even</span>
+                <span class="n">knprime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kn_</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">//</span> <span class="mi">16</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">knprime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kn_</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">%</span> <span class="mi">16</span>
+        <span class="c1"># print(kn.hex(),kn_.hex(),knprime.hex())</span>
+        <span class="n">yJ</span><span class="p">[</span><span class="nb">bytes</span><span class="p">(</span><span class="n">knprime</span><span class="p">)]</span> <span class="o">=</span> <span class="n">J</span><span class="p">[</span><span class="n">kn</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">yJ</span>
+</pre></div>
+</div>
+</section>
+<section id="trie">
+<h3>TRIE<a class="headerlink" href="#trie" title="Permalink to this headline">¶</a></h3>
+<p>Computes the root hash of the storage trie.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.TRIE">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">TRIE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Account" title="eth1spec.eth_types.Account"><span class="pre">eth1spec.eth_types.Account</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Receipt" title="eth1spec.eth_types.Receipt"><span class="pre">eth1spec.eth_types.Receipt</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Root" title="eth1spec.eth_types.Root"><span class="pre">eth1spec.eth_types.Root</span></a><a class="headerlink" href="#eth1spec.trie.TRIE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">TRIE</span><span class="p">(</span><span class="n">J</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Account</span><span class="p">,</span> <span class="n">Bytes</span><span class="p">,</span> <span class="n">Receipt</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the root hash of the storage trie.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    J : `Mapping[Bytes, Union[Bytes, Account, Receipt]]`</span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    root : `eth1spec.eth_types.Root`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cJ0</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="c1"># print(&quot;cJ0&quot;,cJ0.hex())</span>
+    <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">cJ0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="n">
+<h3>n<a class="headerlink" href="#n" title="Permalink to this headline">¶</a></h3>
+<p>Node composition function.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.n">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Account" title="eth1spec.eth_types.Account"><span class="pre">eth1spec.eth_types.Account</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Receipt" title="eth1spec.eth_types.Receipt"><span class="pre">eth1spec.eth_types.Receipt</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.U256" title="eth1spec.eth_types.U256"><span class="pre">eth1spec.eth_types.U256</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><a class="headerlink" href="#eth1spec.trie.n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">n</span><span class="p">(</span><span class="n">J</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Account</span><span class="p">,</span> <span class="n">Receipt</span><span class="p">]],</span> <span class="n">i</span><span class="p">:</span> <span class="n">U256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Node composition function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    J : `Mapping[Bytes, Union[Bytes, Account, Receipt]]`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    i : `eth1spec.eth_types.U256`</span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    hash : `eth1spec.eth_types.Hash32`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># print(&quot;n(&quot;,i,&quot;)&quot;)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+    <span class="n">cJi</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cJi</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cJi</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># print(&quot;cJi,crypto.keccak256(cJi)&quot;,cJi.hex(),crypto.keccak256(cJi).hex())</span>
+        <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">cJi</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h3>c<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h3>
+<p>Structural composition function.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.trie.c">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.trie.</span></span><span class="sig-name descname"><span class="pre">c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">J</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Account" title="eth1spec.eth_types.Account"><span class="pre">eth1spec.eth_types.Account</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Receipt" title="eth1spec.eth_types.Receipt"><span class="pre">eth1spec.eth_types.Receipt</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">eth1spec.eth_types.Uint</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Bytes" title="eth1spec.eth_types.Bytes"><span class="pre">eth1spec.eth_types.Bytes</span></a><a class="headerlink" href="#eth1spec.trie.c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">c</span><span class="p">(</span><span class="n">J</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Account</span><span class="p">,</span> <span class="n">Receipt</span><span class="p">]],</span> <span class="n">i</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Structural composition function.</span>
+
+<span class="sd">    Used to patricialize and merkleize a dictionary. Includes memoization of</span>
+<span class="sd">    the tree structure and hashes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    J : `Mapping[Bytes, Union[Bytes, Account, Receipt]]`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    i : `eth1spec.number.Uint`</span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    value : `eth1spec.eth_types.Bytes`</span>
+<span class="sd">        TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># print(&quot;c(&quot;,J,i,&quot;)&quot;)</span>
+    <span class="c1"># print(&quot;c(&quot;,i,&quot;)&quot;)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># note: empty storage tree has merkle root:</span>
+        <span class="c1">#</span>
+        <span class="c1">#   crypto.keccak256(RLP(b&#39;&#39;))</span>
+        <span class="c1">#       ==</span>
+        <span class="c1">#   56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421 # noqa: E501,SC100</span>
+        <span class="c1">#</span>
+        <span class="c1"># also:</span>
+        <span class="c1">#</span>
+        <span class="c1">#   crypto.keccak256(RLP(()))</span>
+        <span class="c1">#       ==</span>
+        <span class="c1">#   1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347 # noqa: E501,SC100</span>
+        <span class="c1">#</span>
+        <span class="c1"># which is the sha3Uncles hash in block header for no uncles</span>
+
+        <span class="k">return</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">I_0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">J</span><span class="p">))</span>  <span class="c1"># get first key, will reuse below</span>
+
+    <span class="c1"># if leaf node</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">leaf</span> <span class="o">=</span> <span class="n">J</span><span class="p">[</span><span class="n">I_0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">Account</span><span class="p">):</span>
+            <span class="n">I_1</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">leaf</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+                    <span class="n">leaf</span><span class="o">.</span><span class="n">balance</span><span class="p">,</span>
+                    <span class="n">TRIE</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">storage</span><span class="p">)),</span>
+                    <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">code</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">Receipt</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>  <span class="c1"># TODO</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># I_1 = leaf</span>
+            <span class="n">I_1</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c() leaf&quot;</span><span class="p">,</span> <span class="n">I_0</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span> <span class="n">I_1</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+        <span class="c1"># print(I_1.hex())</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">((</span><span class="n">HP</span><span class="p">(</span><span class="n">I_0</span><span class="p">[</span><span class="n">i</span><span class="p">:],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">I_1</span><span class="p">))</span>
+        <span class="c1"># print(&quot;leaf rlp&quot;,rlp.hex(),crypto.keccak256(rlp).hex())</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="c1"># prepare for extension node check by finding max j such that all keys I in</span>
+    <span class="c1"># J have the same I[i:j]</span>
+    <span class="n">elle</span> <span class="o">=</span> <span class="n">I_0</span><span class="p">[:]</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elle</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">I_0</span> <span class="ow">in</span> <span class="n">J</span><span class="p">:</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">I_0</span><span class="p">)))</span>
+        <span class="n">elle</span> <span class="o">=</span> <span class="n">elle</span><span class="p">[:</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">I_0</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">elle</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">elle</span> <span class="o">=</span> <span class="n">elle</span><span class="p">[:</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="c1"># if extension node</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">n</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="c1"># print(&quot;extension,child&quot;,I_0[i:j].hex(),child.hex())</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">((</span><span class="n">HP</span><span class="p">(</span><span class="n">I_0</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span> <span class="n">child</span><span class="p">))</span>
+        <span class="c1"># print(&quot;extension rlp&quot;,rlp.hex(),crypto.keccak256(rlp).hex())</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="c1"># otherwise branch node</span>
+    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+        <span class="c1"># print(&quot;u(&quot;,j,&quot;)&quot;)</span>
+        <span class="c1"># print([k.hex() for k in J.keys()])</span>
+        <span class="k">return</span> <span class="n">n</span><span class="p">({</span><span class="n">I_0</span><span class="p">:</span> <span class="n">I_1</span> <span class="k">for</span> <span class="n">I_0</span><span class="p">,</span> <span class="n">I_1</span> <span class="ow">in</span> <span class="n">J</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">I_0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="p">},</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">I_0</span> <span class="ow">in</span> <span class="n">J</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">I_0</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+            <span class="n">J_I_0</span> <span class="o">=</span> <span class="n">J</span><span class="p">[</span><span class="n">I_0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">J_I_0</span><span class="p">,</span> <span class="p">(</span><span class="n">Account</span><span class="p">,</span> <span class="n">Receipt</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">()</span>  <span class="c1"># TODO: Not sure if this is correct?</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">J_I_0</span>
+            <span class="k">break</span>
+    <span class="c1"># print(&quot;v&quot;,v)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="n">u</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">v</span><span class="p">])</span>
+    <span class="c1"># print(&quot;branch rlp&quot;,rlp.hex(),crypto.keccak256(rlp).hex())</span>
+    <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#ethereum-specification">Ethereum Specification</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../crypto/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.crypto</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.eth_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../evm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../main/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.main</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../number/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.rlp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../spec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.spec</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.trie</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul>
+      <li>Previous: <a href="../spec/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.spec</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/eth1spec/trie/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,197 @@
+:mod:`eth1spec.spec`
+====================
+
+.. py:module:: eth1spec.spec
+
+Ethereum Specification
+----------------------
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.spec.BlockChain
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   eth1spec.spec.state_transition
+   eth1spec.spec.verify_header
+   eth1spec.spec.apply_body
+   eth1spec.spec.process_transaction
+   eth1spec.spec.verify_transaction
+   eth1spec.spec.recover_sender
+   eth1spec.spec.signing_hash
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   eth1spec.spec.BLOCK_REWARD
+   eth1spec.spec.EMPTY_ACCOUNT
+
+
+Module Details
+---------------
+.. data:: BLOCK_REWARD
+   
+
+   
+
+.. data:: EMPTY_ACCOUNT
+   
+
+   
+
+
+BlockChain
+~~~~~~~~~~
+
+History and current state of the block chain.
+
+
+.. class:: BlockChain
+
+   .. attribute:: blocks
+      :annotation: :List[eth1spec.eth_types.Block]
+
+      
+
+   .. attribute:: state
+      :annotation: :eth1spec.eth_types.State
+
+      
+
+
+
+state_transition
+~~~~~~~~~~~~~~~~
+
+Attempts to apply a block to an existing block chain.
+
+
+.. function:: state_transition(chain: BlockChain, block: eth1spec.eth_types.Block) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 47-69
+
+
+verify_header
+~~~~~~~~~~~~~
+
+Verifies a block header.
+
+
+.. function:: verify_header(header: eth1spec.eth_types.Header) -> bool
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 72-86
+
+
+apply_body
+~~~~~~~~~~
+
+Executes a block.
+
+
+.. function:: apply_body(state: eth1spec.eth_types.State, coinbase: eth1spec.eth_types.Address, block_number: eth1spec.eth_types.Uint, block_gas_limit: eth1spec.eth_types.Uint, block_time: eth1spec.eth_types.Uint, block_difficulty: eth1spec.eth_types.Uint, transactions: List[eth1spec.eth_types.Transaction], ommers: List[eth1spec.eth_types.Header]) -> Tuple[eth1spec.eth_types.Uint, eth1spec.eth_types.Root, eth1spec.eth_types.State]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 89-186
+
+
+process_transaction
+~~~~~~~~~~~~~~~~~~~
+
+Execute a transaction against the provided environment.
+
+
+.. function:: process_transaction(env: eth1spec.evm.Environment, tx: eth1spec.eth_types.Transaction) -> Tuple[eth1spec.eth_types.Uint, List[eth1spec.eth_types.Log]]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 189-225
+
+
+verify_transaction
+~~~~~~~~~~~~~~~~~~
+
+Verifies a transaction.
+
+
+.. function:: verify_transaction(tx: eth1spec.eth_types.Transaction) -> bool
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 229-251
+
+
+recover_sender
+~~~~~~~~~~~~~~
+
+Extracts the sender address from a transaction.
+
+
+.. function:: recover_sender(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Address
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 254-284
+
+
+signing_hash
+~~~~~~~~~~~~
+
+Compute the hash of a transaction used in the signature.
+
+
+.. function:: signing_hash(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Hash32
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 287-302
+
