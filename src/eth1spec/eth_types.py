@@ -55,6 +55,14 @@ class Account:
     storage: Storage
 
 
+EMPTY_ACCOUNT = Account(
+    nonce=Uint(0),
+    balance=Uint(0),
+    code=bytearray(),
+    storage={},
+)
+
+
 @dataclass
 class Header:
     """
@@ -106,7 +114,7 @@ class Receipt:
     Result of a transaction.
     """
 
-    post_state: Root
+    pre_state: Root
     cumulative_gas_used: Uint
     bloom: Bloom
     logs: List[Log]
