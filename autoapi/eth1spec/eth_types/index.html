@@ -125,7 +125,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.eth_types.TX_DATA_COST_PER_ZERO" title="eth1spec.eth_types.TX_DATA_COST_PER_ZERO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TX_DATA_COST_PER_ZERO</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.eth_types.State" title="eth1spec.eth_types.State"><code class="xref py py-obj docutils literal notranslate"><span class="pre">State</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.eth_types.EMPTY_ACCOUNT" title="eth1spec.eth_types.EMPTY_ACCOUNT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMPTY_ACCOUNT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.eth_types.State" title="eth1spec.eth_types.State"><code class="xref py py-obj docutils literal notranslate"><span class="pre">State</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -217,17 +220,17 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">eth1spec.eth_types.</span></span><span class="sig-name descname"><span class="pre">Transaction</span></span><a class="headerlink" href="#eth1spec.eth_types.Transaction" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.nonce">
-<span class="sig-name descname"><span class="pre">nonce</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.nonce" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">nonce</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.nonce" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.gas_price">
-<span class="sig-name descname"><span class="pre">gas_price</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.gas_price" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gas_price</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.gas_price" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.gas">
-<span class="sig-name descname"><span class="pre">gas</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.gas" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">gas</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.gas" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -237,7 +240,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.value" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -247,17 +250,17 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.v">
-<span class="sig-name descname"><span class="pre">v</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.v" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">v</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.v" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.r">
-<span class="sig-name descname"><span class="pre">r</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.r" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">r</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.r" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Transaction.s">
-<span class="sig-name descname"><span class="pre">s</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.s" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">s</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Transaction.s" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -290,6 +293,11 @@
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="eth1spec.eth_types.EMPTY_ACCOUNT">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.eth_types.</span></span><span class="sig-name descname"><span class="pre">EMPTY_ACCOUNT</span></span><a class="headerlink" href="#eth1spec.eth_types.EMPTY_ACCOUNT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="header">
@@ -355,7 +363,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eth1spec.eth_types.Header.time">
-<span class="sig-name descname"><span class="pre">time</span></span><em class="property"> <span class="pre">:eth1spec.number.Uint</span></em><a class="headerlink" href="#eth1spec.eth_types.Header.time" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">time</span></span><em class="property"> <span class="pre">:U256</span></em><a class="headerlink" href="#eth1spec.eth_types.Header.time" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -487,7 +495,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../crypto/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.crypto</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.eth_types</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../evm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../main/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.main</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../number/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.rlp</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.spec</span></code></a></li>

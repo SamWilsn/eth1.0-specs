@@ -30,8 +30,10 @@ Functions
    eth1spec.spec.apply_body
    eth1spec.spec.process_transaction
    eth1spec.spec.verify_transaction
+   eth1spec.spec.intrinsic_cost
    eth1spec.spec.recover_sender
    eth1spec.spec.signing_hash
+   eth1spec.spec.print_state
 
 
 
@@ -41,17 +43,11 @@ Attributes
 .. autoapisummary::
 
    eth1spec.spec.BLOCK_REWARD
-   eth1spec.spec.EMPTY_ACCOUNT
 
 
 Module Details
 ---------------
 .. data:: BLOCK_REWARD
-   
-
-   
-
-.. data:: EMPTY_ACCOUNT
    
 
    
@@ -91,7 +87,7 @@ Attempts to apply a block to an existing block chain.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 47-69
+   :lines: 40-65
 
 
 verify_header
@@ -108,7 +104,7 @@ Verifies a block header.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 72-86
+   :lines: 68-82
 
 
 apply_body
@@ -125,7 +121,7 @@ Executes a block.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 89-186
+   :lines: 85-168
 
 
 process_transaction
@@ -142,7 +138,7 @@ Execute a transaction against the provided environment.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 189-225
+   :lines: 171-216
 
 
 verify_transaction
@@ -159,7 +155,24 @@ Verifies a transaction.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 229-251
+   :lines: 219-233
+
+
+intrinsic_cost
+~~~~~~~~~~~~~~
+
+Calculates the intrinsic cost of the transaction that is charged before
+
+
+.. function:: intrinsic_cost(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Uint
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 236-259
 
 
 recover_sender
@@ -176,7 +189,7 @@ Extracts the sender address from a transaction.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 254-284
+   :lines: 262-292
 
 
 signing_hash
@@ -193,5 +206,22 @@ Compute the hash of a transaction used in the signature.
 
 .. literalinclude:: ../../../../src/eth1spec/spec.py
    :language: python
-   :lines: 287-302
+   :lines: 295-317
+
+
+print_state
+~~~~~~~~~~~
+
+Pretty prints the state.
+
+
+.. function:: print_state(state: eth1spec.eth_types.State) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: ../../../../src/eth1spec/spec.py
+   :language: python
+   :lines: 323-344
 

@@ -18,7 +18,6 @@ Submodules
    crypto/index.rst
    eth_types/index.rst
    evm/index.rst
-   main/index.rst
    number/index.rst
    rlp/index.rst
    spec/index.rst

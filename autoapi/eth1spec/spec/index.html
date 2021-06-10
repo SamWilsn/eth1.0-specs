@@ -79,11 +79,17 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.spec.verify_transaction" title="eth1spec.spec.verify_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_transaction</span></code></a></p></td>
 <td><p>Verifies a transaction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.spec.recover_sender" title="eth1spec.spec.recover_sender"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recover_sender</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.spec.intrinsic_cost" title="eth1spec.spec.intrinsic_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intrinsic_cost</span></code></a></p></td>
+<td><p>Calculates the intrinsic cost of the transaction that is charged before</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.spec.recover_sender" title="eth1spec.spec.recover_sender"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recover_sender</span></code></a></p></td>
 <td><p>Extracts the sender address from a transaction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.spec.signing_hash" title="eth1spec.spec.signing_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signing_hash</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.spec.signing_hash" title="eth1spec.spec.signing_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signing_hash</span></code></a></p></td>
 <td><p>Compute the hash of a transaction used in the signature.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.spec.print_state" title="eth1spec.spec.print_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_state</span></code></a></p></td>
+<td><p>Pretty prints the state.</p></td>
 </tr>
 </tbody>
 </table>
@@ -99,9 +105,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#eth1spec.spec.BLOCK_REWARD" title="eth1spec.spec.BLOCK_REWARD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BLOCK_REWARD</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#eth1spec.spec.EMPTY_ACCOUNT" title="eth1spec.spec.EMPTY_ACCOUNT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMPTY_ACCOUNT</span></code></a></p></td>
-<td><p></p></td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -111,11 +114,6 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="eth1spec.spec.BLOCK_REWARD">
 <span class="sig-prename descclassname"><span class="pre">eth1spec.spec.</span></span><span class="sig-name descname"><span class="pre">BLOCK_REWARD</span></span><a class="headerlink" href="#eth1spec.spec.BLOCK_REWARD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="eth1spec.spec.EMPTY_ACCOUNT">
-<span class="sig-prename descclassname"><span class="pre">eth1spec.spec.</span></span><span class="sig-name descname"><span class="pre">EMPTY_ACCOUNT</span></span><a class="headerlink" href="#eth1spec.spec.EMPTY_ACCOUNT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <section id="blockchain">
@@ -156,7 +154,7 @@
 <span class="sd">    block : `eth1spec.eth_types.Block`</span>
 <span class="sd">        Block to apply to `chain`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">verify_header</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+    <span class="c1">#  assert verify_header(block.header)</span>
     <span class="n">gas_used</span><span class="p">,</span> <span class="n">receipt_root</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">apply_body</span><span class="p">(</span>
         <span class="n">chain</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
         <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">coinbase</span><span class="p">,</span>
@@ -167,7 +165,10 @@
         <span class="n">block</span><span class="o">.</span><span class="n">transactions</span><span class="p">,</span>
         <span class="n">block</span><span class="o">.</span><span class="n">ommers</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>  <span class="c1"># TODO</span>
+
+    <span class="k">assert</span> <span class="n">gas_used</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">gas_used</span>
+    <span class="k">assert</span> <span class="n">receipt_root</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">receipt_root</span>
+    <span class="k">assert</span> <span class="n">trie</span><span class="o">.</span><span class="n">TRIE</span><span class="p">(</span><span class="n">trie</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">state</span><span class="p">))</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">state_root</span>
 </pre></div>
 </div>
 </section>
@@ -250,6 +251,9 @@
     <span class="n">gas_available</span> <span class="o">=</span> <span class="n">block_gas_limit</span>
     <span class="n">receipts</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">if</span> <span class="n">coinbase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">coinbase</span><span class="p">]</span> <span class="o">=</span> <span class="n">EMPTY_ACCOUNT</span>
+
     <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">transactions</span><span class="p">:</span>
         <span class="k">assert</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">&lt;=</span> <span class="n">gas_available</span>
         <span class="n">sender_address</span> <span class="o">=</span> <span class="n">recover_sender</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span>
@@ -272,37 +276,20 @@
 
         <span class="n">receipts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">Receipt</span><span class="p">(</span>
-                <span class="n">post_state</span><span class="o">=</span><span class="n">Root</span><span class="p">(</span>
-                    <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span>
-                        <span class="s2">&quot;00000000000000000000000000000000000000000000000000000&quot;</span>
-                        <span class="s2">&quot;00000000000000000000000000000000000000000000000000000&quot;</span>
-                        <span class="s2">&quot;0000000000000000000000&quot;</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
+                <span class="n">post_state</span><span class="o">=</span><span class="n">Root</span><span class="p">(</span><span class="n">trie</span><span class="o">.</span><span class="n">TRIE</span><span class="p">(</span><span class="n">trie</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">state</span><span class="p">))),</span>
                 <span class="n">cumulative_gas_used</span><span class="o">=</span><span class="p">(</span><span class="n">block_gas_limit</span> <span class="o">-</span> <span class="n">gas_available</span><span class="p">),</span>
-                <span class="n">bloom</span><span class="o">=</span><span class="n">Bytes32</span><span class="p">(</span>
-                    <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span>
-                        <span class="s2">&quot;00000000000000000000000000000000000000000000000000000&quot;</span>
-                        <span class="s2">&quot;00000000000000000000000000000000000000000000000000000&quot;</span>
-                        <span class="s2">&quot;0000000000000000000000&quot;</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
-                <span class="n">logs</span><span class="o">=</span><span class="n">logs</span><span class="p">,</span>
+                <span class="n">bloom</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span>
+                <span class="n">logs</span><span class="o">=</span><span class="p">[],</span>
             <span class="p">)</span>
         <span class="p">)</span>
-
-        <span class="n">gas_available</span> <span class="o">-=</span> <span class="n">gas_used</span>
-
-    <span class="k">if</span> <span class="n">coinbase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
-        <span class="n">state</span><span class="p">[</span><span class="n">coinbase</span><span class="p">]</span> <span class="o">=</span> <span class="n">EMPTY_ACCOUNT</span>
 
     <span class="n">state</span><span class="p">[</span><span class="n">coinbase</span><span class="p">]</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">BLOCK_REWARD</span>
 
     <span class="n">receipts_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">Uint</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">to_big_endian</span><span class="p">():</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">receipts</span><span class="p">)</span>
+        <span class="nb">bytes</span><span class="p">(</span><span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">k</span><span class="p">))):</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">receipts</span><span class="p">)</span>
     <span class="p">}</span>
-    <span class="n">receipts_y</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">receipts_map</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">gas_available</span><span class="p">),</span> <span class="n">trie</span><span class="o">.</span><span class="n">TRIE</span><span class="p">(</span><span class="n">receipts_y</span><span class="p">),</span> <span class="n">state</span>
+    <span class="n">receipts_y</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">receipts_map</span><span class="p">,</span> <span class="n">secured</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">block_gas_limit</span> <span class="o">-</span> <span class="n">gas_available</span><span class="p">),</span> <span class="n">trie</span><span class="o">.</span><span class="n">TRIE</span><span class="p">(</span><span class="n">receipts_y</span><span class="p">),</span> <span class="n">state</span>
 </pre></div>
 </div>
 </section>
@@ -346,11 +333,20 @@
     <span class="k">assert</span> <span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">sender</span><span class="o">.</span><span class="n">balance</span>
     <span class="n">sender</span><span class="o">.</span><span class="n">balance</span> <span class="o">-=</span> <span class="n">cost</span>
 
+    <span class="n">gas</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">-</span> <span class="n">intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">tx</span><span class="o">.</span><span class="n">to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>  <span class="c1"># TODO</span>
 
-    <span class="k">return</span> <span class="n">evm</span><span class="o">.</span><span class="n">process_call</span><span class="p">(</span>
-        <span class="n">sender_address</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span><span class="p">,</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">env</span>
+    <span class="n">gas_left</span><span class="p">,</span> <span class="n">logs</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">process_call</span><span class="p">(</span>
+        <span class="n">sender_address</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">gas</span><span class="p">,</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">env</span>
+    <span class="p">)</span>
+
+    <span class="n">sender</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">gas_left</span> <span class="o">*</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span>
+    <span class="n">gas_used</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">-</span> <span class="n">gas_left</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">coinbase</span><span class="p">]</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">gas_used</span> <span class="o">*</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">gas_used</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -376,6 +372,33 @@
 <span class="sd">    verified : `bool`</span>
 <span class="sd">        True if the transaction can be executed, or False otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span>
+</pre></div>
+</div>
+</section>
+<section id="intrinsic-cost">
+<h3>intrinsic_cost<a class="headerlink" href="#intrinsic-cost" title="Permalink to this headline">¶</a></h3>
+<p>Calculates the intrinsic cost of the transaction that is charged before</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.spec.intrinsic_cost">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.spec.</span></span><span class="sig-name descname"><span class="pre">intrinsic_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.Transaction" title="eth1spec.eth_types.Transaction"><span class="pre">eth1spec.eth_types.Transaction</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">eth1spec.eth_types.Uint</span><a class="headerlink" href="#eth1spec.spec.intrinsic_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the intrinsic cost of the transaction that is charged before</span>
+<span class="sd">    execution is instantiated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tx : `eth1spec.eth_types.Transaction`</span>
+<span class="sd">        Transaction to compute the intrinsic cost of.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    verified : `eth1spec.number.Uint`</span>
+<span class="sd">        The intrinsic cost of the transaction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data_cost</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
@@ -384,7 +407,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">data_cost</span> <span class="o">+=</span> <span class="n">TX_DATA_COST_PER_NON_ZERO</span>
 
-    <span class="k">return</span> <span class="n">TX_BASE_COST</span> <span class="o">+</span> <span class="n">data_cost</span> <span class="o">&lt;=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span>
+    <span class="k">return</span> <span class="n">Uint</span><span class="p">(</span><span class="n">TX_BASE_COST</span> <span class="o">+</span> <span class="n">data_cost</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -426,7 +449,7 @@
     <span class="c1"># assert 0&lt;s_int and s_int&lt;(secp256k1n//2+1)</span>
 
     <span class="n">public_key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">secp256k1_recover</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">27</span><span class="p">,</span> <span class="n">signing_hash</span><span class="p">(</span><span class="n">tx</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">public_key</span><span class="p">[</span><span class="mi">12</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">public_key</span><span class="p">)[</span><span class="mi">12</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -453,7 +476,47 @@
 <span class="sd">        Hash of the transaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span>
-        <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">((</span><span class="n">tx</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">gas</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+<section id="print-state">
+<h3>print_state<a class="headerlink" href="#print-state" title="Permalink to this headline">¶</a></h3>
+<p>Pretty prints the state.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.spec.print_state">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.spec.</span></span><span class="sig-name descname"><span class="pre">print_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#eth1spec.eth_types.State" title="eth1spec.eth_types.State"><span class="pre">eth1spec.eth_types.State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.spec.print_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_state</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pretty prints the state.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state : `eth1spec.eth_types.State`</span>
+<span class="sd">        Ethereum state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nice</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">account</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">nice</span><span class="p">[</span><span class="n">address</span><span class="o">.</span><span class="n">hex</span><span class="p">()]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;nonce&quot;</span><span class="p">:</span> <span class="n">account</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+            <span class="s2">&quot;balance&quot;</span><span class="p">:</span> <span class="n">account</span><span class="o">.</span><span class="n">balance</span><span class="p">,</span>
+            <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">account</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span>
+            <span class="s2">&quot;storage&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">account</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">nice</span><span class="p">[</span><span class="n">address</span><span class="o">.</span><span class="n">hex</span><span class="p">()][</span><span class="s2">&quot;storage&quot;</span><span class="p">][</span><span class="n">k</span><span class="o">.</span><span class="n">hex</span><span class="p">()]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">nice</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -486,7 +549,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../crypto/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.crypto</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.eth_types</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../evm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../main/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.main</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../number/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.number</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.rlp</span></code></a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.spec</span></code></a></li>

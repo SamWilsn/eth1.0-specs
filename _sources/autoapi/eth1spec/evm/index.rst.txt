@@ -39,6 +39,11 @@ Attributes
 .. autoapisummary::
 
    eth1spec.evm.ADD
+   eth1spec.evm.PUSH1
+   eth1spec.evm.SSTORE
+   eth1spec.evm.ops
+   eth1spec.evm.VERY_LOW
+   eth1spec.evm.gas_schedule
 
 
 Module Details
@@ -46,8 +51,32 @@ Module Details
 .. data:: ADD
    :annotation: = b'\x01'
 
-   Opcode for the addition (`+`) instruction.
+   
 
+.. data:: PUSH1
+   :annotation: = b'`'
+
+   
+
+.. data:: SSTORE
+   :annotation: = b'U'
+
+   
+
+.. data:: ops
+   
+
+   
+
+.. data:: VERY_LOW
+   :annotation: = 3
+
+   
+
+.. data:: gas_schedule
+   
+
+   
 
 
 Environment
@@ -79,27 +108,27 @@ Items external to the virtual machine itself, provided by the environment.
       
 
    .. attribute:: number
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
    .. attribute:: gas_limit
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
    .. attribute:: gas_price
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
    .. attribute:: time
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
    .. attribute:: difficulty
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
@@ -119,7 +148,7 @@ The internal state of the virtual machine.
 .. class:: Evm
 
    .. attribute:: pc
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
@@ -134,7 +163,7 @@ The internal state of the virtual machine.
       
 
    .. attribute:: gas_left
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
@@ -154,12 +183,12 @@ The internal state of the virtual machine.
       
 
    .. attribute:: value
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
    .. attribute:: depth
-      :annotation: :eth1spec.number.Uint
+      :annotation: :eth1spec.eth_types.Uint
 
       
 
@@ -176,7 +205,7 @@ process_call
 Executes a call from the `caller` to the `target` in a new EVM instance.
 
 
-.. function:: process_call(caller: eth1spec.eth_types.Address, target: eth1spec.eth_types.Address, data: bytes, value: eth1spec.number.Uint, gas: eth1spec.number.Uint, depth: eth1spec.number.Uint, env: Environment) -> Tuple[eth1spec.number.Uint, List[eth1spec.eth_types.Log]]
+.. function:: process_call(caller: eth1spec.eth_types.Address, target: eth1spec.eth_types.Address, data: bytes, value: eth1spec.eth_types.Uint, gas: eth1spec.eth_types.Uint, depth: eth1spec.eth_types.Uint, env: Environment) -> Tuple[eth1spec.eth_types.Uint, List[eth1spec.eth_types.Log]]
    :noindexentry:
 
 
@@ -184,5 +213,5 @@ Executes a call from the `caller` to the `target` in a new EVM instance.
 
 .. literalinclude:: ../../../../src/eth1spec/evm.py
    :language: python
-   :lines: 55-112
+   :lines: 68-151
 

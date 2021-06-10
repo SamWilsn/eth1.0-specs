@@ -115,7 +115,7 @@ y
 TODO
 
 
-.. function:: y(J: Mapping[eth1spec.eth_types.Bytes, T]) -> Mapping[eth1spec.eth_types.Bytes64, T]
+.. function:: y(J: Mapping[eth1spec.eth_types.Bytes, T], secured: bool = True) -> Mapping[eth1spec.eth_types.Bytes64, T]
    :noindexentry:
 
 
@@ -123,7 +123,7 @@ TODO
 
 .. literalinclude:: ../../../../src/eth1spec/trie.py
    :language: python
-   :lines: 100-124
+   :lines: 100-130
 
 
 TRIE
@@ -140,7 +140,7 @@ Computes the root hash of the storage trie.
 
 .. literalinclude:: ../../../../src/eth1spec/trie.py
    :language: python
-   :lines: 127-143
+   :lines: 133-149
 
 
 n
@@ -157,7 +157,7 @@ Node composition function.
 
 .. literalinclude:: ../../../../src/eth1spec/trie.py
    :language: python
-   :lines: 146-170
+   :lines: 152-176
 
 
 c
@@ -174,5 +174,5 @@ Structural composition function.
 
 .. literalinclude:: ../../../../src/eth1spec/trie.py
    :language: python
-   :lines: 173-277
+   :lines: 179-289
 

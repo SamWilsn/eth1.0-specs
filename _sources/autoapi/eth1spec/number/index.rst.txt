@@ -128,7 +128,6 @@ Unsigned positive integer.
 
 
    .. method:: to_big_endian(self) -> bytes
-      :abstractmethod:
 
 
 

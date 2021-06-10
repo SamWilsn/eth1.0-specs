@@ -47,6 +47,7 @@ Attributes
    eth1spec.eth_types.TX_BASE_COST
    eth1spec.eth_types.TX_DATA_COST_PER_NON_ZERO
    eth1spec.eth_types.TX_DATA_COST_PER_ZERO
+   eth1spec.eth_types.EMPTY_ACCOUNT
    eth1spec.eth_types.State
 
 
@@ -137,17 +138,17 @@ Atomic operation performed on the block chain.
 .. class:: Transaction
 
    .. attribute:: nonce
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
    .. attribute:: gas_price
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
    .. attribute:: gas
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
@@ -157,7 +158,7 @@ Atomic operation performed on the block chain.
       
 
    .. attribute:: value
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
@@ -167,17 +168,17 @@ Atomic operation performed on the block chain.
       
 
    .. attribute:: v
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
    .. attribute:: r
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
    .. attribute:: s
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
@@ -211,6 +212,11 @@ State associated with an address.
 
       
 
+
+.. data:: EMPTY_ACCOUNT
+   
+
+   
 
 
 Header
@@ -277,7 +283,7 @@ Header portion of a block on the chain.
       
 
    .. attribute:: time
-      :annotation: :eth1spec.number.Uint
+      :annotation: :U256
 
       
 
