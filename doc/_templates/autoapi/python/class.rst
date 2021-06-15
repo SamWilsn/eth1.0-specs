@@ -43,7 +43,9 @@
    {% set visible_attributes = obj.attributes|rejectattr("inherited")|selectattr("display")|list %}
    {% endif %}
    {% for attribute in visible_attributes %}
-   {{ attribute.render()|indent(3) }}
+   .. {{ attribute.type }}:: {{ attribute.name }}
+
+
    {% endfor %}
    {% if "inherited-members" in autoapi_options %}
    {% set visible_methods = obj.methods|selectattr("display")|list %}

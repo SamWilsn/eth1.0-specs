@@ -51,70 +51,7 @@ Submodules
 {% else %}
 {% set visible_children = obj.children|selectattr("display")|rejectattr("imported")|list %}
 {% endif %}
-{% if visible_children %}
-{{ obj.type|title }} Contents
-{{ "-" * obj.type|length }}---------
-
-{% set visible_classes = visible_children|selectattr("type", "equalto", "class")|list %}
-{% set visible_functions = visible_children|selectattr("type", "equalto", "function")|list %}
-{% set visible_attributes = visible_children|selectattr("type", "equalto", "data")|list %}
-{% if "show-module-summary" in autoapi_options and (visible_classes or visible_functions) %}
-{% block classes scoped %}
-{% if visible_classes %}
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-{% for klass in visible_classes %}
-   {{ klass.id }}
-{% endfor %}
-
-
-{% endif %}
-{% endblock %}
-
-{% block functions scoped %}
-{% if visible_functions %}
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-   :nosignatures:
-
-{% for function in visible_functions %}
-   {{ function.id }}
-{% endfor %}
-
-
-{% endif %}
-{% endblock %}
-
-{% block attributes scoped %}
-{% if visible_attributes %}
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-{% for attribute in visible_attributes %}
-   {{ attribute.id }}
-{% endfor %}
-
-
-{% endif %}
-{% endblock %}
-{{ obj.type|title }} Details
-{{ "-" * obj.type|length }}---------
-{% endif %}
 {% for obj_item in visible_children %}
-{% if obj_item.display %}
-
-{{ obj_item.short_name }}
-{{ '~' * obj_item.short_name|length }}
-
-{% endif %}
 {{ obj_item.render()|indent(0) }}
 {% endfor %}
-{% endif %}
 {% endblock %}
