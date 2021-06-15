@@ -4,76 +4,62 @@
 .. py:module:: eth1spec.trie
 
 State Trie
-----------
+^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
 
 The state trie is the structure responsible for storing
 `eth1spec.eth_types.Account` objects.
 
 
-Module Contents
----------------
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-   :nosignatures:
-
-   eth1spec.trie.HP
-   eth1spec.trie.f
-   eth1spec.trie.HP_inverse
-   eth1spec.trie.y
-   eth1spec.trie.TRIE
-   eth1spec.trie.n
-   eth1spec.trie.c
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.trie.debug
-   eth1spec.trie.verbose
-   eth1spec.trie.T
-
-
-Module Details
----------------
 .. data:: debug
    :annotation: = False
 
-   
+
+
+
 
 .. data:: verbose
    :annotation: = False
 
-   
 
-
-HP
-~~
 
 Hex prefix encoding.
 
+:param x: Array of values less than 16.
+:type x: `eth1spec.eth_types.Bytes`
+:param t: Any of `0`, `1`, `False`, or `True`.
+:type t: `Union[bool, int]`
 
-.. function:: HP(x: eth1spec.eth_types.Bytes, t: Union[bool, int]) -> bytearray
+:returns: **encoded** -- TODO
+:rtype: `bytearray`
+
+
+.. function:: HP(x: eth1spec.base_types.Bytes, t: Union[bool, int]) -> bytearray
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 18-48
-
-
-f
-~
+   :lines: 26-56
 
 Encodes `t` as a bit flag.
+
+:param t: Arbitrary boolean.
+:type t: `Union[bool, int]`
+
+:returns: **flag** -- `t` encoded as a bit flag.
+:rtype: `int`
 
 
 .. function:: f(t: Union[bool, int]) -> int
@@ -82,97 +68,117 @@ Encodes `t` as a bit flag.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 51-68
-
-
-HP_inverse
-~~~~~~~~~~
+   :lines: 59-76
 
 Hex prefix decoding.
 
+:param buffer: TODO
+:type buffer: `Bytes`
 
-.. function:: HP_inverse(buffer: eth1spec.eth_types.Bytes) -> Tuple[str, bool]
+:returns: * **nibbles** (`str`) -- Decoded prefix
+          * **t** (`bool`) -- TODO
+
+
+.. function:: HP_inverse(buffer: eth1spec.base_types.Bytes) -> Tuple[str, bool]
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 71-94
+   :lines: 79-102
+
+
 
 .. data:: T
    
 
-   
 
-
-y
-~
 
 TODO
 
+:param J: TODO
+:type J: `Dict[Bytes, Bytes]`
+:param secured: Denotes whether the keys should be hashed. Defaults to `true`.
+:type secured: `bool`
 
-.. function:: y(J: Mapping[eth1spec.eth_types.Bytes, T], secured: bool = True) -> Mapping[eth1spec.eth_types.Bytes64, T]
+:returns:
+:rtype: TODO
+
+
+.. function:: y(J: Mapping[eth1spec.base_types.Bytes, T], secured: bool = True) -> Mapping[eth1spec.base_types.Bytes64, T]
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 100-130
-
-
-TRIE
-~~~~
+   :lines: 108-138
 
 Computes the root hash of the storage trie.
 
+:param J: TODO
+:type J: `Mapping[Bytes, Union[Bytes, Account, Receipt, Uint, U256]]`
 
-.. function:: TRIE(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Account, eth1spec.eth_types.Bytes, eth1spec.eth_types.Receipt]]) -> eth1spec.eth_types.Root
+:returns: **root** -- TODO
+:rtype: `eth1spec.eth_types.Root`
+
+
+.. function:: TRIE(J: Mapping[eth1spec.base_types.Bytes, Union[eth1spec.eth_types.Account, eth1spec.base_types.Bytes, eth1spec.eth_types.Receipt, eth1spec.base_types.Uint, eth1spec.base_types.U256]]) -> eth1spec.eth_types.Root
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 133-149
-
-
-n
-~
+   :lines: 141-159
 
 Node composition function.
 
+:param J: TODO
+:type J: `Mapping[Bytes, Union[Bytes, Account, Receipt, Uint, U256]]`
+:param i: TODO
+:type i: `eth1spec.eth_types.U256`
 
-.. function:: n(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt]], i: eth1spec.eth_types.U256) -> eth1spec.eth_types.Bytes
+:returns: **hash** -- TODO
+:rtype: `eth1spec.eth_types.Hash32`
+
+
+.. function:: n(J: Mapping[eth1spec.base_types.Bytes, Union[eth1spec.base_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt, eth1spec.base_types.Uint, eth1spec.base_types.U256]], i: eth1spec.base_types.U256) -> eth1spec.base_types.Bytes
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 152-176
-
-
-c
-~
+   :lines: 162-188
 
 Structural composition function.
 
+Used to patricialize and merkleize a dictionary. Includes memoization of
+the tree structure and hashes.
 
-.. function:: c(J: Mapping[eth1spec.eth_types.Bytes, Union[eth1spec.eth_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt]], i: eth1spec.eth_types.Uint) -> eth1spec.eth_types.Bytes
+:param J: TODO
+:type J: `Mapping[Bytes, Union[Bytes, Account, Receipt, Uint, U256]]`
+:param i: TODO
+:type i: `eth1spec.base_types.Uint`
+
+:returns: **value** -- TODO
+:rtype: `eth1spec.eth_types.Bytes`
+
+
+.. function:: c(J: Mapping[eth1spec.base_types.Bytes, Union[eth1spec.base_types.Bytes, eth1spec.eth_types.Account, eth1spec.eth_types.Receipt, eth1spec.base_types.Uint, eth1spec.base_types.U256]], i: eth1spec.base_types.U256) -> eth1spec.base_types.Bytes
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/trie.py
+.. literalinclude:: /../src/eth1spec/trie.py
    :language: python
-   :lines: 179-289
-
+   :lines: 191-306

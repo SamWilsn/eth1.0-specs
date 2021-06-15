@@ -1,0 +1,45 @@
+:mod:`eth1spec.evm.gas`
+=======================
+
+.. py:module:: eth1spec.evm.gas
+
+Ethereum Virtual Machine (EVM) Gas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+EVM gas constants and calculators.
+
+
+
+
+
+.. data:: GAS_VERY_LOW
+   
+
+
+
+Subtracts `amount` from `gas_left`.
+
+:param gas_left: The amount of gas left in the current frame.
+:type gas_left: `eth1spec.base_types.U256`
+:param amount: The amount of gas the current operation requires.
+:type amount: `eth1spec.base_types.U256`
+
+:raises OutOfGasError: If `gas_left` is less than `amount`.
+
+
+.. function:: subtract_gas(gas_left: eth1spec.base_types.U256, amount: eth1spec.base_types.U256) -> eth1spec.base_types.U256
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/evm/gas.py
+   :language: python
+   :lines: 21-40

@@ -4,65 +4,47 @@
 .. py:module:: eth1spec.rlp
 
 Recursive Length Prefix (RLP) Encoding
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
 
-Module Contents
----------------
+Introduction
+------------
 
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-   :nosignatures:
-
-   eth1spec.rlp.encode
-   eth1spec.rlp.R_b
-   eth1spec.rlp.BE
-   eth1spec.rlp.R_l
-   eth1spec.rlp.s
-   eth1spec.rlp.decode
-   eth1spec.rlp.R_b_inverse
-   eth1spec.rlp.BE_inverse
-   eth1spec.rlp.R_l_inverse
-   eth1spec.rlp.s_inverse
-   eth1spec.rlp.decode_length
+Defines the serialization and deserialization format used throughout Ethereum.
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.rlp.verbose
-   eth1spec.rlp.debug
-   eth1spec.rlp.RLP
 
 
-Module Details
----------------
 .. data:: verbose
    :annotation: = False
 
-   
+
+
+
 
 .. data:: debug
    :annotation: = False
 
-   
+
+
+
 
 .. data:: RLP
    
 
-   
 
-
-encode
-~~~~~~
 
 Encodes `x` into a sequence of bytes using RLP.
+
+:param x: A `Bytes`, `Uint`, or sequence of `RLP` encodable objects.
+:type x: `RLP`
+
+:returns: **encoded** -- The RLP encoded bytes representing `x`.
+:rtype: `eth1spec.eth_types.Bytes`
 
 
 .. function:: encode(x: RLP) -> eth1spec.eth_types.Bytes
@@ -71,15 +53,17 @@ Encodes `x` into a sequence of bytes using RLP.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 20-43
-
-
-R_b
-~~~
+   :lines: 29-52
 
 Encodes `x`, a sequence of bytes, using RLP.
+
+:param x: Bytes to encode with RLP.
+:type x: `eth1spec.eth_types.Bytes`
+
+:returns: **encoded** -- The RLP encoded bytes representing `x`.
+:rtype: `eth1spec.eth_types.Bytes`
 
 
 .. function:: R_b(x: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Bytes
@@ -88,32 +72,17 @@ Encodes `x`, a sequence of bytes, using RLP.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 47-69
-
-
-BE
-~~
-
-Converts an arbitrarily sized unsigned integer `x` into its big endian
-
-
-.. function:: BE(x: eth1spec.number.Uint) -> eth1spec.eth_types.Bytes
-   :noindexentry:
-
-
-
-
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
-   :language: python
-   :lines: 72-95
-
-
-R_l
-~~~
+   :lines: 56-79
 
 Encodes `x`, a list of RLP encodable objects, using RLP.
+
+:param x: List to encode with RLP.
+:type x: `List[RLP]`
+
+:returns: **encoded** -- The RLP encoded bytes representing `x`.
+:rtype: `eth1spec.eth_types.Bytes`
 
 
 .. function:: R_l(x: Sequence[RLP]) -> eth1spec.eth_types.Bytes
@@ -122,15 +91,18 @@ Encodes `x`, a list of RLP encodable objects, using RLP.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 99-123
-
-
-s
-~
+   :lines: 83-105
 
 Partially encodes `x`, a list of RLP encodable objects, using RLP,
+excluding the length prefix.
+
+:param x: List to encode with RLP.
+:type x: `List[RLP]`
+
+:returns: **partially_encoded** -- The partially RLP encoded bytes representing `x`.
+:rtype: `eth1spec.eth_types.Bytes`
 
 
 .. function:: s(x: Sequence[RLP]) -> eth1spec.eth_types.Bytes
@@ -139,15 +111,18 @@ Partially encodes `x`, a list of RLP encodable objects, using RLP,
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 128-148
-
-
-decode
-~~~~~~
+   :lines: 109-129
 
 Decodes an integer, byte sequence, or list of RLP encodable objects from
+the byte sequence `b`, using RLP.
+
+:param b: A sequence of bytes, in RLP form.
+:type b: `eth1spec.eth_types.Bytes`
+
+:returns: **decoded** -- Object decoded from `b`.
+:rtype: `RLP`
 
 
 .. function:: decode(b: eth1spec.eth_types.Bytes) -> RLP
@@ -156,15 +131,17 @@ Decodes an integer, byte sequence, or list of RLP encodable objects from
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 154-176
-
-
-R_b_inverse
-~~~~~~~~~~~
+   :lines: 135-157
 
 Decodes a byte sequence from the byte sequence `b`, using RLP.
+
+:param b: A sequence of bytes, in RLP form.
+:type b: `eth1spec.eth_types.Bytes`
+
+:returns: **decoded** -- Bytes decoded from `b`
+:rtype: `eth1spec.eth_types.Bytes`
 
 
 .. function:: R_b_inverse(b: eth1spec.eth_types.Bytes) -> eth1spec.eth_types.Bytes
@@ -173,32 +150,17 @@ Decodes a byte sequence from the byte sequence `b`, using RLP.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 179-202
-
-
-BE_inverse
-~~~~~~~~~~
-
-Converts a sequence of bytes into an arbitrarily sized unsigned integer `x`
-
-
-.. function:: BE_inverse(b: eth1spec.eth_types.Bytes) -> eth1spec.number.Uint
-   :noindexentry:
-
-
-
-
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
-   :language: python
-   :lines: 205-226
-
-
-R_l_inverse
-~~~~~~~~~~~
+   :lines: 160-183
 
 Decodes `b` into a list of RLP encodable objects, using RLP.
+
+:param b: An RLP encoded list.
+:type b: `eth1spec.eth_types.Bytes`
+
+:returns: **decoded** -- List of objects decoded from `b`.
+:rtype: `List[RLP]`
 
 
 .. function:: R_l_inverse(b: eth1spec.eth_types.Bytes) -> List[RLP]
@@ -207,15 +169,18 @@ Decodes `b` into a list of RLP encodable objects, using RLP.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 229-254
-
-
-s_inverse
-~~~~~~~~~
+   :lines: 186-211
 
 Decodes `b`, a partially encoded list of RLP encodable objects, excluding
+the length prefix.
+
+:param b: A list of objects, encoded in RLP, without the length prefix.
+:type b: `eth1spec.eth_types.Bytes`
+
+:returns: **decoded** -- A list of objects decoded from `b`.
+:rtype: `List[RLP]`
 
 
 .. function:: s_inverse(b: eth1spec.eth_types.Bytes) -> List[RLP]
@@ -224,24 +189,25 @@ Decodes `b`, a partially encoded list of RLP encodable objects, excluding
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 257-285
-
-
-decode_length
-~~~~~~~~~~~~~
+   :lines: 214-242
 
 Decodes the length prefix from the byte sequence `b`.
 
+:param b: Sequence of RLP bytes.
+:type b: `eth1spec.eth_types.Bytes`
 
-.. function:: decode_length(b: eth1spec.eth_types.Bytes) -> Tuple[eth1spec.number.Uint, eth1spec.number.Uint]
+:returns: * **rlp_length** (`eth1spec.base_types.Uint`) -- TODO
+          * **length_length** (`eth1spec.base_types.Uint`) -- TODO
+
+
+.. function:: decode_length(b: eth1spec.eth_types.Bytes) -> Tuple[eth1spec.base_types.Uint, eth1spec.base_types.Uint]
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/rlp.py
+.. literalinclude:: /../src/eth1spec/rlp.py
    :language: python
-   :lines: 291-326
-
+   :lines: 248-283

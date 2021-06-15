@@ -3,134 +3,82 @@
 
 .. py:module:: eth1spec.eth_types
 
-Base Types
-----------
+Ethereum Types
+^^^^^^^^^^^^^^
 
-Types re-used throughout the specification.
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
 
+Introduction
+------------
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.eth_types.Transaction
-   eth1spec.eth_types.Account
-   eth1spec.eth_types.Header
-   eth1spec.eth_types.Block
-   eth1spec.eth_types.Log
-   eth1spec.eth_types.Receipt
+Types re-used throughout the specification, which are specific to Ethereum.
 
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.eth_types.Bytes
-   eth1spec.eth_types.Bytes64
-   eth1spec.eth_types.Bytes32
-   eth1spec.eth_types.Bytes20
-   eth1spec.eth_types.Bytes8
-   eth1spec.eth_types.Hash32
-   eth1spec.eth_types.Root
-   eth1spec.eth_types.Hash64
-   eth1spec.eth_types.Address
-   eth1spec.eth_types.U256
-   eth1spec.eth_types.Storage
-   eth1spec.eth_types.Bloom
-   eth1spec.eth_types.TX_BASE_COST
-   eth1spec.eth_types.TX_DATA_COST_PER_NON_ZERO
-   eth1spec.eth_types.TX_DATA_COST_PER_ZERO
-   eth1spec.eth_types.EMPTY_ACCOUNT
-   eth1spec.eth_types.State
-
-
-Module Details
----------------
-.. data:: Bytes
-   
-
-   
-
-.. data:: Bytes64
-   
-
-   
-
-.. data:: Bytes32
-   
-
-   
-
-.. data:: Bytes20
-   
-
-   
-
-.. data:: Bytes8
-   
-
-   
-
-.. data:: Hash32
-   
-
-   
-
-.. data:: Root
-   
-
-   
-
-.. data:: Hash64
-   
-
-   
 
 .. data:: Address
    
 
+
+
+
+
+.. data:: Root
    
 
-.. data:: U256
+
+
+
+
+.. data:: Hash32
    
 
+
+
+
+
+.. data:: Hash64
    
+
+
+
+
 
 .. data:: Storage
    
 
-   
+
+
+
 
 .. data:: Bloom
    
 
-   
+
+
+
 
 .. data:: TX_BASE_COST
    :annotation: = 21000
 
-   
+
+
+
 
 .. data:: TX_DATA_COST_PER_NON_ZERO
    :annotation: = 68
 
-   
+
+
+
 
 .. data:: TX_DATA_COST_PER_ZERO
    :annotation: = 4
 
-   
 
-
-Transaction
-~~~~~~~~~~~
 
 Atomic operation performed on the block chain.
 
@@ -138,54 +86,33 @@ Atomic operation performed on the block chain.
 .. class:: Transaction
 
    .. attribute:: nonce
-      :annotation: :U256
 
-      
 
    .. attribute:: gas_price
-      :annotation: :U256
 
-      
 
    .. attribute:: gas
-      :annotation: :U256
 
-      
 
    .. attribute:: to
-      :annotation: :Optional[Address]
 
-      
 
    .. attribute:: value
-      :annotation: :U256
 
-      
 
    .. attribute:: data
-      :annotation: :Bytes
 
-      
 
    .. attribute:: v
-      :annotation: :U256
 
-      
 
    .. attribute:: r
-      :annotation: :U256
 
-      
 
    .. attribute:: s
-      :annotation: :U256
-
-      
 
 
 
-Account
-~~~~~~~
 
 State associated with an address.
 
@@ -193,34 +120,25 @@ State associated with an address.
 .. class:: Account
 
    .. attribute:: nonce
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: balance
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: code
-      :annotation: :bytes
 
-      
 
    .. attribute:: storage
-      :annotation: :Storage
 
-      
+
+
+
 
 
 .. data:: EMPTY_ACCOUNT
    
 
-   
 
-
-Header
-~~~~~~
 
 Header portion of a block on the chain.
 
@@ -228,84 +146,51 @@ Header portion of a block on the chain.
 .. class:: Header
 
    .. attribute:: parent
-      :annotation: :Hash32
 
-      
 
    .. attribute:: ommers
-      :annotation: :Hash32
 
-      
 
    .. attribute:: coinbase
-      :annotation: :Address
 
-      
 
    .. attribute:: state_root
-      :annotation: :Root
 
-      
 
    .. attribute:: transactions_root
-      :annotation: :Root
 
-      
 
    .. attribute:: receipt_root
-      :annotation: :Root
 
-      
 
    .. attribute:: bloom
-      :annotation: :Bloom
 
-      
 
    .. attribute:: difficulty
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: number
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: gas_limit
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: gas_used
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: time
-      :annotation: :U256
 
-      
 
    .. attribute:: extra
-      :annotation: :Bytes
 
-      
 
    .. attribute:: mix_digest
-      :annotation: :Bytes32
 
-      
 
    .. attribute:: nonce
-      :annotation: :Bytes8
-
-      
 
 
 
-Block
-~~~~~
 
 A complete block.
 
@@ -313,24 +198,15 @@ A complete block.
 .. class:: Block
 
    .. attribute:: header
-      :annotation: :Header
 
-      
 
    .. attribute:: transactions
-      :annotation: :List[Transaction]
 
-      
 
    .. attribute:: ommers
-      :annotation: :List[Header]
-
-      
 
 
 
-Log
-~~~
 
 Data record produced during the execution of a transaction.
 
@@ -338,24 +214,15 @@ Data record produced during the execution of a transaction.
 .. class:: Log
 
    .. attribute:: address
-      :annotation: :Address
 
-      
 
    .. attribute:: topics
-      :annotation: :List[Hash32]
 
-      
 
    .. attribute:: data
-      :annotation: :bytes
-
-      
 
 
 
-Receipt
-~~~~~~~
 
 Result of a transaction.
 
@@ -363,28 +230,22 @@ Result of a transaction.
 .. class:: Receipt
 
    .. attribute:: post_state
-      :annotation: :Root
 
-      
 
    .. attribute:: cumulative_gas_used
-      :annotation: :eth1spec.number.Uint
 
-      
 
    .. attribute:: bloom
-      :annotation: :Bloom
 
-      
 
    .. attribute:: logs
-      :annotation: :List[Log]
 
-      
+
+
+
 
 
 .. data:: State
    
 
-   
 

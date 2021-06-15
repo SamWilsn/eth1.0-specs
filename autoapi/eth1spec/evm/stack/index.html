@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>eth1spec.evm.stack &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="eth1spec.base_types" href="../../base_types/index.html" />
+    <link rel="prev" title="eth1spec.evm.ops" href="../ops/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-eth1spec.evm.stack">
+<span id="eth1spec-evm-stack"></span><h1><a class="reference internal" href="#module-eth1spec.evm.stack" title="eth1spec.evm.stack"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm.stack</span></code></a><a class="headerlink" href="#module-eth1spec.evm.stack" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm-stack">
+<h2>Ethereum Virtual Machine (EVM) Stack<a class="headerlink" href="#ethereum-virtual-machine-evm-stack" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Implementation of the stack operators for the EVM.</p>
+<p>Pops the top item off of <cite>stack</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param stack</dt>
+<dd class="field-odd"><p>EVM stack.</p>
+</dd>
+<dt class="field-even">type stack</dt>
+<dd class="field-even"><p><cite>List[U256]</cite></p>
+</dd>
+<dt class="field-odd">returns</dt>
+<dd class="field-odd"><p><strong>value</strong> – The top element on the stack.</p>
+</dd>
+<dt class="field-even">rtype</dt>
+<dd class="field-even"><p><cite>U256</cite></p>
+</dd>
+<dt class="field-odd">raises StackUnderflowError</dt>
+<dd class="field-odd"><p>If <cite>stack</cite> is empty.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.evm.stack.pop">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.evm.stack.</span></span><span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stack</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">eth1spec.eth_types.U256</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">eth1spec.eth_types.U256</span><a class="headerlink" href="#eth1spec.evm.stack.pop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">U256</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">U256</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pops the top item off of `stack`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stack : `List[U256]`</span>
+<span class="sd">        EVM stack.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    value : `U256`</span>
+<span class="sd">        The top element on the stack.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    StackUnderflowError</span>
+<span class="sd">        If `stack` is empty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">StackUnderflowError</span>
+
+    <span class="k">return</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Pushes <cite>value</cite> onto <cite>stack</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param stack</dt>
+<dd class="field-odd"><p>EVM stack.</p>
+</dd>
+<dt class="field-even">type stack</dt>
+<dd class="field-even"><p><cite>List[U256]</cite></p>
+</dd>
+<dt class="field-odd">param value</dt>
+<dd class="field-odd"><p>Item to be pushed onto <cite>stack</cite>.</p>
+</dd>
+<dt class="field-even">type value</dt>
+<dd class="field-even"><p><cite>U256</cite></p>
+</dd>
+<dt class="field-odd">raises StackOverflowError</dt>
+<dd class="field-odd"><p>If <cite>len(stack)</cite> is <cite>1024</cite>.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.evm.stack.push">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.evm.stack.</span></span><span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stack</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">eth1spec.eth_types.U256</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">eth1spec.eth_types.U256</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.evm.stack.push" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">U256</span><span class="p">],</span> <span class="n">value</span><span class="p">:</span> <span class="n">U256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pushes `value` onto `stack`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stack : `List[U256]`</span>
+<span class="sd">        EVM stack.</span>
+
+<span class="sd">    value : `U256`</span>
+<span class="sd">        Item to be pushed onto `stack`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    StackOverflowError</span>
+<span class="sd">        If `len(stack)` is `1024`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1024</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">StackOverflowError</span>
+
+    <span class="k">return</span> <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm</span></code></a><ul>
+      <li>Previous: <a href="../ops/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.evm.ops</span></code></a></li>
+      <li>Next: <a href="../../base_types/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.base_types</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/eth1spec/evm/stack/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>eth1spec.fork_choice &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="eth1spec.rlp" href="../rlp/index.html" />
+    <link rel="prev" title="eth1spec.eth_types" href="../eth_types/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-eth1spec.fork_choice">
+<span id="eth1spec-fork-choice"></span><h1><a class="reference internal" href="#module-eth1spec.fork_choice" title="eth1spec.fork_choice"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.fork_choice</span></code></a><a class="headerlink" href="#module-eth1spec.fork_choice" title="Permalink to this headline">¶</a></h1>
+<section id="beacon-chain-fork-choice">
+<h2>Beacon Chain Fork Choice<a class="headerlink" href="#beacon-chain-fork-choice" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#fork-choice" id="id2">Fork Choice</a></p>
+<ul>
+<li><p><a class="reference internal" href="#preset" id="id3">Preset</a></p>
+<ul>
+<li><p><a class="reference internal" href="#safe-slots-to-update-justified" id="id4">SAFE_SLOTS_TO_UPDATE_JUSTIFIED</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#helpers" id="id5">Helpers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#latestmessage" id="id6">LatestMessage</a></p></li>
+<li><p><a class="reference internal" href="#store" id="id7">Store</a></p></li>
+<li><p><a class="reference internal" href="#get-forkchoice-store" id="id8">get_forkchoice_store</a></p></li>
+<li><p><a class="reference internal" href="#get-slots-since-genesis" id="id9">get_slots_since_genesis</a></p></li>
+<li><p><a class="reference internal" href="#get-current-slot" id="id10">get_current_slot</a></p></li>
+<li><p><a class="reference internal" href="#compute-slots-since-epoch-start" id="id11">compute_slots_since_epoch_start</a></p></li>
+<li><p><a class="reference internal" href="#get-ancestor" id="id12">get_ancestor</a></p></li>
+<li><p><a class="reference internal" href="#get-latest-attesting-balance" id="id13">get_latest_attesting_balance</a></p></li>
+<li><p><a class="reference internal" href="#filter-block-tree" id="id14">filter_block_tree</a></p></li>
+<li><p><a class="reference internal" href="#get-filtered-block-tree" id="id15">get_filtered_block_tree</a></p></li>
+<li><p><a class="reference internal" href="#get-head" id="id16">get_head</a></p></li>
+<li><p><a class="reference internal" href="#should-update-justified-checkpoint" id="id17">should_update_justified_checkpoint</a></p></li>
+<li><p><a class="reference internal" href="#on-attestation-helpers" id="id18">on_attestation helpers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#validate-on-attestation" id="id19">validate_on_attestation</a></p></li>
+<li><p><a class="reference internal" href="#store-target-checkpoint-state" id="id20">store_target_checkpoint_state</a></p></li>
+<li><p><a class="reference internal" href="#update-latest-messages" id="id21">update_latest_messages</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#handlers" id="id22">Handlers</a></p>
+<ul>
+<li><p><a class="reference internal" href="#on-tick" id="id23">on_tick</a></p></li>
+<li><p><a class="reference internal" href="#on-block" id="id24">on_block</a></p></li>
+<li><p><a class="reference internal" href="#on-attestation" id="id25">on_attestation</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>This document is the beacon chain fork choice spec, part of Ethereum 2.0
+Phase 0…</p>
+</section>
+<section id="fork-choice">
+<h3>Fork Choice<a class="headerlink" href="#fork-choice" title="Permalink to this headline">¶</a></h3>
+<p>The head block root associated with a….</p>
+<section id="preset">
+<h4>Preset<a class="headerlink" href="#preset" title="Permalink to this headline">¶</a></h4>
+<section id="safe-slots-to-update-justified">
+<h5>SAFE_SLOTS_TO_UPDATE_JUSTIFIED<a class="headerlink" href="#safe-slots-to-update-justified" title="Permalink to this headline">¶</a></h5>
+<p>Some description.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><th class="stub"><p>Unit</p></th>
+<td><p>Slots</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Duration</p></th>
+<td><p>96 seconds</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.SAFE_SLOTS_TO_UPDATE_JUSTIFIED">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">SAFE_SLOTS_TO_UPDATE_JUSTIFIED</span></span><em class="property"> <span class="pre">=</span> <span class="pre">8</span></em><a class="headerlink" href="#eth1spec.fork_choice.SAFE_SLOTS_TO_UPDATE_JUSTIFIED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+<section id="helpers">
+<h4>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h4>
+<section id="latestmessage">
+<h5>LatestMessage<a class="headerlink" href="#latestmessage" title="Permalink to this headline">¶</a></h5>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.LatestMessage">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">LatestMessage</span></span><a class="headerlink" href="#eth1spec.fork_choice.LatestMessage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.LatestMessage.epoch">
+<span class="sig-name descname"><span class="pre">epoch</span></span><a class="headerlink" href="#eth1spec.fork_choice.LatestMessage.epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.LatestMessage.root">
+<span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#eth1spec.fork_choice.LatestMessage.root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="store">
+<h5>Store<a class="headerlink" href="#store" title="Permalink to this headline">¶</a></h5>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">Store</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.time">
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.genesis_time">
+<span class="sig-name descname"><span class="pre">genesis_time</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.genesis_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.justified_checkpoint">
+<span class="sig-name descname"><span class="pre">justified_checkpoint</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.justified_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.finalized_checkpoint">
+<span class="sig-name descname"><span class="pre">finalized_checkpoint</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.finalized_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.best_justified_checkpoint">
+<span class="sig-name descname"><span class="pre">best_justified_checkpoint</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.best_justified_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.blocks">
+<span class="sig-name descname"><span class="pre">blocks</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.block_states">
+<span class="sig-name descname"><span class="pre">block_states</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.block_states" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.checkpoint_states">
+<span class="sig-name descname"><span class="pre">checkpoint_states</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.checkpoint_states" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.Store.latest_messages">
+<span class="sig-name descname"><span class="pre">latest_messages</span></span><a class="headerlink" href="#eth1spec.fork_choice.Store.latest_messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="get-forkchoice-store">
+<h5>get_forkchoice_store<a class="headerlink" href="#get-forkchoice-store" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_forkchoice_store">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_forkchoice_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor_state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BeaconState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor_block</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BeaconBlock</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a><a class="headerlink" href="#eth1spec.fork_choice.get_forkchoice_store" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_forkchoice_store</span><span class="p">(</span>
+    <span class="n">anchor_state</span><span class="p">:</span> <span class="s2">&quot;BeaconState&quot;</span><span class="p">,</span> <span class="n">anchor_block</span><span class="p">:</span> <span class="s2">&quot;BeaconBlock&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Store&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_forkchoice_store</span>
+<span class="sd">    ********************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">anchor_block</span><span class="o">.</span><span class="n">state_root</span> <span class="o">==</span> <span class="n">hash_tree_root</span><span class="p">(</span><span class="n">anchor_state</span><span class="p">)</span>
+    <span class="n">anchor_root</span> <span class="o">=</span> <span class="n">hash_tree_root</span><span class="p">(</span><span class="n">anchor_block</span><span class="p">)</span>
+    <span class="n">anchor_epoch</span> <span class="o">=</span> <span class="n">get_current_epoch</span><span class="p">(</span><span class="n">anchor_state</span><span class="p">)</span>
+    <span class="n">justified_checkpoint</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="n">anchor_epoch</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">anchor_root</span><span class="p">)</span>
+    <span class="n">finalized_checkpoint</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="n">epoch</span><span class="o">=</span><span class="n">anchor_epoch</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">anchor_root</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Store</span><span class="p">(</span>
+        <span class="n">time</span><span class="o">=</span><span class="n">uint64</span><span class="p">(</span>
+            <span class="n">anchor_state</span><span class="o">.</span><span class="n">genesis_time</span> <span class="o">+</span> <span class="n">SECONDS_PER_SLOT</span> <span class="o">*</span> <span class="n">anchor_state</span><span class="o">.</span><span class="n">slot</span>
+        <span class="p">),</span>
+        <span class="n">genesis_time</span><span class="o">=</span><span class="n">anchor_state</span><span class="o">.</span><span class="n">genesis_time</span><span class="p">,</span>
+        <span class="n">justified_checkpoint</span><span class="o">=</span><span class="n">justified_checkpoint</span><span class="p">,</span>
+        <span class="n">finalized_checkpoint</span><span class="o">=</span><span class="n">finalized_checkpoint</span><span class="p">,</span>
+        <span class="n">best_justified_checkpoint</span><span class="o">=</span><span class="n">justified_checkpoint</span><span class="p">,</span>
+        <span class="n">blocks</span><span class="o">=</span><span class="p">{</span><span class="n">anchor_root</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="n">anchor_block</span><span class="p">)},</span>
+        <span class="n">block_states</span><span class="o">=</span><span class="p">{</span><span class="n">anchor_root</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="n">anchor_state</span><span class="p">)},</span>
+        <span class="n">checkpoint_states</span><span class="o">=</span><span class="p">{</span><span class="n">justified_checkpoint</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="n">anchor_state</span><span class="p">)},</span>
+</pre></div>
+</div>
+</section>
+<section id="get-slots-since-genesis">
+<h5>get_slots_since_genesis<a class="headerlink" href="#get-slots-since-genesis" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_slots_since_genesis">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_slots_since_genesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#eth1spec.fork_choice.get_slots_since_genesis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_slots_since_genesis</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_slots_since_genesis</span>
+<span class="sd">    ***********************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">store</span><span class="o">.</span><span class="n">genesis_time</span><span class="p">)</span> <span class="o">//</span> <span class="n">SECONDS_PER_SLOT</span>
+</pre></div>
+</div>
+</section>
+<section id="get-current-slot">
+<h5>get_current_slot<a class="headerlink" href="#get-current-slot" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_current_slot">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_current_slot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Slot</span><a class="headerlink" href="#eth1spec.fork_choice.get_current_slot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Slot</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_current_slot</span>
+<span class="sd">    ****************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Slot</span><span class="p">(</span><span class="n">GENESIS_SLOT</span> <span class="o">+</span> <span class="n">get_slots_since_genesis</span><span class="p">(</span><span class="n">store</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-slots-since-epoch-start">
+<h5>compute_slots_since_epoch_start<a class="headerlink" href="#compute-slots-since-epoch-start" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.compute_slots_since_epoch_start">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">compute_slots_since_epoch_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Slot</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#eth1spec.fork_choice.compute_slots_since_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_slots_since_epoch_start</span><span class="p">(</span><span class="n">slot</span><span class="p">:</span> <span class="n">Slot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute_slots_since_epoch_start</span>
+<span class="sd">    *******************************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">slot</span> <span class="o">-</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span><span class="n">compute_epoch_at_slot</span><span class="p">(</span><span class="n">slot</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="get-ancestor">
+<h5>get_ancestor<a class="headerlink" href="#get-ancestor" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_ancestor">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_ancestor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Slot</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Root</span><a class="headerlink" href="#eth1spec.fork_choice.get_ancestor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_ancestor</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Root</span><span class="p">,</span> <span class="n">slot</span><span class="p">:</span> <span class="n">Slot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_ancestor</span>
+<span class="sd">    ************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">slot</span> <span class="o">&gt;</span> <span class="n">slot</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_ancestor</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">parent_root</span><span class="p">,</span> <span class="n">slot</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">block</span><span class="o">.</span><span class="n">slot</span> <span class="o">==</span> <span class="n">slot</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">root</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># root is older than queried slot, thus a skip slot. Return most recent root prior to slot</span>
+        <span class="k">return</span> <span class="n">root</span>
+</pre></div>
+</div>
+</section>
+<section id="get-latest-attesting-balance">
+<h5>get_latest_attesting_balance<a class="headerlink" href="#get-latest-attesting-balance" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_latest_attesting_balance">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_latest_attesting_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Root</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Gwei</span><a class="headerlink" href="#eth1spec.fork_choice.get_latest_attesting_balance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_latest_attesting_balance</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Root</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Gwei</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_latest_attesting_balance</span>
+<span class="sd">    ****************************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">checkpoint_states</span><span class="p">[</span><span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="p">]</span>
+    <span class="n">active_indices</span> <span class="o">=</span> <span class="n">get_active_validator_indices</span><span class="p">(</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">get_current_epoch</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">Gwei</span><span class="p">(</span>
+        <span class="nb">sum</span><span class="p">(</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">validators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">effective_balance</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">active_indices</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">i</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">latest_messages</span>
+                <span class="ow">and</span> <span class="n">get_ancestor</span><span class="p">(</span>
+                    <span class="n">store</span><span class="p">,</span>
+                    <span class="n">store</span><span class="o">.</span><span class="n">latest_messages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
+                    <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">root</span><span class="p">]</span><span class="o">.</span><span class="n">slot</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="n">root</span>
+</pre></div>
+</div>
+</section>
+<section id="filter-block-tree">
+<h5>filter_block_tree<a class="headerlink" href="#filter-block-tree" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.filter_block_tree">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">filter_block_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocks</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Root</span><span class="p"><span class="pre">,</span> </span><span class="pre">BeaconBlock</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#eth1spec.fork_choice.filter_block_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filter_block_tree</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">block_root</span><span class="p">:</span> <span class="n">Root</span><span class="p">,</span> <span class="n">blocks</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Root</span><span class="p">,</span> <span class="n">BeaconBlock</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    filter_block_tree</span>
+<span class="sd">    *****************</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_root</span><span class="p">]</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">root</span>
+        <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">root</span><span class="p">]</span><span class="o">.</span><span class="n">parent_root</span> <span class="o">==</span> <span class="n">block_root</span>
+    <span class="p">]</span>
+
+    <span class="c1"># If any children branches contain expected finalized/justified checkpoints,</span>
+    <span class="c1"># add to filtered block-tree and signal viability to parent.</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
+        <span class="n">filter_block_tree_result</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">filter_block_tree</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">filter_block_tree_result</span><span class="p">):</span>
+            <span class="n">blocks</span><span class="p">[</span><span class="n">block_root</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># If leaf block, check finalized/justified checkpoints as matching latest.</span>
+    <span class="n">head_state</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">block_states</span><span class="p">[</span><span class="n">block_root</span><span class="p">]</span>
+
+    <span class="n">correct_justified</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">GENESIS_EPOCH</span>
+        <span class="ow">or</span> <span class="n">head_state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+        <span class="o">==</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span>
+    <span class="p">)</span>
+    <span class="n">correct_finalized</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">GENESIS_EPOCH</span>
+        <span class="ow">or</span> <span class="n">head_state</span><span class="o">.</span><span class="n">finalized_checkpoint</span> <span class="o">==</span> <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span>
+    <span class="p">)</span>
+    <span class="c1"># If expected finalized/justified, add to viable block-tree and signal viability to parent.</span>
+    <span class="k">if</span> <span class="n">correct_justified</span> <span class="ow">and</span> <span class="n">correct_finalized</span><span class="p">:</span>
+        <span class="n">blocks</span><span class="p">[</span><span class="n">block_root</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Otherwise, branch not viable</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="get-filtered-block-tree">
+<h5>get_filtered_block_tree<a class="headerlink" href="#get-filtered-block-tree" title="Permalink to this headline">¶</a></h5>
+<p>Retrieve a filtered block tree from <code class="docutils literal notranslate"><span class="pre">store</span></code>, only returning branches
+whose leaf state’s justified/finalized info agrees with that in <code class="docutils literal notranslate"><span class="pre">store</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_filtered_block_tree">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_filtered_block_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Root</span><span class="p"><span class="pre">,</span> </span><span class="pre">BeaconBlock</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#eth1spec.fork_choice.get_filtered_block_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_filtered_block_tree</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Root</span><span class="p">,</span> <span class="n">BeaconBlock</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_filtered_block_tree</span>
+<span class="sd">    ***********************</span>
+
+<span class="sd">    Retrieve a filtered block tree from ``store``, only returning branches</span>
+<span class="sd">    whose leaf state&#39;s justified/finalized info agrees with that in ``store``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">root</span>
+    <span class="n">blocks</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Root</span><span class="p">,</span> <span class="n">BeaconBlock</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">filter_block_tree</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">blocks</span>
+</pre></div>
+</div>
+</section>
+<section id="get-head">
+<h5>get_head<a class="headerlink" href="#get-head" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.get_head">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">get_head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Root</span><a class="headerlink" href="#eth1spec.fork_choice.get_head" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_head</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get_head</span>
+<span class="sd">    ********</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get filtered block tree that only includes viable branches</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">get_filtered_block_tree</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="c1"># Execute the LMD-GHOST fork choice</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">root</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">root</span> <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">blocks</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">blocks</span><span class="p">[</span><span class="n">root</span><span class="p">]</span><span class="o">.</span><span class="n">parent_root</span> <span class="o">==</span> <span class="n">head</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">head</span>
+        <span class="c1"># Sort by latest attesting balance with ties broken lexicographically</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="n">children</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">root</span><span class="p">:</span> <span class="p">(</span><span class="n">get_latest_attesting_balance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">root</span><span class="p">),</span> <span class="n">root</span><span class="p">),</span>
+</pre></div>
+</div>
+</section>
+<section id="should-update-justified-checkpoint">
+<h5>should_update_justified_checkpoint<a class="headerlink" href="#should-update-justified-checkpoint" title="Permalink to this headline">¶</a></h5>
+<p>To address the bouncing attack, only update conflicting justified
+checkpoints in the fork choice if in the early slots of the epoch.
+Otherwise, delay incorporation of new justified checkpoint until next epoch
+boundary.</p>
+<p>See <a class="reference external" href="https://ethresear.ch/t/prevention-of-bouncing-attack-on-ffg/6114">https://ethresear.ch/t/prevention-of-bouncing-attack-on-ffg/6114</a> for
+more detailed analysis and discussion.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.should_update_justified_checkpoint">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">should_update_justified_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_justified_checkpoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Checkpoint</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#eth1spec.fork_choice.should_update_justified_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">should_update_justified_checkpoint</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">new_justified_checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    should_update_justified_checkpoint</span>
+<span class="sd">    **********************************</span>
+
+<span class="sd">    To address the bouncing attack, only update conflicting justified</span>
+<span class="sd">    checkpoints in the fork choice if in the early slots of the epoch.</span>
+<span class="sd">    Otherwise, delay incorporation of new justified checkpoint until next epoch</span>
+<span class="sd">    boundary.</span>
+
+<span class="sd">    See https://ethresear.ch/t/prevention-of-bouncing-attack-on-ffg/6114 for</span>
+<span class="sd">    more detailed analysis and discussion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">compute_slots_since_epoch_start</span><span class="p">(</span><span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">))</span>
+        <span class="o">&lt;</span> <span class="n">SAFE_SLOTS_TO_UPDATE_JUSTIFIED</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">justified_slot</span> <span class="o">=</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">get_ancestor</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">new_justified_checkpoint</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">justified_slot</span><span class="p">)</span>
+        <span class="o">==</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">root</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="on-attestation-helpers">
+<h5>on_attestation helpers<a class="headerlink" href="#on-attestation-helpers" title="Permalink to this headline">¶</a></h5>
+<section id="validate-on-attestation">
+<h6>validate_on_attestation<a class="headerlink" href="#validate-on-attestation" title="Permalink to this headline">¶</a></h6>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.validate_on_attestation">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">validate_on_attestation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attestation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Attestation</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.validate_on_attestation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validate_on_attestation</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">attestation</span><span class="p">:</span> <span class="n">Attestation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    on_attestation helpers</span>
+<span class="sd">    **********************</span>
+
+<span class="sd">    validate_on_attestation</span>
+<span class="sd">    %%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+    <span class="c1"># Attestations must be from the current or previous epoch</span>
+    <span class="n">current_epoch</span> <span class="o">=</span> <span class="n">compute_epoch_at_slot</span><span class="p">(</span><span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">))</span>
+
+    <span class="c1"># Use GENESIS_EPOCH for previous when genesis to avoid underflow</span>
+    <span class="n">previous_epoch</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">current_epoch</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">current_epoch</span> <span class="o">&gt;</span> <span class="n">GENESIS_EPOCH</span> <span class="k">else</span> <span class="n">GENESIS_EPOCH</span>
+    <span class="p">)</span>
+
+    <span class="c1"># If attestation target is from a future epoch, delay consideration until</span>
+    <span class="c1"># the epoch arrives</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">epoch</span> <span class="ow">in</span> <span class="p">[</span><span class="n">current_epoch</span><span class="p">,</span> <span class="n">previous_epoch</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">epoch</span> <span class="o">==</span> <span class="n">compute_epoch_at_slot</span><span class="p">(</span><span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">slot</span><span class="p">)</span>
+
+    <span class="c1"># Attestations target be for a known block. If target block is unknown,</span>
+    <span class="c1"># delay consideration until the block is found</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">root</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span>
+
+    <span class="c1"># Attestations must be for a known block. If block is unknown, delay</span>
+    <span class="c1"># consideration until the block is found</span>
+    <span class="k">assert</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">beacon_block_root</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">blocks</span>
+
+    <span class="c1"># Attestations must not be for blocks in the future. If not, the</span>
+    <span class="c1"># attestation should not be considered</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">beacon_block_root</span><span class="p">]</span><span class="o">.</span><span class="n">slot</span>
+        <span class="o">&lt;=</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">slot</span>
+    <span class="p">)</span>
+
+    <span class="c1"># LMD vote must be consistent with FFG vote target</span>
+    <span class="n">target_slot</span> <span class="o">=</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">root</span> <span class="o">==</span> <span class="n">get_ancestor</span><span class="p">(</span>
+        <span class="n">store</span><span class="p">,</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">beacon_block_root</span><span class="p">,</span> <span class="n">target_slot</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Attestations can only affect the fork choice of subsequent slots.</span>
+    <span class="c1"># Delay consideration in the fork choice until their slot is in the past.</span>
+    <span class="k">assert</span> <span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">slot</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="store-target-checkpoint-state">
+<h6>store_target_checkpoint_state<a class="headerlink" href="#store-target-checkpoint-state" title="Permalink to this headline">¶</a></h6>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.store_target_checkpoint_state">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">store_target_checkpoint_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Checkpoint</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.store_target_checkpoint_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">store_target_checkpoint_state</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    store_target_checkpoint_state</span>
+<span class="sd">    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Store target checkpoint state if not yet seen</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">checkpoint_states</span><span class="p">:</span>
+        <span class="n">base_state</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">block_states</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">root</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">base_state</span><span class="o">.</span><span class="n">slot</span> <span class="o">&lt;</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">epoch</span><span class="p">):</span>
+            <span class="n">process_slots</span><span class="p">(</span>
+                <span class="n">base_state</span><span class="p">,</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">checkpoint_states</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_state</span>
+</pre></div>
+</div>
+</section>
+<section id="update-latest-messages">
+<h6>update_latest_messages<a class="headerlink" href="#update-latest-messages" title="Permalink to this headline">¶</a></h6>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.update_latest_messages">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">update_latest_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attesting_indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">ValidatorIndex</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attestation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Attestation</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.update_latest_messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_latest_messages</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+    <span class="n">attesting_indices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ValidatorIndex</span><span class="p">],</span>
+    <span class="n">attestation</span><span class="p">:</span> <span class="n">Attestation</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    update_latest_messages</span>
+<span class="sd">    %%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span>
+    <span class="n">beacon_block_root</span> <span class="o">=</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">beacon_block_root</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">attesting_indices</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">latest_messages</span>
+            <span class="ow">or</span> <span class="n">target</span><span class="o">.</span><span class="n">epoch</span> <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">latest_messages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="p">):</span>
+            <span class="n">store</span><span class="o">.</span><span class="n">latest_messages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">LatestMessage</span><span class="p">(</span>
+                <span class="n">epoch</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">beacon_block_root</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="handlers">
+<h4>Handlers<a class="headerlink" href="#handlers" title="Permalink to this headline">¶</a></h4>
+<section id="on-tick">
+<h5>on_tick<a class="headerlink" href="#on-tick" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.on_tick">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">on_tick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">uint64</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.on_tick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">on_tick</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="n">uint64</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handlers</span>
+<span class="sd">    ~~~~~~~~</span>
+
+<span class="sd">    on_tick</span>
+<span class="sd">    *******</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">previous_slot</span> <span class="o">=</span> <span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+
+    <span class="c1"># update store time</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+
+    <span class="n">current_slot</span> <span class="o">=</span> <span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="c1"># Not a new epoch, return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="n">current_slot</span> <span class="o">&gt;</span> <span class="n">previous_slot</span>
+        <span class="ow">and</span> <span class="n">compute_slots_since_epoch_start</span><span class="p">(</span><span class="n">current_slot</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="k">return</span>
+    <span class="c1"># Update store.justified_checkpoint if a better checkpoint is known</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">best_justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+    <span class="p">):</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">best_justified_checkpoint</span>
+</pre></div>
+</div>
+</section>
+<section id="on-block">
+<h5>on_block<a class="headerlink" href="#on-block" title="Permalink to this headline">¶</a></h5>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.on_block">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">on_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_block</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">SignedBeaconBlock</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.on_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">on_block</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">signed_block</span><span class="p">:</span> <span class="n">SignedBeaconBlock</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    on_block</span>
+<span class="sd">    ********</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">signed_block</span><span class="o">.</span><span class="n">message</span>
+    <span class="c1"># Parent block must be known</span>
+    <span class="k">assert</span> <span class="n">block</span><span class="o">.</span><span class="n">parent_root</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">block_states</span>
+    <span class="c1"># Make a copy of the state to avoid mutability issues</span>
+    <span class="n">pre_state</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">block_states</span><span class="p">[</span><span class="n">block</span><span class="o">.</span><span class="n">parent_root</span><span class="p">])</span>
+
+    <span class="c1"># Blocks cannot be in the future. If they are, their consideration must be</span>
+    <span class="c1"># delayed until the are in the past.</span>
+    <span class="k">assert</span> <span class="n">get_current_slot</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">block</span><span class="o">.</span><span class="n">slot</span>
+
+    <span class="c1"># Check that block is later than the finalized epoch slot (optimization to</span>
+    <span class="c1"># reduce calls to get_ancestor)</span>
+    <span class="n">finalized_slot</span> <span class="o">=</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">block</span><span class="o">.</span><span class="n">slot</span> <span class="o">&gt;</span> <span class="n">finalized_slot</span>
+
+    <span class="c1"># Check block is a descendant of the finalized block at the checkpoint</span>
+    <span class="c1"># finalized slot</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">get_ancestor</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">parent_root</span><span class="p">,</span> <span class="n">finalized_slot</span><span class="p">)</span>
+        <span class="o">==</span> <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">root</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Check the block is valid and compute the post-state</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">pre_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">state_transition</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">signed_block</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Add new block to the store</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">hash_tree_root</span><span class="p">(</span><span class="n">block</span><span class="p">)]</span> <span class="o">=</span> <span class="n">block</span>
+    <span class="c1"># Add new state for this block to the store</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">block_states</span><span class="p">[</span><span class="n">hash_tree_root</span><span class="p">(</span><span class="n">block</span><span class="p">)]</span> <span class="o">=</span> <span class="n">state</span>
+
+    <span class="c1"># Update justified checkpoint</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+            <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">best_justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="p">):</span>
+            <span class="n">store</span><span class="o">.</span><span class="n">best_justified_checkpoint</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">should_update_justified_checkpoint</span><span class="p">(</span>
+            <span class="n">store</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+        <span class="p">):</span>
+            <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+
+    <span class="c1"># Update finalized checkpoint</span>
+    <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">epoch</span> <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">epoch</span><span class="p">:</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">finalized_checkpoint</span>
+
+        <span class="c1"># Potentially update justified if different from store</span>
+        <span class="k">if</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span> <span class="o">!=</span> <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span><span class="p">:</span>
+            <span class="c1"># Update justified if new justified is later than store justified</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+                <span class="o">&gt;</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+            <span class="p">):</span>
+                <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+                <span class="k">return</span>
+
+            <span class="c1"># Update justified if store justified is not in chain with</span>
+            <span class="c1"># finalized checkpoint</span>
+            <span class="n">finalized_slot</span> <span class="o">=</span> <span class="n">compute_start_slot_at_epoch</span><span class="p">(</span>
+                <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">epoch</span>
+            <span class="p">)</span>
+            <span class="n">ancestor_at_finalized_slot</span> <span class="o">=</span> <span class="n">get_ancestor</span><span class="p">(</span>
+                <span class="n">store</span><span class="p">,</span> <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">finalized_slot</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">ancestor_at_finalized_slot</span> <span class="o">!=</span> <span class="n">store</span><span class="o">.</span><span class="n">finalized_checkpoint</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
+                <span class="n">store</span><span class="o">.</span><span class="n">justified_checkpoint</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">current_justified_checkpoint</span>
+</pre></div>
+</div>
+</section>
+<section id="on-attestation">
+<h5>on_attestation<a class="headerlink" href="#on-attestation" title="Permalink to this headline">¶</a></h5>
+<p>Run <code class="docutils literal notranslate"><span class="pre">on_attestation</span></code> upon receiving a new <code class="docutils literal notranslate"><span class="pre">attestation</span></code> from either
+within a block or directly on the wire.</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">attestation</span></code> that is asserted as invalid may be valid at a later
+time, consider scheduling it for later processing in such case.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eth1spec.fork_choice.on_attestation">
+<span class="sig-prename descclassname"><span class="pre">eth1spec.fork_choice.</span></span><span class="sig-name descname"><span class="pre">on_attestation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#eth1spec.fork_choice.Store" title="eth1spec.fork_choice.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attestation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Attestation</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#eth1spec.fork_choice.on_attestation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">on_attestation</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">attestation</span><span class="p">:</span> <span class="n">Attestation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    on_attestation</span>
+<span class="sd">    **************</span>
+
+<span class="sd">    Run ``on_attestation`` upon receiving a new ``attestation`` from either</span>
+<span class="sd">    within a block or directly on the wire.</span>
+
+<span class="sd">    An ``attestation`` that is asserted as invalid may be valid at a later</span>
+<span class="sd">    time, consider scheduling it for later processing in such case.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">validate_on_attestation</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">attestation</span><span class="p">)</span>
+    <span class="n">store_target_checkpoint_state</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+
+    <span class="c1"># Get state at the `target` to fully validate attestation</span>
+    <span class="n">target_state</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">checkpoint_states</span><span class="p">[</span><span class="n">attestation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">]</span>
+    <span class="n">indexed_attestation</span> <span class="o">=</span> <span class="n">get_indexed_attestation</span><span class="p">(</span><span class="n">target_state</span><span class="p">,</span> <span class="n">attestation</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">is_valid_indexed_attestation</span><span class="p">(</span><span class="n">target_state</span><span class="p">,</span> <span class="n">indexed_attestation</span><span class="p">)</span>
+
+    <span class="c1"># Update latest messages for attesting indices</span>
+    <span class="n">update_latest_messages</span><span class="p">(</span>
+        <span class="n">store</span><span class="p">,</span> <span class="n">indexed_attestation</span><span class="o">.</span><span class="n">attesting_indices</span><span class="p">,</span> <span class="n">attestation</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec</span></code></a><ul>
+      <li>Previous: <a href="../eth_types/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.eth_types</span></code></a></li>
+      <li>Next: <a href="../rlp/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">eth1spec.rlp</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/eth1spec/fork_choice/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

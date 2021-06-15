@@ -4,57 +4,25 @@
 .. py:module:: eth1spec.spec
 
 Ethereum Specification
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
 
-Module Contents
----------------
+Introduction
+------------
 
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.spec.BlockChain
-
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-   :nosignatures:
-
-   eth1spec.spec.state_transition
-   eth1spec.spec.verify_header
-   eth1spec.spec.apply_body
-   eth1spec.spec.process_transaction
-   eth1spec.spec.verify_transaction
-   eth1spec.spec.intrinsic_cost
-   eth1spec.spec.recover_sender
-   eth1spec.spec.signing_hash
-   eth1spec.spec.print_state
+Entry point for the Ethereum specification.
 
 
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   eth1spec.spec.BLOCK_REWARD
 
 
-Module Details
----------------
 .. data:: BLOCK_REWARD
    
 
-   
 
-
-BlockChain
-~~~~~~~~~~
 
 History and current state of the block chain.
 
@@ -62,21 +30,19 @@ History and current state of the block chain.
 .. class:: BlockChain
 
    .. attribute:: blocks
-      :annotation: :List[eth1spec.eth_types.Block]
 
-      
 
    .. attribute:: state
-      :annotation: :eth1spec.eth_types.State
-
-      
 
 
 
-state_transition
-~~~~~~~~~~~~~~~~
 
 Attempts to apply a block to an existing block chain.
+
+:param chain: History and current state.
+:type chain: `eth1spec.eth_types.BlockChain`
+:param block: Block to apply to `chain`.
+:type block: `eth1spec.eth_types.Block`
 
 
 .. function:: state_transition(chain: BlockChain, block: eth1spec.eth_types.Block) -> None
@@ -85,15 +51,17 @@ Attempts to apply a block to an existing block chain.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 40-65
-
-
-verify_header
-~~~~~~~~~~~~~
+   :lines: 50-75
 
 Verifies a block header.
+
+:param header: Header to check for correctness.
+:type header: `eth1spec.eth_types.Header`
+
+:returns: **verified** -- True if the header is correct, False otherwise.
+:rtype: `bool`
 
 
 .. function:: verify_header(header: eth1spec.eth_types.Header) -> bool
@@ -102,49 +70,73 @@ Verifies a block header.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 68-82
-
-
-apply_body
-~~~~~~~~~~
+   :lines: 78-92
 
 Executes a block.
 
+:param state: Current account state.
+:type state: `eth1spec.eth_types.State`
+:param coinbase: Address of account which receives block reward and transaction fees.
+:type coinbase: `eth1spec.eth_types.Address`
+:param block_number: Position of the block within the chain.
+:type block_number: `eth1spec.base_types.Uint`
+:param block_gas_limit: Initial amount of gas available for execution in this block.
+:type block_gas_limit: `eth1spec.base_types.Uint`
+:param block_time: Time the block was produced, measured in seconds since the epoch.
+:type block_time: `eth1spec.base_types.U256`
+:param block_difficulty: Difficulty of the block.
+:type block_difficulty: `eth1spec.base_types.Uint`
+:param transactions: Transactions included in the block.
+:type transactions: `List[eth1spec.eth_types.Transaction]`
+:param ommers: Headers of ancestor blocks which are not direct parents (formerly
+               uncles.)
+:type ommers: `List[eth1spec.eth_types.Header]`
 
-.. function:: apply_body(state: eth1spec.eth_types.State, coinbase: eth1spec.eth_types.Address, block_number: eth1spec.eth_types.Uint, block_gas_limit: eth1spec.eth_types.Uint, block_time: eth1spec.eth_types.Uint, block_difficulty: eth1spec.eth_types.Uint, transactions: List[eth1spec.eth_types.Transaction], ommers: List[eth1spec.eth_types.Header]) -> Tuple[eth1spec.eth_types.Uint, eth1spec.eth_types.Root, eth1spec.eth_types.State]
+:returns: * **gas_available** (`eth1spec.base_types.Uint`) -- Remaining gas after all transactions have been executed.
+          * **root** (`eth1spec.eth_types.Root`) -- State root after all transactions have been executed.
+          * **state** (`eth1spec.eth_types.State`) -- State after all transactions have been executed.
+
+
+.. function:: apply_body(state: eth1spec.eth_types.State, coinbase: eth1spec.eth_types.Address, block_number: eth1spec.base_types.Uint, block_gas_limit: eth1spec.base_types.Uint, block_time: eth1spec.base_types.U256, block_difficulty: eth1spec.base_types.Uint, transactions: List[eth1spec.eth_types.Transaction], ommers: List[eth1spec.eth_types.Header]) -> Tuple[eth1spec.base_types.Uint, eth1spec.eth_types.Root, eth1spec.eth_types.State]
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 85-168
-
-
-process_transaction
-~~~~~~~~~~~~~~~~~~~
+   :lines: 95-178
 
 Execute a transaction against the provided environment.
 
+:param env: Environment for the Ethereum Virtual Machine.
+:type env: `eth1spec.evm.Environment`
+:param tx: Transaction to execute.
+:type tx: `eth1spec.eth_types.Transaction`
 
-.. function:: process_transaction(env: eth1spec.evm.Environment, tx: eth1spec.eth_types.Transaction) -> Tuple[eth1spec.eth_types.Uint, List[eth1spec.eth_types.Log]]
+:returns: * **gas_left** (`eth1spec.base_types.U256`) -- Remaining gas after execution.
+          * **logs** (`List[eth1spec.eth_types.Log]`) -- Logs generated during execution.
+
+
+.. function:: process_transaction(env: eth1spec.evm.Environment, tx: eth1spec.eth_types.Transaction) -> Tuple[eth1spec.base_types.U256, List[eth1spec.eth_types.Log]]
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 171-216
-
-
-verify_transaction
-~~~~~~~~~~~~~~~~~~
+   :lines: 181-226
 
 Verifies a transaction.
+
+:param tx: Transaction to verify.
+:type tx: `eth1spec.eth_types.Transaction`
+
+:returns: **verified** -- True if the transaction can be executed, or False otherwise.
+:rtype: `bool`
 
 
 .. function:: verify_transaction(tx: eth1spec.eth_types.Transaction) -> bool
@@ -153,32 +145,37 @@ Verifies a transaction.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 219-233
-
-
-intrinsic_cost
-~~~~~~~~~~~~~~
+   :lines: 229-243
 
 Calculates the intrinsic cost of the transaction that is charged before
+execution is instantiated.
+
+:param tx: Transaction to compute the intrinsic cost of.
+:type tx: `eth1spec.eth_types.Transaction`
+
+:returns: **verified** -- The intrinsic cost of the transaction.
+:rtype: `eth1spec.base_types.Uint`
 
 
-.. function:: intrinsic_cost(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Uint
+.. function:: intrinsic_cost(tx: eth1spec.eth_types.Transaction) -> eth1spec.base_types.Uint
    :noindexentry:
 
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 236-259
-
-
-recover_sender
-~~~~~~~~~~~~~~
+   :lines: 246-269
 
 Extracts the sender address from a transaction.
+
+:param tx: Transaction of interest.
+:type tx: `eth1spec.eth_types.Transaction`
+
+:returns: **sender** -- The address of the account that signed the transaction.
+:rtype: `eth1spec.eth_types.Address`
 
 
 .. function:: recover_sender(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Address
@@ -187,15 +184,17 @@ Extracts the sender address from a transaction.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 262-292
-
-
-signing_hash
-~~~~~~~~~~~~
+   :lines: 272-302
 
 Compute the hash of a transaction used in the signature.
+
+:param tx: Transaction of interest.
+:type tx: `eth1spec.eth_types.Transaction`
+
+:returns: **hash** -- Hash of the transaction.
+:rtype: `eth1spec.eth_types.Hash32`
 
 
 .. function:: signing_hash(tx: eth1spec.eth_types.Transaction) -> eth1spec.eth_types.Hash32
@@ -204,15 +203,14 @@ Compute the hash of a transaction used in the signature.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 295-317
-
-
-print_state
-~~~~~~~~~~~
+   :lines: 305-327
 
 Pretty prints the state.
+
+:param state: Ethereum state.
+:type state: `eth1spec.eth_types.State`
 
 
 .. function:: print_state(state: eth1spec.eth_types.State) -> None
@@ -221,7 +219,6 @@ Pretty prints the state.
 
 
 
-.. literalinclude:: ../../../../src/eth1spec/spec.py
+.. literalinclude:: /../src/eth1spec/spec.py
    :language: python
-   :lines: 323-344
-
+   :lines: 333-354

@@ -1,0 +1,345 @@
+:mod:`eth1spec.fork_choice`
+===========================
+
+.. py:module:: eth1spec.fork_choice
+
+Beacon Chain Fork Choice
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+This document is the beacon chain fork choice spec, part of Ethereum 2.0
+Phase 0...
+
+Fork Choice
+-----------
+
+The head block root associated with a....
+
+
+
+Preset
+~~~~~~
+
+SAFE_SLOTS_TO_UPDATE_JUSTIFIED
+******************************
+
+Some description.
+
+.. list-table::
+   :stub-columns: 1
+
+   * - Unit
+     - Slots
+   * - Duration
+     - 96 seconds
+
+
+.. data:: SAFE_SLOTS_TO_UPDATE_JUSTIFIED
+   :annotation: = 8
+
+
+
+Helpers
+~~~~~~~
+
+LatestMessage
+*************
+
+
+.. class:: LatestMessage
+
+   .. attribute:: epoch
+
+
+   .. attribute:: root
+
+
+
+
+Store
+*****
+
+
+.. class:: Store
+
+   .. attribute:: time
+
+
+   .. attribute:: genesis_time
+
+
+   .. attribute:: justified_checkpoint
+
+
+   .. attribute:: finalized_checkpoint
+
+
+   .. attribute:: best_justified_checkpoint
+
+
+   .. attribute:: blocks
+
+
+   .. attribute:: block_states
+
+
+   .. attribute:: checkpoint_states
+
+
+   .. attribute:: latest_messages
+
+
+
+
+get_forkchoice_store
+********************
+
+
+.. function:: get_forkchoice_store(anchor_state: BeaconState, anchor_block: BeaconBlock) -> Store
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 77-99
+
+get_slots_since_genesis
+***********************
+
+
+.. function:: get_slots_since_genesis(store: Store) -> int
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 103-108
+
+get_current_slot
+****************
+
+
+.. function:: get_current_slot(store: Store) -> Slot
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 111-116
+
+compute_slots_since_epoch_start
+*******************************
+
+
+.. function:: compute_slots_since_epoch_start(slot: Slot) -> int
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 119-124
+
+get_ancestor
+************
+
+
+.. function:: get_ancestor(store: Store, root: Root, slot: Slot) -> Root
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 127-139
+
+get_latest_attesting_balance
+****************************
+
+
+.. function:: get_latest_attesting_balance(store: Store, root: Root) -> Gwei
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 142-162
+
+filter_block_tree
+*****************
+
+
+.. function:: filter_block_tree(store: Store, block_root: Root, blocks: Dict[Root, BeaconBlock]) -> bool
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 168-211
+
+get_filtered_block_tree
+***********************
+
+Retrieve a filtered block tree from ``store``, only returning branches
+whose leaf state's justified/finalized info agrees with that in ``store``.
+
+
+.. function:: get_filtered_block_tree(store: Store) -> Dict[Root, BeaconBlock]
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 214-225
+
+get_head
+********
+
+
+.. function:: get_head(store: Store) -> Root
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 228-246
+
+should_update_justified_checkpoint
+**********************************
+
+To address the bouncing attack, only update conflicting justified
+checkpoints in the fork choice if in the early slots of the epoch.
+Otherwise, delay incorporation of new justified checkpoint until next epoch
+boundary.
+
+See https://ethresear.ch/t/prevention-of-bouncing-attack-on-ffg/6114 for
+more detailed analysis and discussion.
+
+
+.. function:: should_update_justified_checkpoint(store: Store, new_justified_checkpoint: Checkpoint) -> bool
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 250-280
+
+on_attestation helpers
+**********************
+
+validate_on_attestation
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+.. function:: validate_on_attestation(store: Store, attestation: Attestation) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 283-329
+
+store_target_checkpoint_state
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+.. function:: store_target_checkpoint_state(store: Store, target: Checkpoint) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 332-344
+
+update_latest_messages
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+.. function:: update_latest_messages(store: Store, attesting_indices: Sequence[ValidatorIndex], attestation: Attestation) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 347-364
+
+Handlers
+~~~~~~~~
+
+on_tick
+*******
+
+
+.. function:: on_tick(store: Store, time: uint64) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 368-393
+
+on_block
+********
+
+
+.. function:: on_block(store: Store, signed_block: SignedBeaconBlock) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 396-473
+
+on_attestation
+**************
+
+Run ``on_attestation`` upon receiving a new ``attestation`` from either
+within a block or directly on the wire.
+
+An ``attestation`` that is asserted as invalid may be valid at a later
+time, consider scheduling it for later processing in such case.
+
+
+.. function:: on_attestation(store: Store, attestation: Attestation) -> None
+   :noindexentry:
+
+
+
+
+.. literalinclude:: /../src/eth1spec/fork_choice.py
+   :language: python
+   :lines: 476-497
