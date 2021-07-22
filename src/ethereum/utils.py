@@ -11,6 +11,9 @@ Introduction
 
 Utility functions used in this application.
 """
+import dataclasses
+from typing import Type, TypeVar, cast
+
 from ethereum.base_types import Uint
 
 
@@ -59,3 +62,36 @@ def ceil32(value: Uint) -> Uint:
         return value
     else:
         return value + ceiling - remainder
+
+
+T = TypeVar("T")
+
+
+def mutable(name: str, cls: Type[T]) -> Type[T]:
+    """
+    Generate a mutable version of a frozen dataclass.
+
+    Parameters
+    ----------
+    name :
+        The name of the class.
+    cls :
+        The `dataclass` to use as a template for the new class.
+    Returns
+    -------
+    mutable : `Type`
+        A new dataclass with the same fields as `cls`.
+    """
+    cls_mutable = type(
+        name,
+        (),
+        {
+            "__annotations__": cls.__dict__.get("__annotations__", {}),
+            "__doc__": cls.__dict__.get("__doc__", None),
+        },
+    )
+
+    # XXX: This cast tricks mypy into thinking the annotations on `cls` also
+    #      apply to the newly generated class. The new class is *not* a real
+    #      subclass of `cls`, but it does satisfy the same "protocol" (sorta).
+    return cast(Type[T], dataclasses.dataclass(cls_mutable))

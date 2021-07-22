@@ -13,10 +13,11 @@ Types re-used throughout the specification, which are specific to Ethereum.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
 from ..base_types import U256, Bytes, Bytes8, Bytes20, Bytes32, Uint
 from ..crypto import Hash32
+from ..utils import mutable
 
 Address = Bytes20
 Root = Bytes
@@ -64,6 +65,9 @@ EMPTY_ACCOUNT = Account(
     code=bytearray(),
     storage={},
 )
+
+
+AccountMutable = mutable("AccountMutable", Account)
 
 
 @dataclass
@@ -124,3 +128,39 @@ class Receipt:
 
 
 State = Dict[Address, Account]
+
+
+def state_modify(
+    state: State,
+    address: Address,
+    transform: Callable[[Account], None],
+) -> Account:
+    """
+    Modifies the account in the state according to `transform`.
+
+    Parameters
+    ----------
+    state :
+        The state storage object.
+    address :
+        Address of the account to modify.
+    transform :
+        A callable that applies changes to the given account object.
+
+    Returns
+    -------
+    account : Account
+        The account object after the modifications have been applied.
+    """
+    old_account = state.get(address, EMPTY_ACCOUNT)
+    account_mutable = AccountMutable(**old_account.__dict__)
+    transform(account_mutable)
+    new_account = Account(**account_mutable.__dict__)
+
+    if new_account != old_account:
+        if new_account == EMPTY_ACCOUNT:
+            del state[address]
+        else:
+            state[address] = new_account
+
+    return new_account
