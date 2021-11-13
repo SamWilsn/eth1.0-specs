@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.utils.numeric &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.utils.safe_arithmetic" href="../safe_arithmetic/index.html" />
+    <link rel="prev" title="ethereum.utils.hexadecimal" href="../hexadecimal/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.utils.numeric">
+<span id="ethereum-utils-numeric"></span><h1><a class="reference internal" href="#module-ethereum.utils.numeric" title="ethereum.utils.numeric"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.numeric</span></code></a><a class="headerlink" href="#module-ethereum.utils.numeric" title="Permalink to this headline">¶</a></h1>
+<section id="utility-functions-for-numeric-operations">
+<h2>Utility Functions For Numeric Operations<a class="headerlink" href="#utility-functions-for-numeric-operations" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#get-sign" id="id5">get_sign</a></p></li>
+<li><p><a class="reference internal" href="#ceil32" id="id6">ceil32</a></p></li>
+<li><p><a class="reference internal" href="#is-prime" id="id7">is_prime</a></p></li>
+<li><p><a class="reference internal" href="#le-bytes-to-uint32-sequence" id="id8">le_bytes_to_uint32_sequence</a></p></li>
+<li><p><a class="reference internal" href="#le-uint32-sequence-to-bytes" id="id9">le_uint32_sequence_to_bytes</a></p></li>
+<li><p><a class="reference internal" href="#le-uint32-sequence-to-uint" id="id10">le_uint32_sequence_to_uint</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Numeric operations specific utility functions used in this specification.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.numeric.get_sign" title="ethereum.utils.numeric.get_sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sign</span></code></a></p></td>
+<td><p>Determines the sign of a number.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.numeric.ceil32" title="ethereum.utils.numeric.ceil32"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ceil32</span></code></a></p></td>
+<td><p>Converts a unsigned integer to the next closest multiple of 32.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.numeric.is_prime" title="ethereum.utils.numeric.is_prime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_prime</span></code></a></p></td>
+<td><p>Checks if <cite>number</cite> is a prime number.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.numeric.le_bytes_to_uint32_sequence" title="ethereum.utils.numeric.le_bytes_to_uint32_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">le_bytes_to_uint32_sequence</span></code></a></p></td>
+<td><p>Convert little endian byte stream <cite>data</cite> to a little endian Uint32</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.numeric.le_uint32_sequence_to_bytes" title="ethereum.utils.numeric.le_uint32_sequence_to_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">le_uint32_sequence_to_bytes</span></code></a></p></td>
+<td><p>Obtain little endian byte stream from a little endian Uint32 sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.numeric.le_uint32_sequence_to_uint" title="ethereum.utils.numeric.le_uint32_sequence_to_uint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">le_uint32_sequence_to_uint</span></code></a></p></td>
+<td><p>Obtain Uint from a Uint32 sequence assuming that this sequence is little</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="get-sign">
+<h4>get_sign<a class="headerlink" href="#get-sign" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.get_sign">
+<span class="sig-name descname"><span class="pre">get_sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#ethereum.utils.numeric.get_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the sign of a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value whose sign is to be determined.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sign</strong> – The sign of the number (-1 or 0 or 1).
+The return value is based on math signum function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>int</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_sign</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="ceil32">
+<h4>ceil32<a class="headerlink" href="#ceil32" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.ceil32">
+<span class="sig-name descname"><span class="pre">ceil32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.utils.numeric.ceil32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a unsigned integer to the next closest multiple of 32.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value whose ceil32 is to be calculated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ceil32</strong> – The same value if it’s a perfect multiple of 32
+else it returns the smallest multiple of 32
+that is greater than <cite>value</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ethereum.base_types.U256</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ceil32</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="n">ceiling</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+    <span class="n">remainder</span> <span class="o">=</span> <span class="n">value</span> <span class="o">%</span> <span class="n">ceiling</span>
+    <span class="k">if</span> <span class="n">remainder</span> <span class="o">==</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="n">ceiling</span> <span class="o">-</span> <span class="n">remainder</span>
+</pre></div>
+</div>
+</section>
+<section id="is-prime">
+<h4>is_prime<a class="headerlink" href="#is-prime" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.is_prime">
+<span class="sig-name descname"><span class="pre">is_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ethereum.utils.numeric.is_prime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if <cite>number</cite> is a prime number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> – The number to check for primality.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>is_number_prime</strong> – Boolean indicating if <cite>number</cite> is prime or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">number</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># number ** 0.5 is faster than math.sqrt(number)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Return False if number is divisible by x</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="le-bytes-to-uint32-sequence">
+<h4>le_bytes_to_uint32_sequence<a class="headerlink" href="#le-bytes-to-uint32-sequence" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.le_bytes_to_uint32_sequence">
+<span class="sig-name descname"><span class="pre">le_bytes_to_uint32_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.utils.numeric.le_bytes_to_uint32_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert little endian byte stream <cite>data</cite> to a little endian Uint32
+sequence i.e., the first Uint32 number of the sequence is the least
+significant Uint32 number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – The byte stream (little endian) which is to be converted to a Uint32
+stream.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>uint32_sequence</strong> – Sequence of Uint32 numbers obtained from the little endian byte
+stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Tuple[Uint32, …]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">le_bytes_to_uint32_sequence</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Uint32</span><span class="o">.</span><span class="n">from_le_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="le-uint32-sequence-to-bytes">
+<h4>le_uint32_sequence_to_bytes<a class="headerlink" href="#le-uint32-sequence-to-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.le_uint32_sequence_to_bytes">
+<span class="sig-name descname"><span class="pre">le_uint32_sequence_to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bytes</span><a class="headerlink" href="#ethereum.utils.numeric.le_uint32_sequence_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain little endian byte stream from a little endian Uint32 sequence
+i.e., the first Uint32 number of the sequence is the least significant
+Uint32 number.</p>
+<p>Note - In this conversion, the most significant byte (byte at the end of
+the little endian stream) may have leading zeroes. This function doesn’t
+take care of removing these leading zeroes as shown in below example.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">le_uint32_sequence_to_bytes</span><span class="p">([</span><span class="n">Uint32</span><span class="p">(</span><span class="mi">8</span><span class="p">)])</span>
+<span class="go">b&#39;\x08\x00\x00\x00&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> – The Uint32 stream (little endian) which is to be converted to a
+little endian byte stream.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – The byte stream obtained from the little endian Uint32 stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">le_uint32_sequence_to_bytes</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Uint32</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">result_bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+        <span class="n">result_bytes</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">to_le_bytes4</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">result_bytes</span>
+</pre></div>
+</div>
+</section>
+<section id="le-uint32-sequence-to-uint">
+<h4>le_uint32_sequence_to_uint<a class="headerlink" href="#le-uint32-sequence-to-uint" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.numeric.le_uint32_sequence_to_uint">
+<span class="sig-name descname"><span class="pre">le_uint32_sequence_to_uint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.utils.numeric.le_uint32_sequence_to_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain Uint from a Uint32 sequence assuming that this sequence is little
+endian i.e., the first Uint32 number of the sequence is the least
+significant Uint32 number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> – The Uint32 stream (little endian) which is to be converted to a Uint.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>value</strong> – The Uint number obtained from the conversion of the little endian
+Uint32 stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">le_uint32_sequence_to_uint</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Uint32</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="n">sequence_as_bytes</span> <span class="o">=</span> <span class="n">le_uint32_sequence_to_bytes</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_le_bytes</span><span class="p">(</span><span class="n">sequence_as_bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils</span></code></a><ul>
+      <li>Previous: <a href="../hexadecimal/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.hexadecimal</span></code></a></li>
+      <li>Next: <a href="../safe_arithmetic/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.safe_arithmetic</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/utils/numeric/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

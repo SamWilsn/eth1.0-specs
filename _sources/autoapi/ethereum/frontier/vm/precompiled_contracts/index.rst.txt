@@ -1,0 +1,32 @@
+:mod:`ethereum.frontier.vm.precompiled_contracts`
+=================================================
+
+.. py:module:: ethereum.frontier.vm.precompiled_contracts
+
+Precompiled Contract Addresses
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Addresses of precompiled contracts and mappings to their
+implementations.
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   ecrecover/index.rst
+   identity/index.rst
+   mapping/index.rst
+   ripemd160/index.rst
+   sha256/index.rst
+
+

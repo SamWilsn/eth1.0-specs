@@ -8,6 +8,10 @@ pre, .class, .function {
     font-size: 13px;
 }
 
+pre {
+    padding: 1.5em;
+}
+
 /* Classes */
 .class {
     background: #d5d5ee;
@@ -15,9 +19,10 @@ pre, .class, .function {
 }
 
 /* Functions */
-.function {
+.function .sig {
     background: #d0eed0;
     padding: 1.5em;
+    margin: 1em 0;
 }
 
 /* Improve function signatures with type hints */
@@ -31,7 +36,33 @@ pre, .class, .function {
     white-space: pre;
 }
 
+/* Prefer increasing width in field lists over wrapping */
+dl.field-list > dt {
+    word-break: normal;
+}
+
 .sig-param + .sig-paren::before {
     content: '\A';
     white-space: pre;
+}
+
+*[class*="change-"] + *[class*="change-"] {
+    margin-left: 0.1em;
+}
+
+.change-added, .change-removed, .change-replacement, .change-replaced {
+    padding: 0.2em;
+    border: 1px solid;
+    border-left: none;
+    border-right: none;
+}
+
+.change-added, .change-replacement {
+    background: rgba(0, 255, 0, 0.2);
+    border-color: green;
+}
+
+.change-removed, .change-replaced {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: red;
 }

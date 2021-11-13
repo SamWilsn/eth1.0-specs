@@ -1,0 +1,123 @@
+:mod:`ethereum.frontier.genesis`
+================================
+
+.. py:module:: ethereum.frontier.genesis
+
+Genesis Configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Functionalities and entities to obtain the genesis configurations for
+different chains.
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ethereum.frontier.genesis.GenesisConfiguration
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   ethereum.frontier.genesis.genesis_configuration
+
+
+
+Module Details
+---------------
+
+GenesisConfiguration
+~~~~~~~~~~~~~~~~~~~~
+
+
+Configuration for the first block of an Ethereum chain.
+
+Specifies the allocation of ether set out in the pre-sale, and some of
+the fields of the genesis block.
+
+
+.. class:: GenesisConfiguration
+
+   
+
+   .. py:attribute:: difficulty
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: extra_data
+      :annotation: :ethereum.base_types.Bytes
+
+      
+
+   
+
+   .. py:attribute:: gas_limit
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: nonce
+      :annotation: :ethereum.base_types.Bytes8
+
+      
+
+   
+
+   .. py:attribute:: timestamp
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: initial_balances
+      :annotation: :Dict[ethereum.frontier.eth_types.Address, ethereum.base_types.U256]
+
+      
+
+
+
+genesis_configuration
+~~~~~~~~~~~~~~~~~~~~~
+
+
+.. function:: genesis_configuration(genesis_file: str) -> GenesisConfiguration
+   :noindexentry:
+
+   Obtain the genesis configuration from the given genesis json file.
+
+   The genesis file should be present in the `assets` directory.
+
+   :param genesis_file: The json file which contains the parameters for the genesis block
+                        and the pre-sale allocation data.
+
+   :returns: **configuration** -- The genesis configuration obtained from the json genesis file.
+   :rtype: `GenesisConfiguration`
+
+
+
+
+.. undocinclude:: /../src/ethereum/frontier/genesis.py
+   :language: python
+   :pyobject: genesis_configuration

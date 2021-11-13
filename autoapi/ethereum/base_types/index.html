@@ -1,0 +1,1088 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.base_types &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ethereum.crypto" href="../crypto/index.html" />
+    <link rel="prev" title="ethereum.utils.safe_arithmetic" href="../utils/safe_arithmetic/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.base_types">
+<span id="ethereum-base-types"></span><h1><a class="reference internal" href="#module-ethereum.base_types" title="ethereum.base_types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.base_types</span></code></a><a class="headerlink" href="#module-ethereum.base_types" title="Permalink to this headline">¶</a></h1>
+<section id="numeric-array-types">
+<h2>Numeric &amp; Array Types<a class="headerlink" href="#numeric-array-types" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes" id="id3">Classes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id4">Functions</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id5">Attributes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id6">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#uint32-ceil-value" id="id7">UINT32_CEIL_VALUE</a></p></li>
+<li><p><a class="reference internal" href="#u255-ceil-value" id="id8">U255_CEIL_VALUE</a></p></li>
+<li><p><a class="reference internal" href="#u256-ceil-value" id="id9">U256_CEIL_VALUE</a></p></li>
+<li><p><a class="reference internal" href="#uint" id="id10">Uint</a></p></li>
+<li><p><a class="reference internal" href="#t" id="id11">T</a></p></li>
+<li><p><a class="reference internal" href="#fixeduint" id="id12">FixedUInt</a></p></li>
+<li><p><a class="reference internal" href="#u256" id="id13">U256</a></p></li>
+<li><p><a class="reference internal" href="#uint32" id="id14">Uint32</a></p></li>
+<li><p><a class="reference internal" href="#b" id="id15">B</a></p></li>
+<li><p><a class="reference internal" href="#fixedbytes" id="id16">FixedBytes</a></p></li>
+<li><p><a class="reference internal" href="#bytes0" id="id17">Bytes0</a></p></li>
+<li><p><a class="reference internal" href="#bytes4" id="id18">Bytes4</a></p></li>
+<li><p><a class="reference internal" href="#bytes8" id="id19">Bytes8</a></p></li>
+<li><p><a class="reference internal" href="#bytes20" id="id20">Bytes20</a></p></li>
+<li><p><a class="reference internal" href="#bytes32" id="id21">Bytes32</a></p></li>
+<li><p><a class="reference internal" href="#bytes64" id="id22">Bytes64</a></p></li>
+<li><p><a class="reference internal" href="#bytes256" id="id23">Bytes256</a></p></li>
+<li><p><a class="reference internal" href="#bytes" id="id24">Bytes</a></p></li>
+<li><p><a class="reference internal" href="#setattr-function" id="id25">_setattr_function</a></p></li>
+<li><p><a class="reference internal" href="#delattr-function" id="id26">_delattr_function</a></p></li>
+<li><p><a class="reference internal" href="#make-init-function" id="id27">_make_init_function</a></p></li>
+<li><p><a class="reference internal" href="#slotted-freezable" id="id28">slotted_freezable</a></p></li>
+<li><p><a class="reference internal" href="#s" id="id29">S</a></p></li>
+<li><p><a class="reference internal" href="#modify" id="id30">modify</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Integer and array types which are used by—but not unique to—Ethereum.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h4>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Uint</span></code></a></p></td>
+<td><p>Unsigned positive integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.FixedUInt" title="ethereum.base_types.FixedUInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedUInt</span></code></a></p></td>
+<td><p>Superclass for fixed size unsigned integers. Not intended to be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.U256" title="ethereum.base_types.U256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">U256</span></code></a></p></td>
+<td><p>Unsigned positive integer, which can represent <cite>0</cite> to <cite>2 ** 256 - 1</cite>,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Uint32</span></code></a></p></td>
+<td><p>Unsigned positive integer, which can represent <cite>0</cite> to <cite>2 ** 32 - 1</cite>,</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p></td>
+<td><p>Superclass for fixed sized byte arrays. Not intended to be used directly,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes0" title="ethereum.base_types.Bytes0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes0</span></code></a></p></td>
+<td><p>Byte array of exactly zero elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes4" title="ethereum.base_types.Bytes4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes4</span></code></a></p></td>
+<td><p>Byte array of exactly four elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes8" title="ethereum.base_types.Bytes8"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes8</span></code></a></p></td>
+<td><p>Byte array of exactly eight elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes20" title="ethereum.base_types.Bytes20"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes20</span></code></a></p></td>
+<td><p>Byte array of exactly 20 elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes32" title="ethereum.base_types.Bytes32"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes32</span></code></a></p></td>
+<td><p>Byte array of exactly 32 elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes64" title="ethereum.base_types.Bytes64"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes64</span></code></a></p></td>
+<td><p>Byte array of exactly 64 elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes256" title="ethereum.base_types.Bytes256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes256</span></code></a></p></td>
+<td><p>Byte array of exactly 256 elements.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types._setattr_function" title="ethereum.base_types._setattr_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_setattr_function</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types._delattr_function" title="ethereum.base_types._delattr_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_delattr_function</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types._make_init_function" title="ethereum.base_types._make_init_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_init_function</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.slotted_freezable" title="ethereum.base_types.slotted_freezable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slotted_freezable</span></code></a></p></td>
+<td><p>Monkey patches a dataclass so it can be frozen by setting <cite>_frozen</cite> to</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.modify" title="ethereum.base_types.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a></p></td>
+<td><p>Create a mutable copy of <cite>obj</cite> (which must be <cite>&#64;slotted_freezable</cite>) and</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.UINT32_CEIL_VALUE" title="ethereum.base_types.UINT32_CEIL_VALUE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UINT32_CEIL_VALUE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.U255_CEIL_VALUE" title="ethereum.base_types.U255_CEIL_VALUE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">U255_CEIL_VALUE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.U256_CEIL_VALUE" title="ethereum.base_types.U256_CEIL_VALUE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">U256_CEIL_VALUE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.B" title="ethereum.base_types.B"><code class="xref py py-obj docutils literal notranslate"><span class="pre">B</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bytes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.base_types.S" title="ethereum.base_types.S"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="uint32-ceil-value">
+<h4>UINT32_CEIL_VALUE<a class="headerlink" href="#uint32-ceil-value" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.UINT32_CEIL_VALUE">
+<span class="sig-name descname"><span class="pre">UINT32_CEIL_VALUE</span></span><a class="headerlink" href="#ethereum.base_types.UINT32_CEIL_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">UINT32_CEIL_VALUE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span>
+</pre></div>
+</div>
+</section>
+<section id="u255-ceil-value">
+<h4>U255_CEIL_VALUE<a class="headerlink" href="#u255-ceil-value" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.U255_CEIL_VALUE">
+<span class="sig-name descname"><span class="pre">U255_CEIL_VALUE</span></span><a class="headerlink" href="#ethereum.base_types.U255_CEIL_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">U255_CEIL_VALUE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">255</span>
+</pre></div>
+</div>
+</section>
+<section id="u256-ceil-value">
+<h4>U256_CEIL_VALUE<a class="headerlink" href="#u256-ceil-value" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.U256_CEIL_VALUE">
+<span class="sig-name descname"><span class="pre">U256_CEIL_VALUE</span></span><a class="headerlink" href="#ethereum.base_types.U256_CEIL_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">U256_CEIL_VALUE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">256</span>
+</pre></div>
+</div>
+</section>
+<section id="uint">
+<h4>Uint<a class="headerlink" href="#uint" title="Permalink to this headline">¶</a></h4>
+<p>Unsigned positive integer.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Uint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.base_types.Uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#ethereum.base_types.Uint.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.from_be_bytes">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_be_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.from_be_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a sequence of bytes into an arbitrarily sized unsigned integer
+from its big endian representation.
+:param buffer: Bytes to decode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>self</strong> – Unsigned integer decoded from <cite>buffer</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.from_le_bytes">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_le_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.from_le_bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__radd__">
+<span class="sig-name descname"><span class="pre">__radd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value+self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self+value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__iadd__">
+<span class="sig-name descname"><span class="pre">__iadd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self-value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rsub__">
+<span class="sig-name descname"><span class="pre">__rsub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rsub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value-self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__isub__">
+<span class="sig-name descname"><span class="pre">__isub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self*value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rmul__">
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value*self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__imul__">
+<span class="sig-name descname"><span class="pre">__imul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__floordiv__">
+<span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__floordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self//value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rfloordiv__">
+<span class="sig-name descname"><span class="pre">__rfloordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rfloordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value//self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__ifloordiv__">
+<span class="sig-name descname"><span class="pre">__ifloordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__ifloordiv__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__mod__">
+<span class="sig-name descname"><span class="pre">__mod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__mod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self%value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rmod__">
+<span class="sig-name descname"><span class="pre">__rmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value%self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__imod__">
+<span class="sig-name descname"><span class="pre">__imod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__imod__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__divmod__">
+<span class="sig-name descname"><span class="pre">__divmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.base_types.Uint.__divmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(self, value).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rdivmod__">
+<span class="sig-name descname"><span class="pre">__rdivmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.base_types.Uint.__rdivmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(value, self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__pow__">
+<span class="sig-name descname"><span class="pre">__pow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__pow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(self, value, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rpow__">
+<span class="sig-name descname"><span class="pre">__rpow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rpow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(value, self, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__ipow__">
+<span class="sig-name descname"><span class="pre">__ipow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__ipow__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__xor__">
+<span class="sig-name descname"><span class="pre">__xor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__xor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self^value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__rxor__">
+<span class="sig-name descname"><span class="pre">__rxor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__rxor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value^self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.__ixor__">
+<span class="sig-name descname"><span class="pre">__ixor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">Uint</span></a><a class="headerlink" href="#ethereum.base_types.Uint.__ixor__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.to_be_bytes32">
+<span class="sig-name descname"><span class="pre">to_be_bytes32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes32" title="ethereum.base_types.Bytes32"><span class="pre">Bytes32</span></a><a class="headerlink" href="#ethereum.base_types.Uint.to_be_bytes32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this arbitrarily sized unsigned integer into its big endian
+representation with exactly 32 bytes.
+:returns: <strong>big_endian</strong> – Big endian (most significant bits first) representation.
+:rtype: <cite>Bytes32</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.to_be_bytes">
+<span class="sig-name descname"><span class="pre">to_be_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a><a class="headerlink" href="#ethereum.base_types.Uint.to_be_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this arbitrarily sized unsigned integer into its big endian
+representation.
+:returns: <strong>big_endian</strong> – Big endian (most significant bits first) representation.
+:rtype: <cite>Bytes</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint.to_le_bytes">
+<span class="sig-name descname"><span class="pre">to_le_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_bytes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a><a class="headerlink" href="#ethereum.base_types.Uint.to_le_bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="t">
+<h4>T<a class="headerlink" href="#t" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.T">
+<span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#ethereum.base_types.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;FixedUInt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fixeduint">
+<h4>FixedUInt<a class="headerlink" href="#fixeduint" title="Permalink to this headline">¶</a></h4>
+<p>Superclass for fixed size unsigned integers. Not intended to be used
+directly, but rather to be subclassed.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FixedUInt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.base_types.FixedUInt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.MAX_VALUE">
+<span class="sig-name descname"><span class="pre">MAX_VALUE</span></span><em class="property"> <span class="pre">:FixedUInt</span></em><a class="headerlink" href="#ethereum.base_types.FixedUInt.MAX_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#ethereum.base_types.FixedUInt.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__radd__">
+<span class="sig-name descname"><span class="pre">__radd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value+self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self+value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.wrapping_add">
+<span class="sig-name descname"><span class="pre">wrapping_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.wrapping_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__iadd__">
+<span class="sig-name descname"><span class="pre">__iadd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self-value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.wrapping_sub">
+<span class="sig-name descname"><span class="pre">wrapping_sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.wrapping_sub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rsub__">
+<span class="sig-name descname"><span class="pre">__rsub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rsub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value-self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__isub__">
+<span class="sig-name descname"><span class="pre">__isub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__isub__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self*value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.wrapping_mul">
+<span class="sig-name descname"><span class="pre">wrapping_mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.wrapping_mul" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rmul__">
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value*self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__imul__">
+<span class="sig-name descname"><span class="pre">__imul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__floordiv__">
+<span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__floordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self//value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rfloordiv__">
+<span class="sig-name descname"><span class="pre">__rfloordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rfloordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value//self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__ifloordiv__">
+<span class="sig-name descname"><span class="pre">__ifloordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__ifloordiv__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__mod__">
+<span class="sig-name descname"><span class="pre">__mod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__mod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self%value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rmod__">
+<span class="sig-name descname"><span class="pre">__rmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value%self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__imod__">
+<span class="sig-name descname"><span class="pre">__imod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__imod__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__divmod__">
+<span class="sig-name descname"><span class="pre">__divmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.base_types.FixedUInt.__divmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(self, value).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rdivmod__">
+<span class="sig-name descname"><span class="pre">__rdivmod__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rdivmod__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return divmod(value, self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__pow__">
+<span class="sig-name descname"><span class="pre">__pow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__pow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(self, value, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.wrapping_pow">
+<span class="sig-name descname"><span class="pre">wrapping_pow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.wrapping_pow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rpow__">
+<span class="sig-name descname"><span class="pre">__rpow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rpow__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return pow(value, self, mod).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__ipow__">
+<span class="sig-name descname"><span class="pre">__ipow__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modulo</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__ipow__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__and__">
+<span class="sig-name descname"><span class="pre">__and__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__and__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&amp;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__or__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self|value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__xor__">
+<span class="sig-name descname"><span class="pre">__xor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__xor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self^value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rxor__">
+<span class="sig-name descname"><span class="pre">__rxor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rxor__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return value^self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__ixor__">
+<span class="sig-name descname"><span class="pre">__ixor__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__ixor__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__invert__">
+<span class="sig-name descname"><span class="pre">__invert__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__invert__" title="Permalink to this definition">¶</a></dt>
+<dd><p>~self</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedUInt.__rshift__">
+<span class="sig-name descname"><span class="pre">__rshift__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.T" title="ethereum.base_types.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.base_types.FixedUInt.__rshift__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;&gt;value.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="u256">
+<h4>U256<a class="headerlink" href="#u256" title="Permalink to this headline">¶</a></h4>
+<p>Unsigned positive integer, which can represent <cite>0</cite> to <cite>2 ** 256 - 1</cite>,
+inclusive.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.U256">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">U256</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.base_types.U256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedUInt" title="ethereum.base_types.FixedUInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedUInt</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#ethereum.base_types.U256.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.from_be_bytes">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_be_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">U256</span></a><a class="headerlink" href="#ethereum.base_types.U256.from_be_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a sequence of bytes into an arbitrarily sized unsigned integer
+from its big endian representation.
+:param buffer: Bytes to decode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>self</strong> – Unsigned integer decoded from <cite>buffer</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>U256</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.from_signed">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_signed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">U256</span></a><a class="headerlink" href="#ethereum.base_types.U256.from_signed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a signed number into a 256-bit unsigned integer.
+:param value: Signed number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>self</strong> – Unsigned integer obtained from <cite>value</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><cite>U256</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.to_be_bytes32">
+<span class="sig-name descname"><span class="pre">to_be_bytes32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes32" title="ethereum.base_types.Bytes32"><span class="pre">Bytes32</span></a><a class="headerlink" href="#ethereum.base_types.U256.to_be_bytes32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this 256-bit unsigned integer into its big endian
+representation with exactly 32 bytes.
+:returns: <strong>big_endian</strong> – Big endian (most significant bits first) representation.
+:rtype: <cite>Bytes32</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.to_be_bytes">
+<span class="sig-name descname"><span class="pre">to_be_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a><a class="headerlink" href="#ethereum.base_types.U256.to_be_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this 256-bit unsigned integer into its big endian
+representation, omitting leading zero bytes.
+:returns: <strong>big_endian</strong> – Big endian (most significant bits first) representation.
+:rtype: <cite>Bytes</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.U256.to_signed">
+<span class="sig-name descname"><span class="pre">to_signed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#ethereum.base_types.U256.to_signed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this 256-bit unsigned integer into a signed integer.
+:returns: <strong>signed_int</strong> – Signed integer obtained from 256-bit unsigned integer.
+:rtype: <cite>int</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="uint32">
+<h4>Uint32<a class="headerlink" href="#uint32" title="Permalink to this headline">¶</a></h4>
+<p>Unsigned positive integer, which can represent <cite>0</cite> to <cite>2 ** 32 - 1</cite>,
+inclusive.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Uint32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.base_types.Uint32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedUInt" title="ethereum.base_types.FixedUInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedUInt</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32.MAX_VALUE">
+<span class="sig-name descname"><span class="pre">MAX_VALUE</span></span><em class="property"> <span class="pre">:Uint32</span></em><a class="headerlink" href="#ethereum.base_types.Uint32.MAX_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#ethereum.base_types.Uint32.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32.from_le_bytes">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_le_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">Uint32</span></a><a class="headerlink" href="#ethereum.base_types.Uint32.from_le_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a sequence of bytes into an arbitrarily sized unsigned integer
+from its little endian representation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32.to_le_bytes4">
+<span class="sig-name descname"><span class="pre">to_le_bytes4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes4" title="ethereum.base_types.Bytes4"><span class="pre">Bytes4</span></a><a class="headerlink" href="#ethereum.base_types.Uint32.to_le_bytes4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethereum.base_types.Uint32.to_le_bytes">
+<span class="sig-name descname"><span class="pre">to_le_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">Bytes</span></a><a class="headerlink" href="#ethereum.base_types.Uint32.to_le_bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="b">
+<h4>B<a class="headerlink" href="#b" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.B">
+<span class="sig-name descname"><span class="pre">B</span></span><a class="headerlink" href="#ethereum.base_types.B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;FixedBytes&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fixedbytes">
+<h4>FixedBytes<a class="headerlink" href="#fixedbytes" title="Permalink to this headline">¶</a></h4>
+<p>Superclass for fixed sized byte arrays. Not intended to be used directly,
+but should be subclassed.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedBytes">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FixedBytes</span></span><a class="headerlink" href="#ethereum.base_types.FixedBytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedBytes.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">:int</span></em><a class="headerlink" href="#ethereum.base_types.FixedBytes.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.FixedBytes.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#ethereum.base_types.FixedBytes.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes0">
+<h4>Bytes0<a class="headerlink" href="#bytes0" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly zero elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes0">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes0</span></span><a class="headerlink" href="#ethereum.base_types.Bytes0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes0.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#ethereum.base_types.Bytes0.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes4">
+<h4>Bytes4<a class="headerlink" href="#bytes4" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly four elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes4">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes4</span></span><a class="headerlink" href="#ethereum.base_types.Bytes4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes4.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#ethereum.base_types.Bytes4.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes8">
+<h4>Bytes8<a class="headerlink" href="#bytes8" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly eight elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes8">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes8</span></span><a class="headerlink" href="#ethereum.base_types.Bytes8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes8.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">8</span></em><a class="headerlink" href="#ethereum.base_types.Bytes8.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes20">
+<h4>Bytes20<a class="headerlink" href="#bytes20" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly 20 elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes20">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes20</span></span><a class="headerlink" href="#ethereum.base_types.Bytes20" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes20.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">20</span></em><a class="headerlink" href="#ethereum.base_types.Bytes20.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes32">
+<h4>Bytes32<a class="headerlink" href="#bytes32" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly 32 elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes32">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes32</span></span><a class="headerlink" href="#ethereum.base_types.Bytes32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes32.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">32</span></em><a class="headerlink" href="#ethereum.base_types.Bytes32.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes64">
+<h4>Bytes64<a class="headerlink" href="#bytes64" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly 64 elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes64">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes64</span></span><a class="headerlink" href="#ethereum.base_types.Bytes64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes64.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">64</span></em><a class="headerlink" href="#ethereum.base_types.Bytes64.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes256">
+<h4>Bytes256<a class="headerlink" href="#bytes256" title="Permalink to this headline">¶</a></h4>
+<p>Byte array of exactly 256 elements.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes256">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Bytes256</span></span><a class="headerlink" href="#ethereum.base_types.Bytes256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethereum.base_types.FixedBytes" title="ethereum.base_types.FixedBytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedBytes</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes256.LENGTH">
+<span class="sig-name descname"><span class="pre">LENGTH</span></span><em class="property"> <span class="pre">=</span> <span class="pre">256</span></em><a class="headerlink" href="#ethereum.base_types.Bytes256.LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="bytes">
+<h4>Bytes<a class="headerlink" href="#bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.Bytes">
+<span class="sig-name descname"><span class="pre">Bytes</span></span><a class="headerlink" href="#ethereum.base_types.Bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Bytes</span> <span class="o">=</span> <span class="nb">bytes</span>
+</pre></div>
+</div>
+</section>
+<section id="setattr-function">
+<h4>_setattr_function<a class="headerlink" href="#setattr-function" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.base_types._setattr_function">
+<span class="sig-name descname"><span class="pre">_setattr_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.base_types._setattr_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_setattr_function</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_frozen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Mutating frozen dataclasses is not allowed.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="delattr-function">
+<h4>_delattr_function<a class="headerlink" href="#delattr-function" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.base_types._delattr_function">
+<span class="sig-name descname"><span class="pre">_delattr_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.base_types._delattr_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_delattr_function</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frozen</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Mutating frozen dataclasses is not allowed.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="make-init-function">
+<h4>_make_init_function<a class="headerlink" href="#make-init-function" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.base_types._make_init_function">
+<span class="sig-name descname"><span class="pre">_make_init_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Callable</span><a class="headerlink" href="#ethereum.base_types._make_init_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_make_init_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">init_function</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">will_be_frozen</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_frozen&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_frozen&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frozen</span> <span class="o">=</span> <span class="n">will_be_frozen</span>
+
+    <span class="k">return</span> <span class="n">init_function</span>
+</pre></div>
+</div>
+</section>
+<section id="slotted-freezable">
+<h4>slotted_freezable<a class="headerlink" href="#slotted-freezable" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.base_types.slotted_freezable">
+<span class="sig-name descname"><span class="pre">slotted_freezable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#ethereum.base_types.slotted_freezable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Monkey patches a dataclass so it can be frozen by setting <cite>_frozen</cite> to
+<cite>True</cite> and uses <cite>__slots__</cite> for efficiency.</p>
+<p>Instances will be created frozen by default unless you pass <cite>_frozen=False</cite>
+to <cite>__init__</cite>.</p>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">slotted_freezable</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_frozen&quot;</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">)</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span> <span class="o">=</span> <span class="n">_make_init_function</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__setattr__</span> <span class="o">=</span> <span class="n">_setattr_function</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__delattr__</span> <span class="o">=</span> <span class="n">_delattr_function</span>
+    <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="s">
+<h4>S<a class="headerlink" href="#s" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.base_types.S">
+<span class="sig-name descname"><span class="pre">S</span></span><a class="headerlink" href="#ethereum.base_types.S" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="modify">
+<h4>modify<a class="headerlink" href="#modify" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.base_types.modify">
+<span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.base_types.S" title="ethereum.base_types.S"><span class="pre">S</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.base_types.S" title="ethereum.base_types.S"><span class="pre">S</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.base_types.S" title="ethereum.base_types.S"><span class="pre">S</span></a><a class="headerlink" href="#ethereum.base_types.modify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a mutable copy of <cite>obj</cite> (which must be <cite>&#64;slotted_freezable</cite>) and
+apply <cite>f</cite> to the copy before freezing it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<cite>S</cite>) – Object to copy.</p></li>
+<li><p><strong>f</strong> (<cite>Callable[[S], None]</cite>) – Function to apply to <cite>obj</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>new_obj</strong> – Compact byte array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>S</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">S</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">S</span><span class="p">:</span>
+    <span class="n">new_obj</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_frozen</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">(</span><span class="n">new_obj</span><span class="p">)</span>
+    <span class="n">new_obj</span><span class="o">.</span><span class="n">_frozen</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># type: ignore</span>
+    <span class="k">return</span> <span class="n">new_obj</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+      <li>Previous: <a href="../utils/safe_arithmetic/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.safe_arithmetic</span></code></a></li>
+      <li>Next: <a href="../crypto/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.crypto</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/ethereum/base_types/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

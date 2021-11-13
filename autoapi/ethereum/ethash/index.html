@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.ethash &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Comparisons" href="../../../diffs/index.html" />
+    <link rel="prev" title="ethereum.crypto" href="../crypto/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.ethash">
+<span id="ethereum-ethash"></span><h1><a class="reference internal" href="#module-ethereum.ethash" title="ethereum.ethash"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.ethash</span></code></a><a class="headerlink" href="#module-ethereum.ethash" title="Permalink to this headline">¶</a></h1>
+<section id="ethash-functions">
+<h2>Ethash Functions<a class="headerlink" href="#ethash-functions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id4">Attributes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id5">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#epoch-size" id="id6">EPOCH_SIZE</a></p></li>
+<li><p><a class="reference internal" href="#initial-cache-size" id="id7">INITIAL_CACHE_SIZE</a></p></li>
+<li><p><a class="reference internal" href="#cache-epoch-growth-size" id="id8">CACHE_EPOCH_GROWTH_SIZE</a></p></li>
+<li><p><a class="reference internal" href="#initial-dataset-size" id="id9">INITIAL_DATASET_SIZE</a></p></li>
+<li><p><a class="reference internal" href="#dataset-epoch-growth-size" id="id10">DATASET_EPOCH_GROWTH_SIZE</a></p></li>
+<li><p><a class="reference internal" href="#hash-bytes" id="id11">HASH_BYTES</a></p></li>
+<li><p><a class="reference internal" href="#mix-bytes" id="id12">MIX_BYTES</a></p></li>
+<li><p><a class="reference internal" href="#cache-rounds" id="id13">CACHE_ROUNDS</a></p></li>
+<li><p><a class="reference internal" href="#dataset-parents" id="id14">DATASET_PARENTS</a></p></li>
+<li><p><a class="reference internal" href="#hashimoto-accesses" id="id15">HASHIMOTO_ACCESSES</a></p></li>
+<li><p><a class="reference internal" href="#epoch" id="id16">epoch</a></p></li>
+<li><p><a class="reference internal" href="#cache-size" id="id17">cache_size</a></p></li>
+<li><p><a class="reference internal" href="#dataset-size" id="id18">dataset_size</a></p></li>
+<li><p><a class="reference internal" href="#generate-seed" id="id19">generate_seed</a></p></li>
+<li><p><a class="reference internal" href="#generate-cache" id="id20">generate_cache</a></p></li>
+<li><p><a class="reference internal" href="#fnv" id="id21">fnv</a></p></li>
+<li><p><a class="reference internal" href="#fnv-hash" id="id22">fnv_hash</a></p></li>
+<li><p><a class="reference internal" href="#generate-dataset-item" id="id23">generate_dataset_item</a></p></li>
+<li><p><a class="reference internal" href="#generate-dataset" id="id24">generate_dataset</a></p></li>
+<li><p><a class="reference internal" href="#hashimoto" id="id25">hashimoto</a></p></li>
+<li><p><a class="reference internal" href="#hashimoto-light" id="id26">hashimoto_light</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Ethash algorithm related functionalities.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.epoch" title="ethereum.ethash.epoch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">epoch</span></code></a></p></td>
+<td><p>Obtain the epoch number to which the block identified by <cite>block_number</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.cache_size" title="ethereum.ethash.cache_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_size</span></code></a></p></td>
+<td><p>Obtain the cache size (in bytes) of the epoch to which <cite>block_number</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.dataset_size" title="ethereum.ethash.dataset_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_size</span></code></a></p></td>
+<td><p>Obtain the dataset size (in bytes) of the epoch to which <cite>block_number</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.generate_seed" title="ethereum.ethash.generate_seed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_seed</span></code></a></p></td>
+<td><p>Obtain the cache generation seed for the block identified by</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.generate_cache" title="ethereum.ethash.generate_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_cache</span></code></a></p></td>
+<td><p>Generate the cache for the block identified by <cite>block_number</cite>. This cache</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.fnv" title="ethereum.ethash.fnv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fnv</span></code></a></p></td>
+<td><p>FNV algorithm is inspired by the FNV hash, which in some cases is used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.fnv_hash" title="ethereum.ethash.fnv_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fnv_hash</span></code></a></p></td>
+<td><p>FNV Hash mixes in data into mix using the ethash fnv method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.generate_dataset_item" title="ethereum.ethash.generate_dataset_item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_dataset_item</span></code></a></p></td>
+<td><p>Generate a particular dataset item 0-indexed by <cite>index</cite> using <cite>cache</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.generate_dataset" title="ethereum.ethash.generate_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_dataset</span></code></a></p></td>
+<td><p>Generate the full dataset for the block identified by <cite>block_number</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.hashimoto" title="ethereum.ethash.hashimoto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hashimoto</span></code></a></p></td>
+<td><p>Obtain the mix digest and the final value for a header, by aggregating</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.hashimoto_light" title="ethereum.ethash.hashimoto_light"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hashimoto_light</span></code></a></p></td>
+<td><p>Run the hashimoto algorithm by generating dataset item using the cache</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.EPOCH_SIZE" title="ethereum.ethash.EPOCH_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EPOCH_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.INITIAL_CACHE_SIZE" title="ethereum.ethash.INITIAL_CACHE_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INITIAL_CACHE_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.CACHE_EPOCH_GROWTH_SIZE" title="ethereum.ethash.CACHE_EPOCH_GROWTH_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CACHE_EPOCH_GROWTH_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.INITIAL_DATASET_SIZE" title="ethereum.ethash.INITIAL_DATASET_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INITIAL_DATASET_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.DATASET_EPOCH_GROWTH_SIZE" title="ethereum.ethash.DATASET_EPOCH_GROWTH_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASET_EPOCH_GROWTH_SIZE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.HASH_BYTES" title="ethereum.ethash.HASH_BYTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HASH_BYTES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.MIX_BYTES" title="ethereum.ethash.MIX_BYTES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIX_BYTES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.CACHE_ROUNDS" title="ethereum.ethash.CACHE_ROUNDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CACHE_ROUNDS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.ethash.DATASET_PARENTS" title="ethereum.ethash.DATASET_PARENTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASET_PARENTS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.ethash.HASHIMOTO_ACCESSES" title="ethereum.ethash.HASHIMOTO_ACCESSES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HASHIMOTO_ACCESSES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="epoch-size">
+<h4>EPOCH_SIZE<a class="headerlink" href="#epoch-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.EPOCH_SIZE">
+<span class="sig-name descname"><span class="pre">EPOCH_SIZE</span></span><a class="headerlink" href="#ethereum.ethash.EPOCH_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">EPOCH_SIZE</span> <span class="o">=</span> <span class="mi">30000</span>
+</pre></div>
+</div>
+</section>
+<section id="initial-cache-size">
+<h4>INITIAL_CACHE_SIZE<a class="headerlink" href="#initial-cache-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.INITIAL_CACHE_SIZE">
+<span class="sig-name descname"><span class="pre">INITIAL_CACHE_SIZE</span></span><a class="headerlink" href="#ethereum.ethash.INITIAL_CACHE_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INITIAL_CACHE_SIZE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">24</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-epoch-growth-size">
+<h4>CACHE_EPOCH_GROWTH_SIZE<a class="headerlink" href="#cache-epoch-growth-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.CACHE_EPOCH_GROWTH_SIZE">
+<span class="sig-name descname"><span class="pre">CACHE_EPOCH_GROWTH_SIZE</span></span><a class="headerlink" href="#ethereum.ethash.CACHE_EPOCH_GROWTH_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CACHE_EPOCH_GROWTH_SIZE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">17</span>
+</pre></div>
+</div>
+</section>
+<section id="initial-dataset-size">
+<h4>INITIAL_DATASET_SIZE<a class="headerlink" href="#initial-dataset-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.INITIAL_DATASET_SIZE">
+<span class="sig-name descname"><span class="pre">INITIAL_DATASET_SIZE</span></span><a class="headerlink" href="#ethereum.ethash.INITIAL_DATASET_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INITIAL_DATASET_SIZE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</section>
+<section id="dataset-epoch-growth-size">
+<h4>DATASET_EPOCH_GROWTH_SIZE<a class="headerlink" href="#dataset-epoch-growth-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.DATASET_EPOCH_GROWTH_SIZE">
+<span class="sig-name descname"><span class="pre">DATASET_EPOCH_GROWTH_SIZE</span></span><a class="headerlink" href="#ethereum.ethash.DATASET_EPOCH_GROWTH_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DATASET_EPOCH_GROWTH_SIZE</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">23</span>
+</pre></div>
+</div>
+</section>
+<section id="hash-bytes">
+<h4>HASH_BYTES<a class="headerlink" href="#hash-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.HASH_BYTES">
+<span class="sig-name descname"><span class="pre">HASH_BYTES</span></span><a class="headerlink" href="#ethereum.ethash.HASH_BYTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HASH_BYTES</span> <span class="o">=</span> <span class="mi">64</span>
+</pre></div>
+</div>
+</section>
+<section id="mix-bytes">
+<h4>MIX_BYTES<a class="headerlink" href="#mix-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.MIX_BYTES">
+<span class="sig-name descname"><span class="pre">MIX_BYTES</span></span><a class="headerlink" href="#ethereum.ethash.MIX_BYTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MIX_BYTES</span> <span class="o">=</span> <span class="mi">128</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-rounds">
+<h4>CACHE_ROUNDS<a class="headerlink" href="#cache-rounds" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.CACHE_ROUNDS">
+<span class="sig-name descname"><span class="pre">CACHE_ROUNDS</span></span><a class="headerlink" href="#ethereum.ethash.CACHE_ROUNDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CACHE_ROUNDS</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</section>
+<section id="dataset-parents">
+<h4>DATASET_PARENTS<a class="headerlink" href="#dataset-parents" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.DATASET_PARENTS">
+<span class="sig-name descname"><span class="pre">DATASET_PARENTS</span></span><a class="headerlink" href="#ethereum.ethash.DATASET_PARENTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DATASET_PARENTS</span> <span class="o">=</span> <span class="mi">256</span>
+</pre></div>
+</div>
+</section>
+<section id="hashimoto-accesses">
+<h4>HASHIMOTO_ACCESSES<a class="headerlink" href="#hashimoto-accesses" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.ethash.HASHIMOTO_ACCESSES">
+<span class="sig-name descname"><span class="pre">HASHIMOTO_ACCESSES</span></span><a class="headerlink" href="#ethereum.ethash.HASHIMOTO_ACCESSES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HASHIMOTO_ACCESSES</span> <span class="o">=</span> <span class="mi">64</span>
+</pre></div>
+</div>
+</section>
+<section id="epoch">
+<h4>epoch<a class="headerlink" href="#epoch" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.epoch">
+<span class="sig-name descname"><span class="pre">epoch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.ethash.epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the epoch number to which the block identified by <cite>block_number</cite>
+belongs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>epoch_number</strong> – The epoch number to which the passed in block belongs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">epoch</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">block_number</span> <span class="o">//</span> <span class="n">EPOCH_SIZE</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-size">
+<h4>cache_size<a class="headerlink" href="#cache-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.cache_size">
+<span class="sig-name descname"><span class="pre">cache_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.ethash.cache_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the cache size (in bytes) of the epoch to which <cite>block_number</cite>
+belongs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>cache_size_bytes</strong> – The cache size in bytes for the passed in block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cache_size</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">INITIAL_CACHE_SIZE</span> <span class="o">+</span> <span class="p">(</span><span class="n">CACHE_EPOCH_GROWTH_SIZE</span> <span class="o">*</span> <span class="n">epoch</span><span class="p">(</span><span class="n">block_number</span><span class="p">))</span>
+    <span class="n">size</span> <span class="o">-=</span> <span class="n">HASH_BYTES</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="n">HASH_BYTES</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">HASH_BYTES</span>
+
+    <span class="k">return</span> <span class="n">size</span>
+</pre></div>
+</div>
+</section>
+<section id="dataset-size">
+<h4>dataset_size<a class="headerlink" href="#dataset-size" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.dataset_size">
+<span class="sig-name descname"><span class="pre">dataset_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.ethash.dataset_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the dataset size (in bytes) of the epoch to which <cite>block_number</cite>
+belongs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dataset_size_bytes</strong> – The dataset size in bytes for the passed in block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dataset_size</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">INITIAL_DATASET_SIZE</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="n">DATASET_EPOCH_GROWTH_SIZE</span> <span class="o">*</span> <span class="n">epoch</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">size</span> <span class="o">-=</span> <span class="n">MIX_BYTES</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="n">MIX_BYTES</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">MIX_BYTES</span>
+
+    <span class="k">return</span> <span class="n">size</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-seed">
+<h4>generate_seed<a class="headerlink" href="#generate-seed" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.generate_seed">
+<span class="sig-name descname"><span class="pre">generate_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a><a class="headerlink" href="#ethereum.ethash.generate_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the cache generation seed for the block identified by
+<cite>block_number</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>seed</strong> – The cache generation seed for the passed in block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_seed</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="n">epoch_number</span> <span class="o">=</span> <span class="n">epoch</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+
+    <span class="n">seed</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">32</span>
+    <span class="k">while</span> <span class="n">epoch_number</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">keccak256</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">epoch_number</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">Hash32</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-cache">
+<h4>generate_cache<a class="headerlink" href="#generate-cache" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.generate_cache">
+<span class="sig-name descname"><span class="pre">generate_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.ethash.generate_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the cache for the block identified by <cite>block_number</cite>. This cache
+would later be used to generate the full dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>cache</strong> – The cache generated for the passed in block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Tuple[Tuple[Uint32, …], …]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_cache</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">generate_seed</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+    <span class="n">cache_size_bytes</span> <span class="o">=</span> <span class="n">cache_size</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+
+    <span class="n">cache_size_words</span> <span class="o">=</span> <span class="n">cache_size_bytes</span> <span class="o">//</span> <span class="n">HASH_BYTES</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">[</span><span class="n">keccak512</span><span class="p">(</span><span class="n">seed</span><span class="p">)]</span>
+
+    <span class="n">previous_cache_item</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cache_size_words</span><span class="p">):</span>
+        <span class="n">cache_item</span> <span class="o">=</span> <span class="n">keccak512</span><span class="p">(</span><span class="n">previous_cache_item</span><span class="p">)</span>
+        <span class="n">cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cache_item</span><span class="p">)</span>
+        <span class="n">previous_cache_item</span> <span class="o">=</span> <span class="n">cache_item</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">CACHE_ROUNDS</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cache_size_words</span><span class="p">):</span>
+            <span class="c1"># Converting `cache_size_words` to int as `-1 + Uint(5)` is an</span>
+            <span class="c1"># error.</span>
+            <span class="n">first_cache_item</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span>
+                <span class="p">(</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">cache_size_words</span><span class="p">))</span> <span class="o">%</span> <span class="n">cache_size_words</span>
+            <span class="p">]</span>
+            <span class="n">second_cache_item</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span>
+                <span class="n">Uint32</span><span class="o">.</span><span class="n">from_le_bytes</span><span class="p">(</span><span class="n">cache</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span> <span class="o">%</span> <span class="n">cache_size_words</span>
+            <span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">a</span> <span class="o">^</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">first_cache_item</span><span class="p">,</span> <span class="n">second_cache_item</span><span class="p">)]</span>
+            <span class="p">)</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">keccak512</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">le_bytes_to_uint32_sequence</span><span class="p">(</span><span class="n">cache_item</span><span class="p">)</span> <span class="k">for</span> <span class="n">cache_item</span> <span class="ow">in</span> <span class="n">cache</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fnv">
+<h4>fnv<a class="headerlink" href="#fnv" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.fnv">
+<span class="sig-name descname"><span class="pre">fnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><a class="headerlink" href="#ethereum.ethash.fnv" title="Permalink to this definition">¶</a></dt>
+<dd><p>FNV algorithm is inspired by the FNV hash, which in some cases is used
+as a non-associative substitute for XOR.</p>
+<p>Note that here we multiply the prime with the full 32-bit input, in
+contrast with the FNV-1 spec which multiplies the prime with
+one byte (octet) in turn.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – The first data point.</p></li>
+<li><p><strong>b</strong> – The second data point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>modified_mix_integers</strong> – The result of performing fnv on the passed in data points.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fnv</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Uint</span><span class="p">,</span> <span class="n">Uint32</span><span class="p">],</span> <span class="n">b</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Uint</span><span class="p">,</span> <span class="n">Uint32</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Uint32</span><span class="p">:</span>
+    <span class="c1"># This is a faster way of doing [number % (2 ** 32)]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">((</span><span class="n">Uint</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="mh">0x01000193</span><span class="p">)</span> <span class="o">^</span> <span class="n">Uint</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">UINT32_MAX_VALUE</span>
+    <span class="k">return</span> <span class="n">Uint32</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fnv-hash">
+<h4>fnv_hash<a class="headerlink" href="#fnv-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.fnv_hash">
+<span class="sig-name descname"><span class="pre">fnv_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mix_integers</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.ethash.fnv_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>FNV Hash mixes in data into mix using the ethash fnv method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mix_integers</strong> – Mix data in the form of a sequence of Uint32.</p></li>
+<li><p><strong>data</strong> – The data (sequence of Uint32) to be hashed into the mix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>modified_mix_integers</strong> – The result of performing the fnv hash on the mix and the passed in
+data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Tuple[Uint32, …]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fnv_hash</span><span class="p">(</span>
+    <span class="n">mix_integers</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">fnv</span><span class="p">(</span><span class="n">mix_integers</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mix_integers</span><span class="p">))</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-dataset-item">
+<h4>generate_dataset_item<a class="headerlink" href="#generate-dataset-item" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.generate_dataset_item">
+<span class="sig-name descname"><span class="pre">generate_dataset_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash64" title="ethereum.crypto.Hash64"><span class="pre">ethereum.crypto.Hash64</span></a><a class="headerlink" href="#ethereum.ethash.generate_dataset_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a particular dataset item 0-indexed by <cite>index</cite> using <cite>cache</cite>.
+Each dataset item is a byte stream of 64 bytes or a stream of 16 uint32
+numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache</strong> – The cache from which a subset of items will be used to generate the
+dataset item.</p></li>
+<li><p><strong>index</strong> – The index of the dataset item to generate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dataset_item</strong> – The generated dataset item for passed index.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Hash64</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_dataset_item</span><span class="p">(</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="n">index</span><span class="p">:</span> <span class="n">Uint</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash64</span><span class="p">:</span>
+    <span class="n">mix</span> <span class="o">=</span> <span class="n">keccak512</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">le_uint32_sequence_to_uint</span><span class="p">(</span><span class="n">cache</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">cache</span><span class="p">)])</span> <span class="o">^</span> <span class="n">index</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to_le_bytes</span><span class="p">(</span><span class="n">number_bytes</span><span class="o">=</span><span class="n">HASH_BYTES</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">mix_integers</span> <span class="o">=</span> <span class="n">le_bytes_to_uint32_sequence</span><span class="p">(</span><span class="n">mix</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">DATASET_PARENTS</span><span class="p">):</span>
+        <span class="n">mix_word</span><span class="p">:</span> <span class="n">Uint32</span> <span class="o">=</span> <span class="n">mix_integers</span><span class="p">[</span><span class="n">j</span> <span class="o">%</span> <span class="mi">16</span><span class="p">]</span>
+        <span class="n">cache_index</span> <span class="o">=</span> <span class="n">fnv</span><span class="p">(</span><span class="n">index</span> <span class="o">^</span> <span class="n">j</span><span class="p">,</span> <span class="n">mix_word</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="n">cache_index</span><span class="p">]</span>
+        <span class="n">mix_integers</span> <span class="o">=</span> <span class="n">fnv_hash</span><span class="p">(</span><span class="n">mix_integers</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+
+    <span class="n">mix</span> <span class="o">=</span> <span class="n">Hash64</span><span class="p">(</span><span class="n">le_uint32_sequence_to_bytes</span><span class="p">(</span><span class="n">mix_integers</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">keccak512</span><span class="p">(</span><span class="n">mix</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-dataset">
+<h4>generate_dataset<a class="headerlink" href="#generate-dataset" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.generate_dataset">
+<span class="sig-name descname"><span class="pre">generate_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_number</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash64" title="ethereum.crypto.Hash64"><span class="pre">ethereum.crypto.Hash64</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.ethash.generate_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the full dataset for the block identified by <cite>block_number</cite>.</p>
+<p>This function is present only for demonstration purposes, as it will take
+a long time to execute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block_number</strong> – The number of the block of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dataset</strong> – The dataset generated for the passed in block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Tuple[Hash64, …]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_dataset</span><span class="p">(</span><span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Hash64</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="n">dataset_size_bytes</span><span class="p">:</span> <span class="n">Uint</span> <span class="o">=</span> <span class="n">dataset_size</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_cache</span><span class="p">(</span><span class="n">block_number</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Parallelize this later on if it adds value</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">generate_dataset_item</span><span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="n">Uint</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dataset_size_bytes</span> <span class="o">//</span> <span class="n">HASH_BYTES</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="hashimoto">
+<h4>hashimoto<a class="headerlink" href="#hashimoto" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.hashimoto">
+<span class="sig-name descname"><span class="pre">hashimoto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header_hash</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonce</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes8" title="ethereum.base_types.Bytes8"><span class="pre">ethereum.base_types.Bytes8</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fetch_dataset_item</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.ethash.hashimoto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the mix digest and the final value for a header, by aggregating
+data from the full dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header_hash</strong> – The PoW valid rlp hash of a header.</p></li>
+<li><p><strong>nonce</strong> – The propogated nonce for the given block.</p></li>
+<li><p><strong>dataset_size</strong> – Dataset size for the epoch to which the current block belongs to.</p></li>
+<li><p><strong>fetch_dataset_item</strong> – The function which will be used to obtain a specific dataset item
+from an index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>mix_digest</strong> (<cite>bytes</cite>) – The mix digest generated from the header hash and propogated nonce.</p></li>
+<li><p><strong>result</strong> (<cite>Hash32</cite>) – The final result obtained which will be checked for leading zeros (in
+byte representation) in correspondance with the block difficulty.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hashimoto</span><span class="p">(</span>
+    <span class="n">header_hash</span><span class="p">:</span> <span class="n">Hash32</span><span class="p">,</span>
+    <span class="n">nonce</span><span class="p">:</span> <span class="n">Bytes8</span><span class="p">,</span>
+    <span class="n">dataset_size</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+    <span class="n">fetch_dataset_item</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Uint</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">Hash32</span><span class="p">]:</span>
+    <span class="n">nonce_le</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">nonce</span><span class="p">))</span>
+    <span class="n">seed_hash</span> <span class="o">=</span> <span class="n">keccak512</span><span class="p">(</span><span class="n">header_hash</span> <span class="o">+</span> <span class="n">nonce_le</span><span class="p">)</span>
+    <span class="n">seed_head</span> <span class="o">=</span> <span class="n">Uint32</span><span class="o">.</span><span class="n">from_le_bytes</span><span class="p">(</span><span class="n">seed_hash</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">dataset_size</span> <span class="o">//</span> <span class="mi">128</span>
+    <span class="n">mix</span> <span class="o">=</span> <span class="n">le_bytes_to_uint32_sequence</span><span class="p">(</span><span class="n">seed_hash</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">MIX_BYTES</span> <span class="o">//</span> <span class="n">HASH_BYTES</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">HASHIMOTO_ACCESSES</span><span class="p">):</span>
+        <span class="n">new_data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">fnv</span><span class="p">(</span><span class="n">i</span> <span class="o">^</span> <span class="n">seed_head</span><span class="p">,</span> <span class="n">mix</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">mix</span><span class="p">)])</span> <span class="o">%</span> <span class="n">rows</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MIX_BYTES</span> <span class="o">//</span> <span class="n">HASH_BYTES</span><span class="p">):</span>
+            <span class="c1"># Typecasting `parent` from Uint32 to Uint as 2*parent + j may</span>
+            <span class="c1"># overflow Uint32.</span>
+            <span class="n">new_data</span> <span class="o">+=</span> <span class="n">fetch_dataset_item</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Uint</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span>
+
+        <span class="n">mix</span> <span class="o">=</span> <span class="n">fnv_hash</span><span class="p">(</span><span class="n">mix</span><span class="p">,</span> <span class="n">new_data</span><span class="p">)</span>
+
+    <span class="n">compressed_mix</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mix</span><span class="p">),</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">compressed_mix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">fnv</span><span class="p">(</span><span class="n">fnv</span><span class="p">(</span><span class="n">fnv</span><span class="p">(</span><span class="n">mix</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">mix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]),</span> <span class="n">mix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="p">)</span>
+
+    <span class="n">mix_digest</span> <span class="o">=</span> <span class="n">le_uint32_sequence_to_bytes</span><span class="p">(</span><span class="n">compressed_mix</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">keccak256</span><span class="p">(</span><span class="n">seed_hash</span> <span class="o">+</span> <span class="n">mix_digest</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mix_digest</span><span class="p">,</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+<section id="hashimoto-light">
+<h4>hashimoto_light<a class="headerlink" href="#hashimoto-light" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.ethash.hashimoto_light">
+<span class="sig-name descname"><span class="pre">hashimoto_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header_hash</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonce</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes8" title="ethereum.base_types.Bytes8"><span class="pre">ethereum.base_types.Bytes8</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint32" title="ethereum.base_types.Uint32"><span class="pre">ethereum.base_types.Uint32</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.ethash.hashimoto_light" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the hashimoto algorithm by generating dataset item using the cache
+instead of loading the full dataset into main memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header_hash</strong> – The PoW valid rlp hash of a header.</p></li>
+<li><p><strong>nonce</strong> – The propogated nonce for the given block.</p></li>
+<li><p><strong>cache</strong> – The generated cache for the epoch to which the current block belongs
+to.</p></li>
+<li><p><strong>dataset_size</strong> – Dataset size for the epoch to which the current block belongs to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>mix_digest</strong> (<cite>bytes</cite>) – The mix digest generated from the header hash and propogated nonce.</p></li>
+<li><p><strong>result</strong> (<cite>Hash32</cite>) – The final result obtained which will be checked for leading zeros (in
+byte representation) in correspondance with the block difficulty.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hashimoto_light</span><span class="p">(</span>
+    <span class="n">header_hash</span><span class="p">:</span> <span class="n">Hash32</span><span class="p">,</span>
+    <span class="n">nonce</span><span class="p">:</span> <span class="n">Bytes8</span><span class="p">,</span>
+    <span class="n">cache</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">dataset_size</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">Hash32</span><span class="p">]:</span>
+
+    <span class="k">def</span> <span class="nf">fetch_dataset_item</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint32</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="n">item</span><span class="p">:</span> <span class="n">Hash64</span> <span class="o">=</span> <span class="n">generate_dataset_item</span><span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">le_bytes_to_uint32_sequence</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hashimoto</span><span class="p">(</span><span class="n">header_hash</span><span class="p">,</span> <span class="n">nonce</span><span class="p">,</span> <span class="n">dataset_size</span><span class="p">,</span> <span class="n">fetch_dataset_item</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+      <li>Previous: <a href="../crypto/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.crypto</span></code></a></li>
+      <li>Next: <a href="../../../diffs/index.html" title="next chapter">Comparisons</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/ethereum/ethash/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

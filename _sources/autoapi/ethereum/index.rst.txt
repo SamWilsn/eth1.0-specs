@@ -1,0 +1,49 @@
+:mod:`ethereum`
+===============
+
+.. py:module:: ethereum
+
+Ethereum Specification
+^^^^^^^^^^^^^^^^^^^^^^
+
+Core specifications for Ethereum clients.
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   frontier/index.rst
+   utils/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   base_types/index.rst
+   crypto/index.rst
+   ethash/index.rst
+
+
+Package Contents
+----------------
+
+
+EVM_RECURSION_LIMIT
+~~~~~~~~~~~~~~~~~~~
+
+
+
+.. py:data:: EVM_RECURSION_LIMIT
+
+   
+
+.. undocinclude:: /../src/ethereum/__init__.py
+   :language: python
+   :lines: 12-12
+

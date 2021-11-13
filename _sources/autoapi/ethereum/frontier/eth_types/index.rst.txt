@@ -1,0 +1,475 @@
+:mod:`ethereum.frontier.eth_types`
+==================================
+
+.. py:module:: ethereum.frontier.eth_types
+
+Ethereum Types
+^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Types re-used throughout the specification, which are specific to Ethereum.
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ethereum.frontier.eth_types.Transaction
+   ethereum.frontier.eth_types.Account
+   ethereum.frontier.eth_types.Header
+   ethereum.frontier.eth_types.Block
+   ethereum.frontier.eth_types.Log
+   ethereum.frontier.eth_types.Receipt
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ethereum.frontier.eth_types.Address
+   ethereum.frontier.eth_types.Root
+   ethereum.frontier.eth_types.Bloom
+   ethereum.frontier.eth_types.TX_BASE_COST
+   ethereum.frontier.eth_types.TX_DATA_COST_PER_NON_ZERO
+   ethereum.frontier.eth_types.TX_DATA_COST_PER_ZERO
+   ethereum.frontier.eth_types.EMPTY_ACCOUNT
+
+
+Module Details
+---------------
+
+Address
+~~~~~~~
+
+
+
+.. py:data:: Address
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 31-31
+
+
+Root
+~~~~
+
+
+
+.. py:data:: Root
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 32-32
+
+
+Bloom
+~~~~~
+
+
+
+.. py:data:: Bloom
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 34-34
+
+
+TX_BASE_COST
+~~~~~~~~~~~~
+
+
+
+.. py:data:: TX_BASE_COST
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 36-36
+
+
+TX_DATA_COST_PER_NON_ZERO
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+.. py:data:: TX_DATA_COST_PER_NON_ZERO
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 37-37
+
+
+TX_DATA_COST_PER_ZERO
+~~~~~~~~~~~~~~~~~~~~~
+
+
+
+.. py:data:: TX_DATA_COST_PER_ZERO
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 38-38
+
+
+Transaction
+~~~~~~~~~~~
+
+
+Atomic operation performed on the block chain.
+
+
+.. class:: Transaction
+
+   
+
+   .. py:attribute:: nonce
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: gas_price
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: gas
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: to
+      :annotation: :Union[ethereum.base_types.Bytes0, Address]
+
+      
+
+   
+
+   .. py:attribute:: value
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: data
+      :annotation: :ethereum.base_types.Bytes
+
+      
+
+   
+
+   .. py:attribute:: v
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: r
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: s
+      :annotation: :ethereum.base_types.U256
+
+      
+
+
+
+Account
+~~~~~~~
+
+
+State associated with an address.
+
+
+.. class:: Account
+
+   
+
+   .. py:attribute:: nonce
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: balance
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: code
+      :annotation: :bytes
+
+      
+
+
+
+EMPTY_ACCOUNT
+~~~~~~~~~~~~~
+
+
+
+.. py:data:: EMPTY_ACCOUNT
+
+   
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :lines: 71-74
+
+
+Header
+~~~~~~
+
+
+Header portion of a block on the chain.
+
+
+.. class:: Header
+
+   
+
+   .. py:attribute:: parent_hash
+      :annotation: :ethereum.crypto.Hash32
+
+      
+
+   
+
+   .. py:attribute:: ommers_hash
+      :annotation: :ethereum.crypto.Hash32
+
+      
+
+   
+
+   .. py:attribute:: coinbase
+      :annotation: :Address
+
+      
+
+   
+
+   .. py:attribute:: state_root
+      :annotation: :Root
+
+      
+
+   
+
+   .. py:attribute:: transactions_root
+      :annotation: :Root
+
+      
+
+   
+
+   .. py:attribute:: receipt_root
+      :annotation: :Root
+
+      
+
+   
+
+   .. py:attribute:: bloom
+      :annotation: :Bloom
+
+      
+
+   
+
+   .. py:attribute:: difficulty
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: number
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: gas_limit
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: gas_used
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: timestamp
+      :annotation: :ethereum.base_types.U256
+
+      
+
+   
+
+   .. py:attribute:: extra_data
+      :annotation: :ethereum.base_types.Bytes
+
+      
+
+   
+
+   .. py:attribute:: mix_digest
+      :annotation: :ethereum.base_types.Bytes32
+
+      
+
+   
+
+   .. py:attribute:: nonce
+      :annotation: :ethereum.base_types.Bytes8
+
+      
+
+
+
+Block
+~~~~~
+
+
+A complete block.
+
+
+.. class:: Block
+
+   
+
+   .. py:attribute:: header
+      :annotation: :Header
+
+      
+
+   
+
+   .. py:attribute:: transactions
+      :annotation: :Tuple[Transaction, Ellipsis]
+
+      
+
+   
+
+   .. py:attribute:: ommers
+      :annotation: :Tuple[Header, Ellipsis]
+
+      
+
+
+
+Log
+~~~
+
+
+Data record produced during the execution of a transaction.
+
+
+.. class:: Log
+
+   
+
+   .. py:attribute:: address
+      :annotation: :Address
+
+      
+
+   
+
+   .. py:attribute:: topics
+      :annotation: :Tuple[ethereum.crypto.Hash32, Ellipsis]
+
+      
+
+   
+
+   .. py:attribute:: data
+      :annotation: :bytes
+
+      
+
+
+
+Receipt
+~~~~~~~
+
+
+Result of a transaction.
+
+
+.. class:: Receipt
+
+   
+
+   .. py:attribute:: post_state
+      :annotation: :Root
+
+      
+
+   
+
+   .. py:attribute:: cumulative_gas_used
+      :annotation: :ethereum.base_types.Uint
+
+      
+
+   
+
+   .. py:attribute:: bloom
+      :annotation: :Bloom
+
+      
+
+   
+
+   .. py:attribute:: logs
+      :annotation: :Tuple[Log, Ellipsis]
+
+      
+
+

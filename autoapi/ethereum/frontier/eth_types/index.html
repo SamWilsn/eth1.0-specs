@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.frontier.eth_types &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.frontier.genesis" href="../genesis/index.html" />
+    <link rel="prev" title="ethereum.frontier.bloom" href="../bloom/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.frontier.eth_types">
+<span id="ethereum-frontier-eth-types"></span><h1><a class="reference internal" href="#module-ethereum.frontier.eth_types" title="ethereum.frontier.eth_types"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.eth_types</span></code></a><a class="headerlink" href="#module-ethereum.frontier.eth_types" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-types">
+<h2>Ethereum Types<a class="headerlink" href="#ethereum-types" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes" id="id3">Classes</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id4">Attributes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id5">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#address" id="id6">Address</a></p></li>
+<li><p><a class="reference internal" href="#root" id="id7">Root</a></p></li>
+<li><p><a class="reference internal" href="#bloom" id="id8">Bloom</a></p></li>
+<li><p><a class="reference internal" href="#tx-base-cost" id="id9">TX_BASE_COST</a></p></li>
+<li><p><a class="reference internal" href="#tx-data-cost-per-non-zero" id="id10">TX_DATA_COST_PER_NON_ZERO</a></p></li>
+<li><p><a class="reference internal" href="#tx-data-cost-per-zero" id="id11">TX_DATA_COST_PER_ZERO</a></p></li>
+<li><p><a class="reference internal" href="#transaction" id="id12">Transaction</a></p></li>
+<li><p><a class="reference internal" href="#account" id="id13">Account</a></p></li>
+<li><p><a class="reference internal" href="#empty-account" id="id14">EMPTY_ACCOUNT</a></p></li>
+<li><p><a class="reference internal" href="#header" id="id15">Header</a></p></li>
+<li><p><a class="reference internal" href="#block" id="id16">Block</a></p></li>
+<li><p><a class="reference internal" href="#log" id="id17">Log</a></p></li>
+<li><p><a class="reference internal" href="#receipt" id="id18">Receipt</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Types re-used throughout the specification, which are specific to Ethereum.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h4>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Transaction" title="ethereum.frontier.eth_types.Transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transaction</span></code></a></p></td>
+<td><p>Atomic operation performed on the block chain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Account" title="ethereum.frontier.eth_types.Account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Account</span></code></a></p></td>
+<td><p>State associated with an address.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Header" title="ethereum.frontier.eth_types.Header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Header</span></code></a></p></td>
+<td><p>Header portion of a block on the chain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Block" title="ethereum.frontier.eth_types.Block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Block</span></code></a></p></td>
+<td><p>A complete block.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Log" title="ethereum.frontier.eth_types.Log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Log</span></code></a></p></td>
+<td><p>Data record produced during the execution of a transaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Receipt" title="ethereum.frontier.eth_types.Receipt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Receipt</span></code></a></p></td>
+<td><p>Result of a transaction.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Address" title="ethereum.frontier.eth_types.Address"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Address</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Root" title="ethereum.frontier.eth_types.Root"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Root</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Bloom" title="ethereum.frontier.eth_types.Bloom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bloom</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.TX_BASE_COST" title="ethereum.frontier.eth_types.TX_BASE_COST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TX_BASE_COST</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.TX_DATA_COST_PER_NON_ZERO" title="ethereum.frontier.eth_types.TX_DATA_COST_PER_NON_ZERO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TX_DATA_COST_PER_NON_ZERO</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.TX_DATA_COST_PER_ZERO" title="ethereum.frontier.eth_types.TX_DATA_COST_PER_ZERO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TX_DATA_COST_PER_ZERO</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.EMPTY_ACCOUNT" title="ethereum.frontier.eth_types.EMPTY_ACCOUNT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMPTY_ACCOUNT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="address">
+<h4>Address<a class="headerlink" href="#address" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Address">
+<span class="sig-name descname"><span class="pre">Address</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Address</span> <span class="o">=</span> <span class="n">Bytes20</span>
+</pre></div>
+</div>
+</section>
+<section id="root">
+<h4>Root<a class="headerlink" href="#root" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Root">
+<span class="sig-name descname"><span class="pre">Root</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Root</span> <span class="o">=</span> <span class="n">Hash32</span>
+</pre></div>
+</div>
+</section>
+<section id="bloom">
+<h4>Bloom<a class="headerlink" href="#bloom" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Bloom">
+<span class="sig-name descname"><span class="pre">Bloom</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Bloom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Bloom</span> <span class="o">=</span> <span class="n">Bytes256</span>
+</pre></div>
+</div>
+</section>
+<section id="tx-base-cost">
+<h4>TX_BASE_COST<a class="headerlink" href="#tx-base-cost" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.TX_BASE_COST">
+<span class="sig-name descname"><span class="pre">TX_BASE_COST</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.TX_BASE_COST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TX_BASE_COST</span> <span class="o">=</span> <span class="mi">21000</span>
+</pre></div>
+</div>
+</section>
+<section id="tx-data-cost-per-non-zero">
+<h4>TX_DATA_COST_PER_NON_ZERO<a class="headerlink" href="#tx-data-cost-per-non-zero" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.TX_DATA_COST_PER_NON_ZERO">
+<span class="sig-name descname"><span class="pre">TX_DATA_COST_PER_NON_ZERO</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.TX_DATA_COST_PER_NON_ZERO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TX_DATA_COST_PER_NON_ZERO</span> <span class="o">=</span> <span class="mi">68</span>
+</pre></div>
+</div>
+</section>
+<section id="tx-data-cost-per-zero">
+<h4>TX_DATA_COST_PER_ZERO<a class="headerlink" href="#tx-data-cost-per-zero" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.TX_DATA_COST_PER_ZERO">
+<span class="sig-name descname"><span class="pre">TX_DATA_COST_PER_ZERO</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.TX_DATA_COST_PER_ZERO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TX_DATA_COST_PER_ZERO</span> <span class="o">=</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</section>
+<section id="transaction">
+<h4>Transaction<a class="headerlink" href="#transaction" title="Permalink to this headline">¶</a></h4>
+<p>Atomic operation performed on the block chain.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Transaction</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.nonce">
+<span class="sig-name descname"><span class="pre">nonce</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.nonce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.gas_price">
+<span class="sig-name descname"><span class="pre">gas_price</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.gas_price" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.gas">
+<span class="sig-name descname"><span class="pre">gas</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.gas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.to">
+<span class="sig-name descname"><span class="pre">to</span></span><em class="property"> <span class="pre">:Union[ethereum.base_types.Bytes0,</span> <span class="pre">Address]</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.to" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.v">
+<span class="sig-name descname"><span class="pre">v</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.v" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.r">
+<span class="sig-name descname"><span class="pre">r</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.r" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Transaction.s">
+<span class="sig-name descname"><span class="pre">s</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Transaction.s" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="account">
+<h4>Account<a class="headerlink" href="#account" title="Permalink to this headline">¶</a></h4>
+<p>State associated with an address.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Account">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Account</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Account" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Account.nonce">
+<span class="sig-name descname"><span class="pre">nonce</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Account.nonce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Account.balance">
+<span class="sig-name descname"><span class="pre">balance</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Account.balance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Account.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"> <span class="pre">:bytes</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Account.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="empty-account">
+<h4>EMPTY_ACCOUNT<a class="headerlink" href="#empty-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.EMPTY_ACCOUNT">
+<span class="sig-name descname"><span class="pre">EMPTY_ACCOUNT</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.EMPTY_ACCOUNT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">EMPTY_ACCOUNT</span> <span class="o">=</span> <span class="n">Account</span><span class="p">(</span>
+    <span class="n">nonce</span><span class="o">=</span><span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">balance</span><span class="o">=</span><span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">code</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(),</span>
+</pre></div>
+</div>
+</section>
+<section id="header">
+<h4>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h4>
+<p>Header portion of a block on the chain.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Header</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Header" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.parent_hash">
+<span class="sig-name descname"><span class="pre">parent_hash</span></span><em class="property"> <span class="pre">:ethereum.crypto.Hash32</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.parent_hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.ommers_hash">
+<span class="sig-name descname"><span class="pre">ommers_hash</span></span><em class="property"> <span class="pre">:ethereum.crypto.Hash32</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.ommers_hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.coinbase">
+<span class="sig-name descname"><span class="pre">coinbase</span></span><em class="property"> <span class="pre">:Address</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.coinbase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.state_root">
+<span class="sig-name descname"><span class="pre">state_root</span></span><em class="property"> <span class="pre">:Root</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.state_root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.transactions_root">
+<span class="sig-name descname"><span class="pre">transactions_root</span></span><em class="property"> <span class="pre">:Root</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.transactions_root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.receipt_root">
+<span class="sig-name descname"><span class="pre">receipt_root</span></span><em class="property"> <span class="pre">:Root</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.receipt_root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.bloom">
+<span class="sig-name descname"><span class="pre">bloom</span></span><em class="property"> <span class="pre">:Bloom</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.bloom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.difficulty">
+<span class="sig-name descname"><span class="pre">difficulty</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.difficulty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.number">
+<span class="sig-name descname"><span class="pre">number</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.gas_limit">
+<span class="sig-name descname"><span class="pre">gas_limit</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.gas_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.gas_used">
+<span class="sig-name descname"><span class="pre">gas_used</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.gas_used" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.extra_data">
+<span class="sig-name descname"><span class="pre">extra_data</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.extra_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.mix_digest">
+<span class="sig-name descname"><span class="pre">mix_digest</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes32</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.mix_digest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Header.nonce">
+<span class="sig-name descname"><span class="pre">nonce</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes8</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Header.nonce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="block">
+<h4>Block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h4>
+<p>A complete block.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Block">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Block</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Block" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Block.header">
+<span class="sig-name descname"><span class="pre">header</span></span><em class="property"> <span class="pre">:Header</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Block.header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Block.transactions">
+<span class="sig-name descname"><span class="pre">transactions</span></span><em class="property"> <span class="pre">:Tuple[Transaction,</span> <span class="pre">Ellipsis]</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Block.transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Block.ommers">
+<span class="sig-name descname"><span class="pre">ommers</span></span><em class="property"> <span class="pre">:Tuple[Header,</span> <span class="pre">Ellipsis]</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Block.ommers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="log">
+<h4>Log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h4>
+<p>Data record produced during the execution of a transaction.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Log">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Log</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Log" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Log.address">
+<span class="sig-name descname"><span class="pre">address</span></span><em class="property"> <span class="pre">:Address</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Log.address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Log.topics">
+<span class="sig-name descname"><span class="pre">topics</span></span><em class="property"> <span class="pre">:Tuple[ethereum.crypto.Hash32,</span> <span class="pre">Ellipsis]</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Log.topics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Log.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"> <span class="pre">:bytes</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Log.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="receipt">
+<h4>Receipt<a class="headerlink" href="#receipt" title="Permalink to this headline">¶</a></h4>
+<p>Result of a transaction.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Receipt">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Receipt</span></span><a class="headerlink" href="#ethereum.frontier.eth_types.Receipt" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Receipt.post_state">
+<span class="sig-name descname"><span class="pre">post_state</span></span><em class="property"> <span class="pre">:Root</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Receipt.post_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Receipt.cumulative_gas_used">
+<span class="sig-name descname"><span class="pre">cumulative_gas_used</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Receipt.cumulative_gas_used" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Receipt.bloom">
+<span class="sig-name descname"><span class="pre">bloom</span></span><em class="property"> <span class="pre">:Bloom</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Receipt.bloom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.Receipt.logs">
+<span class="sig-name descname"><span class="pre">logs</span></span><em class="property"> <span class="pre">:Tuple[Log,</span> <span class="pre">Ellipsis]</span></em><a class="headerlink" href="#ethereum.frontier.eth_types.Receipt.logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier</span></code></a><ul>
+      <li>Previous: <a href="../bloom/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.bloom</span></code></a></li>
+      <li>Next: <a href="../genesis/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.genesis</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/frontier/eth_types/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

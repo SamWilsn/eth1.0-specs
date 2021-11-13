@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.utils.hexadecimal &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.utils.numeric" href="../numeric/index.html" />
+    <link rel="prev" title="ethereum.utils.ensure" href="../ensure/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.utils.hexadecimal">
+<span id="ethereum-utils-hexadecimal"></span><h1><a class="reference internal" href="#module-ethereum.utils.hexadecimal" title="ethereum.utils.hexadecimal"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.hexadecimal</span></code></a><a class="headerlink" href="#module-ethereum.utils.hexadecimal" title="Permalink to this headline">¶</a></h1>
+<section id="utility-functions-for-hexadecimal-strings">
+<h2>Utility Functions For Hexadecimal Strings<a class="headerlink" href="#utility-functions-for-hexadecimal-strings" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#has-hex-prefix" id="id5">has_hex_prefix</a></p></li>
+<li><p><a class="reference internal" href="#remove-hex-prefix" id="id6">remove_hex_prefix</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-bytes" id="id7">hex_to_bytes</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-bytes8" id="id8">hex_to_bytes8</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-bytes32" id="id9">hex_to_bytes32</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-hash" id="id10">hex_to_hash</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-uint" id="id11">hex_to_uint</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-u256" id="id12">hex_to_u256</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Hexadecimal strings specific utility functions used in this specification.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.has_hex_prefix" title="ethereum.utils.hexadecimal.has_hex_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_hex_prefix</span></code></a></p></td>
+<td><p>Check if a hex string starts with hex prefix (0x).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.remove_hex_prefix" title="ethereum.utils.hexadecimal.remove_hex_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_hex_prefix</span></code></a></p></td>
+<td><p>Remove 0x prefix from a hex string if present. This function returns the</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_bytes" title="ethereum.utils.hexadecimal.hex_to_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_bytes</span></code></a></p></td>
+<td><p>Convert hex string to bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_bytes8" title="ethereum.utils.hexadecimal.hex_to_bytes8"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_bytes8</span></code></a></p></td>
+<td><p>Convert hex string to 8 bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_bytes32" title="ethereum.utils.hexadecimal.hex_to_bytes32"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_bytes32</span></code></a></p></td>
+<td><p>Convert hex string to 32 bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_hash" title="ethereum.utils.hexadecimal.hex_to_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_hash</span></code></a></p></td>
+<td><p>Convert hex string to hash32 (32 bytes).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_uint" title="ethereum.utils.hexadecimal.hex_to_uint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_uint</span></code></a></p></td>
+<td><p>Convert hex string to Uint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_u256" title="ethereum.utils.hexadecimal.hex_to_u256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_u256</span></code></a></p></td>
+<td><p>Convert hex string to U256.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="has-hex-prefix">
+<h4>has_hex_prefix<a class="headerlink" href="#has-hex-prefix" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.has_hex_prefix">
+<span class="sig-name descname"><span class="pre">has_hex_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ethereum.utils.hexadecimal.has_hex_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a hex string starts with hex prefix (0x).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be checked for presence of prefix.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>has_prefix</strong> – Boolean indicating whether the hex string has 0x prefix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">has_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">hex_string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;0x&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="remove-hex-prefix">
+<h4>remove_hex_prefix<a class="headerlink" href="#remove-hex-prefix" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.remove_hex_prefix">
+<span class="sig-name descname"><span class="pre">remove_hex_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#ethereum.utils.hexadecimal.remove_hex_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove 0x prefix from a hex string if present. This function returns the
+passed hex string if it isn’t prefixed with 0x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string whose prefix is to be removed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>modified_hex_string</strong> – The hexadecimal string with the 0x prefix removed if present.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>str</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">has_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">hex_string</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;0x&quot;</span><span class="p">)</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">hex_string</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-bytes">
+<h4>hex_to_bytes<a class="headerlink" href="#hex-to-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_bytes">
+<span class="sig-name descname"><span class="pre">hex_to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to bytes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>byte_stream</strong> – Byte stream corresponding to the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_bytes</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-bytes8">
+<h4>hex_to_bytes8<a class="headerlink" href="#hex-to-bytes8" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_bytes8">
+<span class="sig-name descname"><span class="pre">hex_to_bytes8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes8" title="ethereum.base_types.Bytes8"><span class="pre">ethereum.base_types.Bytes8</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_bytes8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to 8 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to 8 bytes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>8_byte_stream</strong> – 8-byte stream corresponding to the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_bytes8</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes8</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Bytes8</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-bytes32">
+<h4>hex_to_bytes32<a class="headerlink" href="#hex-to-bytes32" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_bytes32">
+<span class="sig-name descname"><span class="pre">hex_to_bytes32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes32" title="ethereum.base_types.Bytes32"><span class="pre">ethereum.base_types.Bytes32</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_bytes32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to 32 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to 32 bytes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>32_byte_stream</strong> – 32-byte stream corresponding to the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_bytes32</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes32</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Bytes32</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-hash">
+<h4>hex_to_hash<a class="headerlink" href="#hex-to-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_hash">
+<span class="sig-name descname"><span class="pre">hex_to_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to hash32 (32 bytes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to hash32.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>hash</strong> – 32-byte stream obtained from the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_hash</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Hash32</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-uint">
+<h4>hex_to_uint<a class="headerlink" href="#hex-to-uint" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_uint">
+<span class="sig-name descname"><span class="pre">hex_to_uint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to Uint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to Uint.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>converted</strong> – The unsigned integer obtained from the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_uint</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Uint</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-u256">
+<h4>hex_to_u256<a class="headerlink" href="#hex-to-u256" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_u256">
+<span class="sig-name descname"><span class="pre">hex_to_u256</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_u256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to U256.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to U256.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>converted</strong> – The U256 integer obtained from the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>U256</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_u256</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">U256</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">U256</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">),</span> <span class="mi">16</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils</span></code></a><ul>
+      <li>Previous: <a href="../ensure/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.ensure</span></code></a></li>
+      <li>Next: <a href="../numeric/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.utils.numeric</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/utils/hexadecimal/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

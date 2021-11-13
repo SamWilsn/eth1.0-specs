@@ -1,0 +1,7 @@
+===========
+Comparisons
+===========
+
+.. toctree::
+   :maxdepth: 1
+

@@ -1,0 +1,31 @@
+:mod:`ethereum.utils`
+=====================
+
+.. py:module:: ethereum.utils
+
+Utility Functions
+^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Utility functions used in this specification.
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   byte/index.rst
+   ensure/index.rst
+   hexadecimal/index.rst
+   numeric/index.rst
+   safe_arithmetic/index.rst
+
+
