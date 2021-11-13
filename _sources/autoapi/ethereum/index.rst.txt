@@ -15,7 +15,9 @@ Subpackages
    :titlesonly:
    :maxdepth: 3
 
+   banana/index.rst
    frontier/index.rst
+   orange/index.rst
    utils/index.rst
 
 

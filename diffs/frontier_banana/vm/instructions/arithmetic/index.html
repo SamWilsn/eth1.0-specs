@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.frontier.vm.instructions.arithmeticethereum.banana.vm.instructions.arithmetic &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="ethereum.frontier.specethereum.banana.spec" href="../../../spec/index.html" />
+    <link rel="prev" title="ethereum.frontier.vm.memoryethereum.banana.vm.memory" href="../../memory/index.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.frontier.vm.instructions.arithmetic">
+<span id="ethereum-frontier-vm-instructions-arithmetic"></span><h1><a class="change-replaced reference internal" href="#module-ethereum.frontier.vm.instructions.arithmetic" title="ethereum.frontier.vm.instructions.arithmetic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.arithmetic</span></code></a><a class="change-replacement reference internal" href="#module-ethereum.banana.vm.instructions.arithmetic" title="ethereum.banana.vm.instructions.arithmetic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code></a><a class="headerlink" href="#module-ethereum.frontier.vm.instructions.arithmetic" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm-arithmetic-instructions">
+<h2>Ethereum Virtual Machine (EVM) Arithmetic Instructions<a class="headerlink" href="#ethereum-virtual-machine-evm-arithmetic-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#add" id="id5">add</a></p></li>
+<li><p><a class="reference internal" href="#sub" id="id6">sub</a></p></li>
+<li><p><a class="reference internal" href="#mul" id="id7">mul</a></p></li>
+<li><p><a class="reference internal" href="#div" id="id8">div</a></p></li>
+<li><p><a class="reference internal" href="#sdiv" id="id9">sdiv</a></p></li>
+<li><p><a class="reference internal" href="#mod" id="id10">mod</a></p></li>
+<li><p><a class="reference internal" href="#smod" id="id11">smod</a></p></li>
+<li><p><a class="reference internal" href="#addmod" id="id12">addmod</a></p></li>
+<li><p><a class="reference internal" href="#mulmod" id="id13">mulmod</a></p></li>
+<li><p><a class="reference internal" href="#exp" id="id14">exp</a></p></li>
+<li><p><a class="reference internal" href="#signextend" id="id15">signextend</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Implementations of the EVM Arithmetic instructions.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.add" title="ethereum.frontier.vm.instructions.arithmetic.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<td><p>Adds the top two elements of the stack together, and pushes the result back</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.sub" title="ethereum.frontier.vm.instructions.arithmetic.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a></p></td>
+<td><p>Subtracts the top two elements of the stack, and pushes the result back</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.mul" title="ethereum.frontier.vm.instructions.arithmetic.mul"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mul</span></code></a></p></td>
+<td><p>Multiply the top two elements of the stack, and pushes the result back</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.div" title="ethereum.frontier.vm.instructions.arithmetic.div"><code class="xref py py-obj docutils literal notranslate"><span class="pre">div</span></code></a></p></td>
+<td><p>Integer division of the top two elements of the stack. Pushes the result</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.sdiv" title="ethereum.frontier.vm.instructions.arithmetic.sdiv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sdiv</span></code></a></p></td>
+<td><p>Signed integer division of the top two elements of the stack. Pushes the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.mod" title="ethereum.frontier.vm.instructions.arithmetic.mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mod</span></code></a></p></td>
+<td><p>Modulo remainder of the top two elements of the stack. Pushes the result</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.smod" title="ethereum.frontier.vm.instructions.arithmetic.smod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smod</span></code></a></p></td>
+<td><p>Signed modulo remainder of the top two elements of the stack. Pushes the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.addmod" title="ethereum.frontier.vm.instructions.arithmetic.addmod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addmod</span></code></a></p></td>
+<td><p>Modulo addition of the top 2 elements with the 3rd element. Pushes the</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.mulmod" title="ethereum.frontier.vm.instructions.arithmetic.mulmod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mulmod</span></code></a></p></td>
+<td><p>Modulo multiplication of the top 2 elements with the 3rd element. Pushes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.exp" title="ethereum.frontier.vm.instructions.arithmetic.exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exp</span></code></a></p></td>
+<td><p>Exponential operation of the top 2 elements. Pushes the result back on</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.vm.instructions.arithmetic.signextend" title="ethereum.frontier.vm.instructions.arithmetic.signextend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signextend</span></code></a></p></td>
+<td><p>Sign extend operation. In other words, extend a signed number which</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="add">
+<h4>add<a class="headerlink" href="#add" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the top two elements of the stack together, and pushes the result back
+on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>3</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_VERY_LOW</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">wrapping_add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="sub">
+<h4>sub<a class="headerlink" href="#sub" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.sub">
+<span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtracts the top two elements of the stack, and pushes the result back
+on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>3</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_VERY_LOW</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">wrapping_sub</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="mul">
+<h4>mul<a class="headerlink" href="#mul" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply the top two elements of the stack, and pushes the result back
+on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">wrapping_mul</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="div">
+<h4>div<a class="headerlink" href="#div" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.div">
+<span class="sig-name descname"><span class="pre">div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer division of the top two elements of the stack. Pushes the result
+back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="n">dividend</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">divisor</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">divisor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">quotient</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">quotient</span> <span class="o">=</span> <span class="n">dividend</span> <span class="o">//</span> <span class="n">divisor</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">quotient</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="sdiv">
+<h4>sdiv<a class="headerlink" href="#sdiv" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.sdiv">
+<span class="sig-name descname"><span class="pre">sdiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.sdiv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signed integer division of the top two elements of the stack. Pushes the
+result back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sdiv</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="n">dividend</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">to_signed</span><span class="p">()</span>
+    <span class="n">divisor</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">to_signed</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">divisor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">quotient</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">dividend</span> <span class="o">==</span> <span class="o">-</span><span class="n">U255_CEIL_VALUE</span> <span class="ow">and</span> <span class="n">divisor</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">quotient</span> <span class="o">=</span> <span class="o">-</span><span class="n">U255_CEIL_VALUE</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">get_sign</span><span class="p">(</span><span class="n">dividend</span> <span class="o">*</span> <span class="n">divisor</span><span class="p">)</span>
+        <span class="n">quotient</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dividend</span><span class="p">)</span> <span class="o">//</span> <span class="nb">abs</span><span class="p">(</span><span class="n">divisor</span><span class="p">))</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_signed</span><span class="p">(</span><span class="n">quotient</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="mod">
+<h4>mod<a class="headerlink" href="#mod" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.mod">
+<span class="sig-name descname"><span class="pre">mod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modulo remainder of the top two elements of the stack. Pushes the result
+back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mod</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="n">x</span> <span class="o">%</span> <span class="n">y</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">remainder</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="smod">
+<h4>smod<a class="headerlink" href="#smod" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.smod">
+<span class="sig-name descname"><span class="pre">smod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.smod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signed modulo remainder of the top two elements of the stack. Pushes the
+result back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">smod</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">to_signed</span><span class="p">()</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">to_signed</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="n">get_sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_signed</span><span class="p">(</span><span class="n">remainder</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="addmod">
+<h4>addmod<a class="headerlink" href="#addmod" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.addmod">
+<span class="sig-name descname"><span class="pre">addmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.addmod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modulo addition of the top 2 elements with the 3rd element. Pushes the
+result back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>3</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>8</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addmod</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_MID</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="p">((</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="mulmod">
+<h4>mulmod<a class="headerlink" href="#mulmod" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.mulmod">
+<span class="sig-name descname"><span class="pre">mulmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.mulmod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modulo multiplication of the top 2 elements with the 3rd element. Pushes
+the result back on the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>3</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>8</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mulmod</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_MID</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="exp">
+<h4>exp<a class="headerlink" href="#exp" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponential operation of the top 2 elements. Pushes the result back on
+the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="n">gas_used</span> <span class="o">=</span> <span class="n">GAS_EXPONENTIATION</span>
+    <span class="k">if</span> <span class="n">exponent</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># This is equivalent to 1 + floor(log(y, 256)). But in python the log</span>
+        <span class="c1"># function is inaccurate leading to wrong results.</span>
+        <span class="n">exponent_bits</span> <span class="o">=</span> <span class="n">exponent</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
+        <span class="n">exponent_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">exponent_bits</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span>
+        <span class="n">gas_used</span> <span class="o">+=</span> <span class="n">GAS_EXPONENTIATION</span> <span class="o">*</span> <span class="n">exponent_bytes</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_used</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">U256_CEIL_VALUE</span><span class="p">))</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="signextend">
+<h4>signextend<a class="headerlink" href="#signextend" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.vm.instructions.arithmetic.signextend">
+<span class="sig-name descname"><span class="pre">signextend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.frontier.vm.instructions.arithmetic.signextend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign extend operation. In other words, extend a signed number which
+fits in N bytes to 32 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.StackUnderflowError" title="ethereum.frontier.vm.error.StackUnderflowError"><strong>ethereum.frontier.vm.error.StackUnderflowError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.StackUnderflowError" title="ethereum.banana.vm.error.StackUnderflowError"><strong>ethereum.banana.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>2</cite>.</p></li>
+<li><p><a class="change-replaced reference internal" href="../../error/index.pickle#ethereum.frontier.vm.error.OutOfGasError" title="ethereum.frontier.vm.error.OutOfGasError"><strong>ethereum.frontier.vm.error.OutOfGasError</strong></a><a class="change-replacement reference internal" href="../../error/index.pickle#ethereum.banana.vm.error.OutOfGasError" title="ethereum.banana.vm.error.OutOfGasError"><strong>ethereum.banana.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>5</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">signextend</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_LOW</span><span class="p">)</span>
+
+    <span class="c1"># byte_num would be 0-indexed when inserted to the stack.</span>
+    <span class="n">byte_num</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">byte_num</span> <span class="o">&gt;</span> <span class="mi">31</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t extend any further</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># U256(0).to_be_bytes() gives b&#39;&#39; instead b&#39;\x00&#39;. # noqa: SC100</span>
+        <span class="n">value_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to_be_bytes32</span><span class="p">())</span>
+        <span class="c1"># Now among the obtained value bytes, consider only</span>
+        <span class="c1"># N `least significant bytes`, where N is `byte_num + 1`.</span>
+        <span class="n">value_bytes</span> <span class="o">=</span> <span class="n">value_bytes</span><span class="p">[</span><span class="mi">31</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">byte_num</span><span class="p">)</span> <span class="p">:]</span>
+        <span class="n">sign_bit</span> <span class="o">=</span> <span class="n">value_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+        <span class="k">if</span> <span class="n">sign_bit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">value_bytes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_bytes_prepend</span> <span class="o">=</span> <span class="mi">32</span> <span class="o">-</span> <span class="p">(</span><span class="n">byte_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span>
+                <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0xFF</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_bytes_prepend</span><span class="p">)</span> <span class="o">+</span> <span class="n">value_bytes</span>
+            <span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Comparisons</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.storage</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.storage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/hexadecimal/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.hexadecimal</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.hexadecimal</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.block</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.block</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../control_flow/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.control_flow</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.control_flow</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bloom/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.bloom</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.bloom</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/json/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.json</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.json</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bitwise/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.bitwise</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.bitwise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keccak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.keccak</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.keccak</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.gas</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.gas</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interpreter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.interpreter</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.interpreter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../state/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.state</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/address/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.address</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.address</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/ripemd160/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.ripemd160</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ripemd160</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../runtime/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.runtime</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.runtime</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../trie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.trie</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.trie</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.environment</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.environment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../error/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.error</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.eth_types</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.eth_types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/sha256/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.sha256</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.sha256</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../genesis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.genesis</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.genesis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.system</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.system</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/identity/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.identity</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.identity</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.memory</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.arithmetic</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../spec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.spec</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../comparison/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.comparison</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.comparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/ecrecover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.ecrecover</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ecrecover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.rlp</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.rlp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../precompiled_contracts/mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.mapping</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.mapping</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../utils/message/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.message</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.message</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.log</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/storage/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.storage</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.storage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/utils/hexadecimal/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.hexadecimal</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.hexadecimal</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/block/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.block</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.block</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/control_flow/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.control_flow</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.control_flow</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/bloop/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.bloop</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/bloom/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.bloom</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.bloom</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/utils/json/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.json</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.json</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/bitwise/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.bitwise</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.bitwise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/keccak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.keccak</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.keccak</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/gas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.gas</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.gas</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/interpreter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.interpreter</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.interpreter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/state/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.state</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/utils/address/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.address</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.address</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/ripemd160/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ripemd160</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.ripemd160</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/runtime/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.runtime</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.runtime</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/trie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.trie</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.trie</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/environment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.environment</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.environment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/error/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.error</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.eth_types</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.eth_types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/sha256/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.sha256</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.sha256</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/genesis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.genesis</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.genesis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.system</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.system</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/identity/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.identity</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.identity</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/arithmetic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.arithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/spec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/comparison/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.comparison</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.comparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/ecrecover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ecrecover</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.ecrecover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.rlp</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.rlp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/precompiled_contracts/mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.mapping</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.mapping</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/utils/message/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.message</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.message</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/instructions/log/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.log</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../banana_orange/vm/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.stack</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Comparisons</a><ul>
+      <li>Previous: <a href="../../memory/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.memory</span></code></a></li>
+      <li>Next: <a href="../../../spec/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.spec</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code></a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../_sources/diffs/frontier_banana/vm/instructions/arithmetic/index.pickle64.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

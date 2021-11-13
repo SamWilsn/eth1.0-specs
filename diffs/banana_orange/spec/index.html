@@ -1,0 +1,1272 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.banana.specethereum.orange.spec &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ethereum.banana.vm.instructions.comparisonethereum.orange.vm.instructions.comparison" href="../vm/instructions/comparison/index.html" />
+    <link rel="prev" title="ethereum.banana.vm.instructions.arithmeticethereum.orange.vm.instructions.arithmetic" href="../vm/instructions/arithmetic/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.banana.spec">
+<span id="ethereum-banana-spec"></span><h1><a class="change-replaced reference internal" href="#module-ethereum.banana.spec" title="ethereum.banana.spec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code></a><a class="change-replacement reference internal" href="#module-ethereum.orange.spec" title="ethereum.orange.spec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.spec</span></code></a><a class="headerlink" href="#module-ethereum.banana.spec" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-specification">
+<h2>Ethereum Specification<a class="headerlink" href="#ethereum-specification" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes" id="id3">Classes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id4">Functions</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id5">Attributes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id6">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#block-reward" id="id7">BLOCK_REWARD</a></p></li>
+<li><p><a class="reference internal" href="#gas-limit-adjustment-factor" id="id8">GAS_LIMIT_ADJUSTMENT_FACTOR</a></p></li>
+<li><p><a class="reference internal" href="#gas-limit-minimum" id="id9">GAS_LIMIT_MINIMUM</a></p></li>
+<li><p><a class="reference internal" href="#genesis-difficulty" id="id10">GENESIS_DIFFICULTY</a></p></li>
+<li><p><a class="reference internal" href="#max-uncle-depth" id="id11">MAX_UNCLE_DEPTH</a></p></li>
+<li><p><a class="reference internal" href="#blockchain" id="id12">BlockChain</a></p></li>
+<li><p><a class="reference internal" href="#apply-fork" id="id13">apply_fork</a></p></li>
+<li><p><a class="reference internal" href="#get-last-256-block-hashes" id="id14">get_last_256_block_hashes</a></p></li>
+<li><p><a class="reference internal" href="#state-transition" id="id15">state_transition</a></p></li>
+<li><p><a class="reference internal" href="#validate-header" id="id16">validate_header</a></p></li>
+<li><p><a class="reference internal" href="#generate-header-hash-for-pow" id="id17">generate_header_hash_for_pow</a></p></li>
+<li><p><a class="reference internal" href="#validate-proof-of-work" id="id18">validate_proof_of_work</a></p></li>
+<li><p><a class="reference internal" href="#apply-body" id="id19">apply_body</a></p></li>
+<li><p><a class="reference internal" href="#validate-ommers" id="id20">validate_ommers</a></p></li>
+<li><p><a class="reference internal" href="#pay-rewards" id="id21">pay_rewards</a></p></li>
+<li><p><a class="reference internal" href="#process-transaction" id="id22">process_transaction</a></p></li>
+<li><p><a class="reference internal" href="#validate-transaction" id="id23">validate_transaction</a></p></li>
+<li><p><a class="reference internal" href="#calculate-intrinsic-cost" id="id24">calculate_intrinsic_cost</a></p></li>
+<li><p><a class="reference internal" href="#recover-sender" id="id25">recover_sender</a></p></li>
+<li><p><a class="reference internal" href="#signing-hash" id="id26">signing_hash</a></p></li>
+<li><p><a class="reference internal" href="#compute-header-hash" id="id27">compute_header_hash</a></p></li>
+<li><p><a class="reference internal" href="#get-block-header-by-hash" id="id28">get_block_header_by_hash</a></p></li>
+<li><p><a class="reference internal" href="#check-gas-limit" id="id29">check_gas_limit</a></p></li>
+<li><p><a class="reference internal" href="#calculate-block-difficulty" id="id30">calculate_block_difficulty</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Entry point for the Ethereum specification.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h4>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.BlockChain" title="ethereum.banana.spec.BlockChain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockChain</span></code></a></p></td>
+<td><p>History and current state of the block chain.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.apply_fork" title="ethereum.banana.spec.apply_fork"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_fork</span></code></a></p></td>
+<td><p>Transforms the state from the previous hard fork (<cite>old</cite>) into the block</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.get_last_256_block_hashes" title="ethereum.banana.spec.get_last_256_block_hashes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_last_256_block_hashes</span></code></a></p></td>
+<td><p>Obtain the list of hashes of the previous 256 blocks in order of increasing</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.state_transition" title="ethereum.banana.spec.state_transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_transition</span></code></a></p></td>
+<td><p>Attempts to apply a block to an existing block chain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.validate_header" title="ethereum.banana.spec.validate_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_header</span></code></a></p></td>
+<td><p>Verifies a block header.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.generate_header_hash_for_pow" title="ethereum.banana.spec.generate_header_hash_for_pow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_header_hash_for_pow</span></code></a></p></td>
+<td><p>Generate rlp hash of the header which is to be used for Proof-of-Work</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.validate_proof_of_work" title="ethereum.banana.spec.validate_proof_of_work"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_proof_of_work</span></code></a></p></td>
+<td><p>Validates the Proof of Work constraints.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.apply_body" title="ethereum.banana.spec.apply_body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_body</span></code></a></p></td>
+<td><p>Executes a block.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.validate_ommers" title="ethereum.banana.spec.validate_ommers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_ommers</span></code></a></p></td>
+<td><p>Validates the ommers mentioned in the block.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.pay_rewards" title="ethereum.banana.spec.pay_rewards"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pay_rewards</span></code></a></p></td>
+<td><p>Pay rewards to the block miner as well as the ommers miners.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.process_transaction" title="ethereum.banana.spec.process_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_transaction</span></code></a></p></td>
+<td><p>Execute a transaction against the provided environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.validate_transaction" title="ethereum.banana.spec.validate_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_transaction</span></code></a></p></td>
+<td><p>Verifies a transaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.calculate_intrinsic_cost" title="ethereum.banana.spec.calculate_intrinsic_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_intrinsic_cost</span></code></a></p></td>
+<td><p>Calculates the intrinsic cost of the transaction that is charged before</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.recover_sender" title="ethereum.banana.spec.recover_sender"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recover_sender</span></code></a></p></td>
+<td><p>Extracts the sender address from a transaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.signing_hash" title="ethereum.banana.spec.signing_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signing_hash</span></code></a></p></td>
+<td><p>Compute the hash of a transaction used in the signature.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.compute_header_hash" title="ethereum.banana.spec.compute_header_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_header_hash</span></code></a></p></td>
+<td><p>Computes the hash of a block header.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.get_block_header_by_hash" title="ethereum.banana.spec.get_block_header_by_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_block_header_by_hash</span></code></a></p></td>
+<td><p>Fetches the block header with the corresponding hash.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.check_gas_limit" title="ethereum.banana.spec.check_gas_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_gas_limit</span></code></a></p></td>
+<td><p>Validates the gas limit for a block.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.calculate_block_difficulty" title="ethereum.banana.spec.calculate_block_difficulty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_block_difficulty</span></code></a></p></td>
+<td><p>Computes difficulty of a block using its header and parent header.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.BLOCK_REWARD" title="ethereum.banana.spec.BLOCK_REWARD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BLOCK_REWARD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.GAS_LIMIT_ADJUSTMENT_FACTOR" title="ethereum.banana.spec.GAS_LIMIT_ADJUSTMENT_FACTOR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GAS_LIMIT_ADJUSTMENT_FACTOR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.GAS_LIMIT_MINIMUM" title="ethereum.banana.spec.GAS_LIMIT_MINIMUM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GAS_LIMIT_MINIMUM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.banana.spec.GENESIS_DIFFICULTY" title="ethereum.banana.spec.GENESIS_DIFFICULTY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GENESIS_DIFFICULTY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.banana.spec.MAX_UNCLE_DEPTH" title="ethereum.banana.spec.MAX_UNCLE_DEPTH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_UNCLE_DEPTH</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="block-reward">
+<h4>BLOCK_REWARD<a class="headerlink" href="#block-reward" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.banana.spec.BLOCK_REWARD">
+<span class="sig-name descname"><span class="pre">BLOCK_REWARD</span></span><a class="headerlink" href="#ethereum.banana.spec.BLOCK_REWARD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BLOCK_REWARD</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">18</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="gas-limit-adjustment-factor">
+<h4>GAS_LIMIT_ADJUSTMENT_FACTOR<a class="headerlink" href="#gas-limit-adjustment-factor" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.banana.spec.GAS_LIMIT_ADJUSTMENT_FACTOR">
+<span class="sig-name descname"><span class="pre">GAS_LIMIT_ADJUSTMENT_FACTOR</span></span><a class="headerlink" href="#ethereum.banana.spec.GAS_LIMIT_ADJUSTMENT_FACTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GAS_LIMIT_ADJUSTMENT_FACTOR</span> <span class="o">=</span> <span class="mi">1024</span>
+</pre></div>
+</div>
+</section>
+<section id="gas-limit-minimum">
+<h4>GAS_LIMIT_MINIMUM<a class="headerlink" href="#gas-limit-minimum" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.banana.spec.GAS_LIMIT_MINIMUM">
+<span class="sig-name descname"><span class="pre">GAS_LIMIT_MINIMUM</span></span><a class="headerlink" href="#ethereum.banana.spec.GAS_LIMIT_MINIMUM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GAS_LIMIT_MINIMUM</span> <span class="o">=</span> <span class="mi">5000</span>
+</pre></div>
+</div>
+</section>
+<section id="genesis-difficulty">
+<h4>GENESIS_DIFFICULTY<a class="headerlink" href="#genesis-difficulty" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.banana.spec.GENESIS_DIFFICULTY">
+<span class="sig-name descname"><span class="pre">GENESIS_DIFFICULTY</span></span><a class="headerlink" href="#ethereum.banana.spec.GENESIS_DIFFICULTY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GENESIS_DIFFICULTY</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">131072</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="max-uncle-depth">
+<h4>MAX_UNCLE_DEPTH<a class="headerlink" href="#max-uncle-depth" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.banana.spec.MAX_UNCLE_DEPTH">
+<span class="sig-name descname"><span class="pre">MAX_UNCLE_DEPTH</span></span><a class="headerlink" href="#ethereum.banana.spec.MAX_UNCLE_DEPTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_UNCLE_DEPTH</span> <span class="o">=</span> <span class="mi">6</span>
+</pre></div>
+</div>
+</section>
+<section id="blockchain">
+<h4>BlockChain<a class="headerlink" href="#blockchain" title="Permalink to this headline">¶</a></h4>
+<p>History and current state of the block chain.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.banana.spec.BlockChain">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BlockChain</span></span><a class="headerlink" href="#ethereum.banana.spec.BlockChain" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.banana.spec.BlockChain.blocks">
+<span class="sig-name descname"><span class="pre">blocks</span></span><em class="property"> <span class="change-replaced"><span class="pre">:List[ethereum.banana.eth_types.Block]</span></span><span class="change-replacement"><span class="pre">:List[ethereum.orange.eth_types.Block]</span></span></em><a class="headerlink" href="#ethereum.banana.spec.BlockChain.blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.banana.spec.BlockChain.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"> <span class="change-replaced"><span class="pre">:ethereum.banana.state.State</span></span><span class="change-replacement"><span class="pre">:ethereum.orange.state.State</span></span></em><a class="headerlink" href="#ethereum.banana.spec.BlockChain.state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="apply-fork">
+<h4>apply_fork<a class="headerlink" href="#apply-fork" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.apply_fork">
+<span class="sig-name descname"><span class="pre">apply_fork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.apply_fork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the state from the previous hard fork (<cite>old</cite>) into the block
+chain object for this hard fork and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>old</strong> – Previous block chain object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>new</strong> – Upgraded block chain object for this hard fork.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>BlockChain</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">apply_fork</span><span class="p">(</span><span class="n">old</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BlockChain</span><span class="p">:</span>
+    <span class="n">genesis</span> <span class="o">=</span> <span class="n">genesis_configuration</span><span class="p">(</span><span class="s2">&quot;mainnet.json&quot;</span><span class="p">)</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">account</span><span class="p">,</span> <span class="n">balance</span> <span class="ow">in</span> <span class="n">genesis</span><span class="o">.</span><span class="n">initial_balances</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">create_ether</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">balance</span><span class="p">)</span>
+
+    <span class="n">genesis_header</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span>
+        <span class="n">parent_hash</span><span class="o">=</span><span class="n">Hash32</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="n">ommers_hash</span><span class="o">=</span><span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(()),</span>
+        <span class="n">coinbase</span><span class="o">=</span><span class="n">Address</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="n">state_root</span><span class="o">=</span><span class="n">state_root</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
+        <span class="n">transactions_root</span><span class="o">=</span><span class="n">root</span><span class="p">(</span><span class="n">Trie</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="n">receipt_root</span><span class="o">=</span><span class="n">root</span><span class="p">(</span><span class="n">Trie</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="n">bloom</span><span class="o">=</span><span class="n">Bloom</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">256</span><span class="p">),</span>
+        <span class="n">difficulty</span><span class="o">=</span><span class="n">genesis</span><span class="o">.</span><span class="n">difficulty</span><span class="p">,</span>
+        <span class="n">number</span><span class="o">=</span><span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">gas_limit</span><span class="o">=</span><span class="n">genesis</span><span class="o">.</span><span class="n">gas_limit</span><span class="p">,</span>
+        <span class="n">gas_used</span><span class="o">=</span><span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">timestamp</span><span class="o">=</span><span class="n">genesis</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">extra_data</span><span class="o">=</span><span class="n">genesis</span><span class="o">.</span><span class="n">extra_data</span><span class="p">,</span>
+        <span class="n">mix_digest</span><span class="o">=</span><span class="n">Hash32</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="n">nonce</span><span class="o">=</span><span class="n">genesis</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">genesis_block</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span>
+        <span class="n">header</span><span class="o">=</span><span class="n">genesis_header</span><span class="p">,</span>
+        <span class="n">transactions</span><span class="o">=</span><span class="p">(),</span>
+        <span class="n">ommers</span><span class="o">=</span><span class="p">(),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">BlockChain</span><span class="p">(</span><span class="n">blocks</span><span class="o">=</span><span class="p">[</span><span class="n">genesis_block</span><span class="p">],</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="get-last-256-block-hashes">
+<h4>get_last_256_block_hashes<a class="headerlink" href="#get-last-256-block-hashes" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.get_last_256_block_hashes">
+<span class="sig-name descname"><span class="pre">get_last_256_block_hashes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.get_last_256_block_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the list of hashes of the previous 256 blocks in order of increasing
+block number.</p>
+<p>This function will return less hashes for the first 256 blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>chain</strong> – History and current state.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>recent_block_hashes</strong> – Hashes of the recent 256 blocks in order of increasing block number.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>List[Hash32]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_last_256_block_hashes</span><span class="p">(</span><span class="n">chain</span><span class="p">:</span> <span class="n">BlockChain</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Hash32</span><span class="p">]:</span>
+    <span class="n">recent_blocks</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">255</span><span class="p">:]</span>
+    <span class="c1"># TODO: This function has not been tested rigorously</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">recent_blocks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">recent_block_hashes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">recent_blocks</span><span class="p">:</span>
+        <span class="n">prev_block_hash</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">parent_hash</span>
+        <span class="n">recent_block_hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prev_block_hash</span><span class="p">)</span>
+
+    <span class="c1"># We are computing the hash only for the most recent block and not for</span>
+    <span class="c1"># the rest of the blocks as they have successors which have the hash of</span>
+    <span class="c1"># the current block as parent hash.</span>
+    <span class="n">most_recent_block_hash</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span>
+        <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">recent_blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">recent_block_hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">most_recent_block_hash</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">recent_block_hashes</span>
+</pre></div>
+</div>
+</section>
+<section id="state-transition">
+<h4>state_transition<a class="headerlink" href="#state-transition" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.state_transition">
+<span class="sig-name descname"><span class="pre">state_transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.state_transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to apply a block to an existing block chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chain</strong> – History and current state.</p></li>
+<li><p><strong>block</strong> – Block to apply to <cite>chain</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">state_transition</span><span class="p">(</span><span class="n">chain</span><span class="p">:</span> <span class="n">BlockChain</span><span class="p">,</span> <span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">parent_header</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+    <span class="n">validate_header</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="n">parent_header</span><span class="p">)</span>
+    <span class="n">validate_ommers</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">ommers</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="n">chain</span><span class="p">)</span>
+    <span class="p">(</span>
+        <span class="n">gas_used</span><span class="p">,</span>
+        <span class="n">transactions_root</span><span class="p">,</span>
+        <span class="n">receipt_root</span><span class="p">,</span>
+        <span class="n">block_logs_bloom</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">apply_body</span><span class="p">(</span>
+        <span class="n">chain</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="n">get_last_256_block_hashes</span><span class="p">(</span><span class="n">chain</span><span class="p">),</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">coinbase</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">gas_limit</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">difficulty</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">transactions</span><span class="p">,</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">ommers</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">gas_used</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">gas_used</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">transactions_root</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">transactions_root</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">state_root</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">state_root</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">receipt_root</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">receipt_root</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">block_logs_bloom</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">bloom</span><span class="p">)</span>
+
+    <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+        <span class="c1"># Real clients have to store more blocks to deal with reorgs, but the</span>
+        <span class="c1"># protocol only requires the last 255</span>
+        <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">255</span><span class="p">:]</span>
+</pre></div>
+</div>
+</section>
+<section id="validate-header">
+<h4>validate_header<a class="headerlink" href="#validate-header" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.validate_header">
+<span class="sig-name descname"><span class="pre">validate_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.validate_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies a block header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header</strong> – Header to check for correctness.</p></li>
+<li><p><strong>parent_header</strong> – Parent Header of the header to check for correctness</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validate_header</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">Header</span><span class="p">,</span> <span class="n">parent_header</span><span class="p">:</span> <span class="n">Header</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">block_difficulty</span> <span class="o">=</span> <span class="n">calculate_block_difficulty</span><span class="p">(</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">parent_header</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">parent_header</span><span class="o">.</span><span class="n">difficulty</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">ensure</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">difficulty</span> <span class="o">==</span> <span class="n">block_difficulty</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">number</span> <span class="o">==</span> <span class="n">parent_header</span><span class="o">.</span><span class="n">number</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">check_gas_limit</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">gas_limit</span><span class="p">,</span> <span class="n">parent_header</span><span class="o">.</span><span class="n">gas_limit</span><span class="p">))</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">&gt;</span> <span class="n">parent_header</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">extra_data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">32</span><span class="p">)</span>
+
+    <span class="n">validate_proof_of_work</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-header-hash-for-pow">
+<h4>generate_header_hash_for_pow<a class="headerlink" href="#generate-header-hash-for-pow" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.generate_header_hash_for_pow">
+<span class="sig-name descname"><span class="pre">generate_header_hash_for_pow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.generate_header_hash_for_pow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate rlp hash of the header which is to be used for Proof-of-Work
+verification. This hash is generated with the following header fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>parent_hash</cite></p></li>
+<li><p><cite>ommers_hash</cite></p></li>
+<li><p><cite>coinbase</cite></p></li>
+<li><p><cite>state_root</cite></p></li>
+<li><p><cite>transactions_root</cite></p></li>
+<li><p><cite>receipt_root</cite></p></li>
+<li><p><cite>bloom</cite></p></li>
+<li><p><cite>difficulty</cite></p></li>
+<li><p><cite>number</cite></p></li>
+<li><p><cite>gas_limit</cite></p></li>
+<li><p><cite>gas_used</cite></p></li>
+<li><p><cite>timestamp</cite></p></li>
+<li><p><cite>extra_data</cite></p></li>
+</ul>
+</div></blockquote>
+<p>In other words, the PoW artefacts <cite>mix_digest</cite> and <cite>nonce</cite> are ignored
+while calculating this hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>header</strong> – The header object for which the hash is to be generated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>hash</strong> – The PoW valid rlp hash of the passed in header.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_header_hash_for_pow</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">Header</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="n">header_data_without_pow_artefacts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">parent_hash</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">ommers_hash</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">coinbase</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">state_root</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">transactions_root</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">receipt_root</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">bloom</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">difficulty</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">gas_limit</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">gas_used</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">extra_data</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">header_data_without_pow_artefacts</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="validate-proof-of-work">
+<h4>validate_proof_of_work<a class="headerlink" href="#validate-proof-of-work" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.validate_proof_of_work">
+<span class="sig-name descname"><span class="pre">validate_proof_of_work</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.validate_proof_of_work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the Proof of Work constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>header</strong> – Header of interest.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validate_proof_of_work</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">Header</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">header_hash</span> <span class="o">=</span> <span class="n">generate_header_hash_for_pow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="c1"># TODO: Memoize this somewhere and read from that data instead of</span>
+    <span class="c1"># calculating cache for every block validation.</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">generate_cache</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">mix_digest</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">hashimoto_light</span><span class="p">(</span>
+        <span class="n">header_hash</span><span class="p">,</span> <span class="n">header</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">dataset_size</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">ensure</span><span class="p">(</span><span class="n">mix_digest</span> <span class="o">==</span> <span class="n">header</span><span class="o">.</span><span class="n">mix_digest</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span>
+        <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">U256_CEIL_VALUE</span> <span class="o">//</span> <span class="n">header</span><span class="o">.</span><span class="n">difficulty</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="apply-body">
+<h4>apply_body<a class="headerlink" href="#apply-body" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.apply_body">
+<span class="sig-name descname"><span class="pre">apply_body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_hashes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coinbase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_gas_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_difficulty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transactions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ommers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.apply_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes a block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – Current account state.</p></li>
+<li><p><strong>block_hashes</strong> – List of hashes of the previous 256 blocks in the order of
+increasing block number.</p></li>
+<li><p><strong>coinbase</strong> – Address of account which receives block reward and transaction fees.</p></li>
+<li><p><strong>block_number</strong> – Position of the block within the chain.</p></li>
+<li><p><strong>block_gas_limit</strong> – Initial amount of gas available for execution in this block.</p></li>
+<li><p><strong>block_time</strong> – Time the block was produced, measured in seconds since the epoch.</p></li>
+<li><p><strong>block_difficulty</strong> – Difficulty of the block.</p></li>
+<li><p><strong>transactions</strong> – Transactions included in the block.</p></li>
+<li><p><strong>ommers</strong> – Headers of ancestor blocks which are not direct parents (formerly
+uncles.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>gas_available</strong> (<cite>eth1spec.base_types.Uint</cite>) – Remaining gas after all transactions have been executed.</p></li>
+<li><p><strong>transactions_root</strong> (<cite>eth1spec.eth_types.Root</cite>) – Trie root of all the transactions in the block.</p></li>
+<li><p><strong>receipt_root</strong> (<cite>eth1spec.eth_types.Root</cite>) – Trie root of all the receipts in the block.</p></li>
+<li><p><strong>block_logs_bloom</strong> (<cite>Bloom</cite>) – Logs bloom of all the logs included in all the transactions of the
+block.</p></li>
+<li><p><strong>state</strong> (<cite>eth1spec.eth_types.State</cite>) – State after all transactions have been executed.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">apply_body</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="n">block_hashes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Hash32</span><span class="p">],</span>
+    <span class="n">coinbase</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+    <span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+    <span class="n">block_gas_limit</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+    <span class="n">block_time</span><span class="p">:</span> <span class="n">U256</span><span class="p">,</span>
+    <span class="n">block_difficulty</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+    <span class="n">transactions</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Transaction</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">ommers</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Header</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Uint</span><span class="p">,</span> <span class="n">Root</span><span class="p">,</span> <span class="n">Root</span><span class="p">,</span> <span class="n">Bloom</span><span class="p">,</span> <span class="n">State</span><span class="p">]:</span>
+    <span class="n">gas_available</span> <span class="o">=</span> <span class="n">block_gas_limit</span>
+    <span class="n">transactions_trie</span><span class="p">:</span> <span class="n">Trie</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transaction</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Trie</span><span class="p">(</span>
+        <span class="n">secured</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">receipts_trie</span><span class="p">:</span> <span class="n">Trie</span><span class="p">[</span><span class="n">Bytes</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Receipt</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Trie</span><span class="p">(</span>
+        <span class="n">secured</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">block_logs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Log</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">transactions</span><span class="p">):</span>
+        <span class="n">trie_set</span><span class="p">(</span><span class="n">transactions_trie</span><span class="p">,</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="n">tx</span><span class="p">)</span>
+
+        <span class="n">ensure</span><span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">&lt;=</span> <span class="n">gas_available</span><span class="p">)</span>
+        <span class="n">sender_address</span> <span class="o">=</span> <span class="n">recover_sender</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span>
+
+        <span class="n">env</span> <span class="o">=</span> <span class="n">vm</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+            <span class="n">caller</span><span class="o">=</span><span class="n">sender_address</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="n">sender_address</span><span class="p">,</span>
+            <span class="n">block_hashes</span><span class="o">=</span><span class="n">block_hashes</span><span class="p">,</span>
+            <span class="n">coinbase</span><span class="o">=</span><span class="n">coinbase</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="n">block_number</span><span class="p">,</span>
+            <span class="n">gas_limit</span><span class="o">=</span><span class="n">block_gas_limit</span><span class="p">,</span>
+            <span class="n">gas_price</span><span class="o">=</span><span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">block_time</span><span class="p">,</span>
+            <span class="n">difficulty</span><span class="o">=</span><span class="n">block_difficulty</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">gas_used</span><span class="p">,</span> <span class="n">logs</span> <span class="o">=</span> <span class="n">process_transaction</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">tx</span><span class="p">)</span>
+        <span class="n">gas_available</span> <span class="o">-=</span> <span class="n">gas_used</span>
+
+        <span class="n">trie_set</span><span class="p">(</span>
+            <span class="n">receipts_trie</span><span class="p">,</span>
+            <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span>
+            <span class="n">Receipt</span><span class="p">(</span>
+                <span class="n">post_state</span><span class="o">=</span><span class="n">state_root</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
+                <span class="n">cumulative_gas_used</span><span class="o">=</span><span class="p">(</span><span class="n">block_gas_limit</span> <span class="o">-</span> <span class="n">gas_available</span><span class="p">),</span>
+                <span class="n">bloom</span><span class="o">=</span><span class="n">logs_bloom</span><span class="p">(</span><span class="n">logs</span><span class="p">),</span>
+                <span class="n">logs</span><span class="o">=</span><span class="n">logs</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">block_logs</span> <span class="o">+=</span> <span class="n">logs</span>
+
+    <span class="n">pay_rewards</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">block_number</span><span class="p">,</span> <span class="n">coinbase</span><span class="p">,</span> <span class="n">ommers</span><span class="p">)</span>
+
+    <span class="n">gas_remaining</span> <span class="o">=</span> <span class="n">block_gas_limit</span> <span class="o">-</span> <span class="n">gas_available</span>
+
+    <span class="n">block_logs_bloom</span> <span class="o">=</span> <span class="n">logs_bloom</span><span class="p">(</span><span class="n">block_logs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">gas_remaining</span><span class="p">,</span>
+        <span class="n">root</span><span class="p">(</span><span class="n">transactions_trie</span><span class="p">),</span>
+        <span class="n">root</span><span class="p">(</span><span class="n">receipts_trie</span><span class="p">),</span>
+        <span class="n">block_logs_bloom</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="validate-ommers">
+<h4>validate_ommers<a class="headerlink" href="#validate-ommers" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.validate_ommers">
+<span class="sig-name descname"><span class="pre">validate_ommers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ommers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.validate_ommers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the ommers mentioned in the block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ommers</strong> – List of ommers mentioned in the current block.</p></li>
+<li><p><strong>block_header</strong> – The header of current block.</p></li>
+<li><p><strong>chain</strong> – History and current state.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validate_ommers</span><span class="p">(</span>
+    <span class="n">ommers</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Header</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">block_header</span><span class="p">:</span> <span class="n">Header</span><span class="p">,</span> <span class="n">chain</span><span class="p">:</span> <span class="n">BlockChain</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">block_hash</span> <span class="o">=</span> <span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">block_header</span><span class="p">)</span>
+
+    <span class="n">ensure</span><span class="p">(</span><span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">ommers</span><span class="p">)</span> <span class="o">==</span> <span class="n">block_header</span><span class="o">.</span><span class="n">ommers_hash</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ommers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Nothing to validate</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Check that each ommer satisfies the constraints of a header</span>
+    <span class="k">for</span> <span class="n">ommer</span> <span class="ow">in</span> <span class="n">ommers</span><span class="p">:</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">ommer</span><span class="o">.</span><span class="n">number</span> <span class="o">&lt;</span> <span class="n">block_header</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">ommer_parent_header</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">block_header</span><span class="o">.</span><span class="n">number</span> <span class="o">-</span> <span class="n">ommer</span><span class="o">.</span><span class="n">number</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">header</span>
+        <span class="n">validate_header</span><span class="p">(</span><span class="n">ommer</span><span class="p">,</span> <span class="n">ommer_parent_header</span><span class="p">)</span>
+
+    <span class="c1"># Check that there can be only at most 2 ommers for a block.</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ommers</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">ommers_hashes</span> <span class="o">=</span> <span class="p">[</span><span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">ommer</span><span class="p">)</span> <span class="k">for</span> <span class="n">ommer</span> <span class="ow">in</span> <span class="n">ommers</span><span class="p">]</span>
+    <span class="c1"># Check that there are no duplicates in the ommers of current block</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ommers_hashes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ommers_hashes</span><span class="p">)))</span>
+
+    <span class="n">recent_canonical_blocks</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">MAX_UNCLE_DEPTH</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">:]</span>
+    <span class="n">recent_canonical_block_hashes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="p">)</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">recent_canonical_blocks</span>
+    <span class="p">}</span>
+    <span class="n">recent_ommers_hashes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Hash32</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">recent_canonical_blocks</span><span class="p">:</span>
+        <span class="n">recent_ommers_hashes</span> <span class="o">=</span> <span class="n">recent_ommers_hashes</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">rlp</span><span class="o">.</span><span class="n">rlp_hash</span><span class="p">(</span><span class="n">ommer</span><span class="p">)</span> <span class="k">for</span> <span class="n">ommer</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">ommers</span><span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ommer_index</span><span class="p">,</span> <span class="n">ommer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ommers</span><span class="p">):</span>
+        <span class="n">ommer_hash</span> <span class="o">=</span> <span class="n">ommers_hashes</span><span class="p">[</span><span class="n">ommer_index</span><span class="p">]</span>
+        <span class="c1"># The current block shouldn&#39;t be the ommer</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">ommer_hash</span> <span class="o">!=</span> <span class="n">block_hash</span><span class="p">)</span>
+
+        <span class="c1"># Ommer shouldn&#39;t be one of the recent canonical blocks</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">ommer_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recent_canonical_block_hashes</span><span class="p">)</span>
+
+        <span class="c1"># Ommer shouldn&#39;t be one of the uncles mentioned in the recent</span>
+        <span class="c1"># canonical blocks</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">ommer_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recent_ommers_hashes</span><span class="p">)</span>
+
+        <span class="c1"># Ommer age with respect to the current block. For example, an age of</span>
+        <span class="c1"># 1 indicates that the ommer is a sibling of previous block.</span>
+        <span class="n">ommer_age</span> <span class="o">=</span> <span class="n">block_header</span><span class="o">.</span><span class="n">number</span> <span class="o">-</span> <span class="n">ommer</span><span class="o">.</span><span class="n">number</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">ommer_age</span> <span class="o">&lt;=</span> <span class="n">MAX_UNCLE_DEPTH</span><span class="p">)</span>
+
+        <span class="n">ensure</span><span class="p">(</span><span class="n">ommer</span><span class="o">.</span><span class="n">parent_hash</span> <span class="ow">in</span> <span class="n">recent_canonical_block_hashes</span><span class="p">)</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">ommer</span><span class="o">.</span><span class="n">parent_hash</span> <span class="o">!=</span> <span class="n">block_header</span><span class="o">.</span><span class="n">parent_hash</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pay-rewards">
+<h4>pay_rewards<a class="headerlink" href="#pay-rewards" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.pay_rewards">
+<span class="sig-name descname"><span class="pre">pay_rewards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coinbase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ommers</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.pay_rewards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pay rewards to the block miner as well as the ommers miners.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – Current account state.</p></li>
+<li><p><strong>block_number</strong> – Position of the block within the chain.</p></li>
+<li><p><strong>coinbase</strong> – Address of account which receives block reward and transaction fees.</p></li>
+<li><p><strong>ommers</strong> – List of ommers mentioned in the current block.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pay_rewards</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="n">block_number</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span>
+    <span class="n">coinbase</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+    <span class="n">ommers</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Header</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">miner_reward</span> <span class="o">=</span> <span class="n">BLOCK_REWARD</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ommers</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">BLOCK_REWARD</span> <span class="o">//</span> <span class="mi">32</span><span class="p">))</span>
+    <span class="n">create_ether</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">coinbase</span><span class="p">,</span> <span class="n">miner_reward</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ommer</span> <span class="ow">in</span> <span class="n">ommers</span><span class="p">:</span>
+        <span class="c1"># Ommer age with respect to the current block.</span>
+        <span class="n">ommer_age</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="n">block_number</span> <span class="o">-</span> <span class="n">ommer</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">ommer_miner_reward</span> <span class="o">=</span> <span class="p">((</span><span class="mi">8</span> <span class="o">-</span> <span class="n">ommer_age</span><span class="p">)</span> <span class="o">*</span> <span class="n">BLOCK_REWARD</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span>
+        <span class="n">create_ether</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">ommer</span><span class="o">.</span><span class="n">coinbase</span><span class="p">,</span> <span class="n">ommer_miner_reward</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="process-transaction">
+<h4>process_transaction<a class="headerlink" href="#process-transaction" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.process_transaction">
+<span class="sig-name descname"><span class="pre">process_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.process_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a transaction against the provided environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – Environment for the Ethereum Virtual Machine.</p></li>
+<li><p><strong>tx</strong> – Transaction to execute.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>gas_left</strong> (<cite>eth1spec.base_types.U256</cite>) – Remaining gas after execution.</p></li>
+<li><p><strong>logs</strong> (<cite>Tuple[eth1spec.eth_types.Log, …]</cite>) – Logs generated during execution.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_transaction</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">vm</span><span class="o">.</span><span class="n">Environment</span><span class="p">,</span> <span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">U256</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Log</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">validate_transaction</span><span class="p">(</span><span class="n">tx</span><span class="p">))</span>
+
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">origin</span>
+    <span class="n">sender_account</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender</span><span class="p">)</span>
+    <span class="n">gas_fee</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">*</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">sender_account</span><span class="o">.</span><span class="n">nonce</span> <span class="o">==</span> <span class="n">tx</span><span class="o">.</span><span class="n">nonce</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">sender_account</span><span class="o">.</span><span class="n">balance</span> <span class="o">&gt;=</span> <span class="n">gas_fee</span><span class="p">)</span>
+
+    <span class="n">gas</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">-</span> <span class="n">calculate_intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span>
+    <span class="n">increment_nonce</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender</span><span class="p">)</span>
+    <span class="n">sender_balance_after_gas_fee</span> <span class="o">=</span> <span class="n">sender_account</span><span class="o">.</span><span class="n">balance</span> <span class="o">-</span> <span class="n">gas_fee</span>
+    <span class="n">set_account_balance</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">sender_balance_after_gas_fee</span><span class="p">)</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="n">prepare_message</span><span class="p">(</span>
+        <span class="n">sender</span><span class="p">,</span>
+        <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">gas</span><span class="p">,</span>
+        <span class="n">env</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span>
+        <span class="n">gas_left</span><span class="p">,</span>
+        <span class="n">refund_counter</span><span class="p">,</span>
+        <span class="n">logs</span><span class="p">,</span>
+        <span class="n">accounts_to_delete</span><span class="p">,</span>
+        <span class="n">has_erred</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">process_message_call</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+
+    <span class="n">gas_used</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">-</span> <span class="n">gas_left</span>
+    <span class="n">gas_refund</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">gas_used</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">refund_counter</span><span class="p">)</span>
+    <span class="n">gas_refund_amount</span> <span class="o">=</span> <span class="p">(</span><span class="n">gas_left</span> <span class="o">+</span> <span class="n">gas_refund</span><span class="p">)</span> <span class="o">*</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span>
+    <span class="n">transaction_fee</span> <span class="o">=</span> <span class="p">(</span><span class="n">tx</span><span class="o">.</span><span class="n">gas</span> <span class="o">-</span> <span class="n">gas_left</span> <span class="o">-</span> <span class="n">gas_refund</span><span class="p">)</span> <span class="o">*</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span>
+    <span class="n">total_gas_used</span> <span class="o">=</span> <span class="n">gas_used</span> <span class="o">-</span> <span class="n">gas_refund</span>
+
+    <span class="c1"># refund gas</span>
+    <span class="n">sender_balance_after_refund</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">get_account</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender</span><span class="p">)</span><span class="o">.</span><span class="n">balance</span> <span class="o">+</span> <span class="n">gas_refund_amount</span>
+    <span class="p">)</span>
+    <span class="n">set_account_balance</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">sender_balance_after_refund</span><span class="p">)</span>
+
+    <span class="c1"># transfer miner fees</span>
+    <span class="n">coinbase_balance_after_mining_fee</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">get_account</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">coinbase</span><span class="p">)</span><span class="o">.</span><span class="n">balance</span> <span class="o">+</span> <span class="n">transaction_fee</span>
+    <span class="p">)</span>
+    <span class="n">set_account_balance</span><span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">coinbase</span><span class="p">,</span> <span class="n">coinbase_balance_after_mining_fee</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">address</span> <span class="ow">in</span> <span class="n">accounts_to_delete</span><span class="p">:</span>
+        <span class="n">destroy_account</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">total_gas_used</span><span class="p">,</span> <span class="n">logs</span>
+</pre></div>
+</div>
+</section>
+<section id="validate-transaction">
+<h4>validate_transaction<a class="headerlink" href="#validate-transaction" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.validate_transaction">
+<span class="sig-name descname"><span class="pre">validate_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.validate_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies a transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tx</strong> – Transaction to validate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>verified</strong> – True if the transaction can be executed, or False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validate_transaction</span><span class="p">(</span><span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">calculate_intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tx</span><span class="o">.</span><span class="n">gas</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-intrinsic-cost">
+<h4>calculate_intrinsic_cost<a class="headerlink" href="#calculate-intrinsic-cost" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.calculate_intrinsic_cost">
+<span class="sig-name descname"><span class="pre">calculate_intrinsic_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.calculate_intrinsic_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the intrinsic cost of the transaction that is charged before
+execution is instantiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tx</strong> – Transaction to compute the intrinsic cost of.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>verified</strong> – The intrinsic cost of the transaction.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_intrinsic_cost</span><span class="p">(</span><span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Uint</span><span class="p">:</span>
+    <span class="n">data_cost</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">byte</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data_cost</span> <span class="o">+=</span> <span class="n">TX_DATA_COST_PER_ZERO</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_cost</span> <span class="o">+=</span> <span class="n">TX_DATA_COST_PER_NON_ZERO</span>
+
+    <span class="k">return</span> <span class="n">Uint</span><span class="p">(</span><span class="n">TX_BASE_COST</span> <span class="o">+</span> <span class="n">data_cost</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="recover-sender">
+<h4>recover_sender<a class="headerlink" href="#recover-sender" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.recover_sender">
+<span class="sig-name descname"><span class="pre">recover_sender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.recover_sender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the sender address from a transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tx</strong> – Transaction of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sender</strong> – The address of the account that signed the transaction.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.eth_types.Address</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">recover_sender</span><span class="p">(</span><span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Address</span><span class="p">:</span>
+    <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">tx</span><span class="o">.</span><span class="n">s</span>
+
+    <span class="c1">#  if v &gt; 28:</span>
+    <span class="c1">#      v = v - (chain_id*2+8)</span>
+
+    <span class="n">ensure</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">27</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">28</span><span class="p">)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">SECP256K1N</span><span class="p">)</span>
+
+    <span class="c1"># TODO: this causes error starting in block 46169 (or 46170?)</span>
+    <span class="c1"># assert 0&lt;s_int and s_int&lt;(SECP256K1N//2+1)</span>
+
+    <span class="n">public_key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">secp256k1_recover</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">27</span><span class="p">,</span> <span class="n">signing_hash</span><span class="p">(</span><span class="n">tx</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">public_key</span><span class="p">)[</span><span class="mi">12</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="signing-hash">
+<h4>signing_hash<a class="headerlink" href="#signing-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.signing_hash">
+<span class="sig-name descname"><span class="pre">signing_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.signing_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the hash of a transaction used in the signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tx</strong> – Transaction of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>hash</strong> – Hash of the transaction.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.eth_types.Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">signing_hash</span><span class="p">(</span><span class="n">tx</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span>
+        <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">gas_price</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">gas</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">to</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">tx</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-header-hash">
+<h4>compute_header_hash<a class="headerlink" href="#compute-header-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.compute_header_hash">
+<span class="sig-name descname"><span class="pre">compute_header_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.compute_header_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the hash of a block header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>header</strong> – Header of interest.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>hash</strong> – Hash of the header.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ethereum.eth_types.Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_header_hash</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">Header</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="get-block-header-by-hash">
+<h4>get_block_header_by_hash<a class="headerlink" href="#get-block-header-by-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.get_block_header_by_hash">
+<span class="sig-name descname"><span class="pre">get_block_header_by_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.get_block_header_by_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the block header with the corresponding hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hash</strong> – Hash of the header of interest.</p></li>
+<li><p><strong>chain</strong> – History and current state.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Header</strong> – Block header found by its hash.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ethereum.eth_types.Header</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_block_header_by_hash</span><span class="p">(</span><span class="nb">hash</span><span class="p">:</span> <span class="n">Hash32</span><span class="p">,</span> <span class="n">chain</span><span class="p">:</span> <span class="n">BlockChain</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Header</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">chain</span><span class="o">.</span><span class="n">blocks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">compute_header_hash</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">header</span><span class="p">)</span> <span class="o">==</span> <span class="nb">hash</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">block</span><span class="o">.</span><span class="n">header</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find header with hash=</span><span class="si">{</span><span class="nb">hash</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="check-gas-limit">
+<h4>check_gas_limit<a class="headerlink" href="#check-gas-limit" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.check_gas_limit">
+<span class="sig-name descname"><span class="pre">check_gas_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gas_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_gas_limit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.check_gas_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the gas limit for a block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gas_limit</strong> – Gas limit to validate.</p></li>
+<li><p><strong>parent_gas_limit</strong> – Gas limit of the parent block.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>check</strong> – True if gas limit constraints are satisfied, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_gas_limit</span><span class="p">(</span><span class="n">gas_limit</span><span class="p">:</span> <span class="n">Uint</span><span class="p">,</span> <span class="n">parent_gas_limit</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">max_adjustment_delta</span> <span class="o">=</span> <span class="n">parent_gas_limit</span> <span class="o">//</span> <span class="n">GAS_LIMIT_ADJUSTMENT_FACTOR</span>
+    <span class="k">if</span> <span class="n">gas_limit</span> <span class="o">&gt;=</span> <span class="n">parent_gas_limit</span> <span class="o">+</span> <span class="n">max_adjustment_delta</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">gas_limit</span> <span class="o">&lt;=</span> <span class="n">parent_gas_limit</span> <span class="o">-</span> <span class="n">max_adjustment_delta</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">gas_limit</span> <span class="o">&lt;</span> <span class="n">GAS_LIMIT_MINIMUM</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-block-difficulty">
+<h4>calculate_block_difficulty<a class="headerlink" href="#calculate-block-difficulty" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.banana.spec.calculate_block_difficulty">
+<span class="sig-name descname"><span class="pre">calculate_block_difficulty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_difficulty</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethereum.banana.spec.calculate_block_difficulty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes difficulty of a block using its header and parent header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> – Block number of the block</p></li>
+<li><p><strong>timestamp</strong> – Timestmap of the block</p></li>
+<li><p><strong>parent_timestamp</strong> – Timestanp of the parent block</p></li>
+<li><p><strong>parent_difficulty</strong> – difficulty of the parent block</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>difficulty</strong> – Computed difficulty for a block.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ethereum.base_types.Uint</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<pre class="literal-block">def calculate_block_difficulty(
+    number: Uint,
+    timestamp: U256,
+    parent_timestamp: U256,
+    parent_difficulty: Uint,
+) -&gt; Uint:
+    max_adjustment_delta = parent_difficulty // Uint(2048)
+    if number == 0:
+        return GENESIS_DIFFICULTY
+    elif timestamp &lt; parent_timestamp + 13:
+        difficulty = parent_difficulty + max_adjustment_delta
+    else:  # timestamp &gt;= parent_timestamp + 13
+        difficulty = parent_difficulty - max_adjustment_delta
+
+    # Historical Note: The difficulty bomb was not present in Ethereum at the
+    # start of <span class="change-replaced">Banana,</span><span class="change-replacement">Orange,</span> but was added shortly after launch. However since the
+    # bomb has no effect prior to block 200000 we pretend it existed from
+    # genesis.
+    # See https://github.com/ethereum/go-ethereum/pull/1588
+    num_bomb_periods = int(number) // 100000 - 2
+    if num_bomb_periods &gt;= 0:
+        difficulty += 2 ** num_bomb_periods
+    return Uint(max(difficulty, GENESIS_DIFFICULTY))
+</pre>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Comparisons</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/storage/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.storage</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.storage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/utils/hexadecimal/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.hexadecimal</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.hexadecimal</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/block/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.block</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.block</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/control_flow/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.control_flow</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.control_flow</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/bloom/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.bloom</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.bloom</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/utils/json/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.json</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.json</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/bitwise/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.bitwise</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.bitwise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/keccak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.keccak</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.keccak</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/gas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.gas</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.gas</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/interpreter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.interpreter</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.interpreter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/state/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.state</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/utils/address/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.address</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.address</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/ripemd160/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.ripemd160</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ripemd160</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/runtime/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.runtime</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.runtime</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/trie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.trie</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.trie</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/environment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.environment</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.environment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/error/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.error</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.eth_types</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.eth_types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/sha256/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.sha256</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.sha256</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/genesis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.genesis</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.genesis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.system</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.system</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/identity/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.identity</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.identity</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/arithmetic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.arithmetic</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/spec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.spec</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/comparison/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.comparison</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.comparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/ecrecover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.ecrecover</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ecrecover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.rlp</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.rlp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/precompiled_contracts/mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.precompiled_contracts.mapping</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.mapping</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/utils/message/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.utils.message</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.message</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/instructions/log/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.instructions.log</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../frontier_banana/vm/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.vm.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/storage/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.storage</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.storage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/hexadecimal/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.hexadecimal</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.hexadecimal</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/block/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.block</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.block</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/control_flow/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.control_flow</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.control_flow</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bloop/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.bloop</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bloom/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.bloom</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.bloom</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/json/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.json</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.json</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/bitwise/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.bitwise</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.bitwise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/keccak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.keccak</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.keccak</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/gas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.gas</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.gas</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/interpreter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.interpreter</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.interpreter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../state/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.state</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/address/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.address</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.address</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/ripemd160/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ripemd160</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.ripemd160</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/runtime/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.runtime</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.runtime</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.trie</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.trie</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/environment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.environment</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.environment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/error/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.error</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../eth_types/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.eth_types</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.eth_types</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/sha256/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.sha256</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.sha256</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../genesis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.genesis</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.genesis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.system</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.system</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/identity/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.identity</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.identity</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.memory</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/arithmetic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.arithmetic</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.spec</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/comparison/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.comparison</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.comparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/ecrecover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.ecrecover</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.ecrecover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rlp/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.rlp</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.rlp</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/precompiled_contracts/mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.precompiled_contracts.mapping</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.precompiled_contracts.mapping</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/message/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.utils.message</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.utils.message</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/instructions/log/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.log</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vm/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.stack</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.stack</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Comparisons</a><ul>
+      <li>Previous: <a href="../vm/instructions/arithmetic/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.arithmetic</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.arithmetic</span></code></a></li>
+      <li>Next: <a href="../vm/instructions/comparison/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.banana.vm.instructions.comparison</span></code><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.orange.vm.instructions.comparison</span></code></a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/diffs/banana_orange/spec/index.pickle64.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
