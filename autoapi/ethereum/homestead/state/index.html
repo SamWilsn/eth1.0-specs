@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.state &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.trie" href="../trie/index.html" />
+    <link rel="prev" title="ethereum.homestead.spec" href="../spec/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.state">
+<span id="ethereum-homestead-state"></span><h1><a class="reference internal" href="#module-ethereum.homestead.state" title="ethereum.homestead.state"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.state</span></code></a><a class="headerlink" href="#module-ethereum.homestead.state" title="Permalink to this headline">¶</a></h1>
+<section id="state">
+<h2>State<a class="headerlink" href="#state" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id2">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id3">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes" id="id4">Classes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id5">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id6">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id7">State</a></p></li>
+<li><p><a class="reference internal" href="#close-state" id="id8">close_state</a></p></li>
+<li><p><a class="reference internal" href="#begin-transaction" id="id9">begin_transaction</a></p></li>
+<li><p><a class="reference internal" href="#commit-transaction" id="id10">commit_transaction</a></p></li>
+<li><p><a class="reference internal" href="#rollback-transaction" id="id11">rollback_transaction</a></p></li>
+<li><p><a class="reference internal" href="#get-account" id="id12">get_account</a></p></li>
+<li><p><a class="reference internal" href="#get-account-optional" id="id13">get_account_optional</a></p></li>
+<li><p><a class="reference internal" href="#set-account" id="id14">set_account</a></p></li>
+<li><p><a class="reference internal" href="#destroy-account" id="id15">destroy_account</a></p></li>
+<li><p><a class="reference internal" href="#get-storage" id="id16">get_storage</a></p></li>
+<li><p><a class="reference internal" href="#set-storage" id="id17">set_storage</a></p></li>
+<li><p><a class="reference internal" href="#storage-root" id="id18">storage_root</a></p></li>
+<li><p><a class="reference internal" href="#state-root" id="id19">state_root</a></p></li>
+<li><p><a class="reference internal" href="#account-exists" id="id20">account_exists</a></p></li>
+<li><p><a class="reference internal" href="#account-has-code-or-nonce" id="id21">account_has_code_or_nonce</a></p></li>
+<li><p><a class="reference internal" href="#modify-state" id="id22">modify_state</a></p></li>
+<li><p><a class="reference internal" href="#move-ether" id="id23">move_ether</a></p></li>
+<li><p><a class="reference internal" href="#set-account-balance" id="id24">set_account_balance</a></p></li>
+<li><p><a class="reference internal" href="#touch-account" id="id25">touch_account</a></p></li>
+<li><p><a class="reference internal" href="#increment-nonce" id="id26">increment_nonce</a></p></li>
+<li><p><a class="reference internal" href="#set-code" id="id27">set_code</a></p></li>
+<li><p><a class="reference internal" href="#create-ether" id="id28">create_ether</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>The state contains all information that is preserved between transactions.</p>
+<p>It consists of a main account trie and storage tries for each contract.</p>
+<p>There is a distinction between an account that does not exist and
+<cite>EMPTY_ACCOUNT</cite>.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h4>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><code class="xref py py-obj docutils literal notranslate"><span class="pre">State</span></code></a></p></td>
+<td><p>Contains all information that is preserved between transactions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.close_state" title="ethereum.homestead.state.close_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_state</span></code></a></p></td>
+<td><p>Free resources held by the state. Used by optimized implementations to</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.begin_transaction" title="ethereum.homestead.state.begin_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">begin_transaction</span></code></a></p></td>
+<td><p>Start a state transaction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.commit_transaction" title="ethereum.homestead.state.commit_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">commit_transaction</span></code></a></p></td>
+<td><p>Commit a state transaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.rollback_transaction" title="ethereum.homestead.state.rollback_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rollback_transaction</span></code></a></p></td>
+<td><p>Rollback a state transaction, resetting the state to the point when the</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.get_account" title="ethereum.homestead.state.get_account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_account</span></code></a></p></td>
+<td><p>Get the <cite>Account</cite> object at an address. Returns <cite>EMPTY_ACCOUNT</cite> if there</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.get_account_optional" title="ethereum.homestead.state.get_account_optional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_account_optional</span></code></a></p></td>
+<td><p>Get the <cite>Account</cite> object at an address. Returns <cite>None</cite> (rather than</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.set_account" title="ethereum.homestead.state.set_account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_account</span></code></a></p></td>
+<td><p>Set the <cite>Account</cite> object at an address. Setting to <cite>None</cite> deletes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.destroy_account" title="ethereum.homestead.state.destroy_account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destroy_account</span></code></a></p></td>
+<td><p>Completely remove the account at <cite>address</cite> and all of its storage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.get_storage" title="ethereum.homestead.state.get_storage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_storage</span></code></a></p></td>
+<td><p>Get a value at a storage key on an account. Returns <cite>U256(0)</cite> if the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.set_storage" title="ethereum.homestead.state.set_storage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_storage</span></code></a></p></td>
+<td><p>Set a value at a storage key on an account. Setting to <cite>U256(0)</cite> deletes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.storage_root" title="ethereum.homestead.state.storage_root"><code class="xref py py-obj docutils literal notranslate"><span class="pre">storage_root</span></code></a></p></td>
+<td><p>Calculate the storage root of an account.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.state_root" title="ethereum.homestead.state.state_root"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_root</span></code></a></p></td>
+<td><p>Calculate the state root.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.account_exists" title="ethereum.homestead.state.account_exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">account_exists</span></code></a></p></td>
+<td><p>Checks if an account exists in the state trie</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.account_has_code_or_nonce" title="ethereum.homestead.state.account_has_code_or_nonce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">account_has_code_or_nonce</span></code></a></p></td>
+<td><p>Checks if an account has non zero nonce or non empty code</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.modify_state" title="ethereum.homestead.state.modify_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_state</span></code></a></p></td>
+<td><p>Modify an <cite>Account</cite> in the <cite>State</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.move_ether" title="ethereum.homestead.state.move_ether"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_ether</span></code></a></p></td>
+<td><p>Move funds between accounts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.set_account_balance" title="ethereum.homestead.state.set_account_balance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_account_balance</span></code></a></p></td>
+<td><p>Sets the balance of an account.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.touch_account" title="ethereum.homestead.state.touch_account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">touch_account</span></code></a></p></td>
+<td><p>Initializes an account to state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.increment_nonce" title="ethereum.homestead.state.increment_nonce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">increment_nonce</span></code></a></p></td>
+<td><p>Increments the nonce of an account.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.state.set_code" title="ethereum.homestead.state.set_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_code</span></code></a></p></td>
+<td><p>Sets Account code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.state.create_ether" title="ethereum.homestead.state.create_ether"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_ether</span></code></a></p></td>
+<td><p>Add newly created ether to an account.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h4>State<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Contains all information that is preserved between transactions.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.homestead.state.State">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">State</span></span><a class="headerlink" href="#ethereum.homestead.state.State" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.state.State._main_trie">
+<span class="sig-name descname"><span class="pre">_main_trie</span></span><em class="property"> <span class="pre">:ethereum.homestead.trie.Trie[ethereum.homestead.eth_types.Address,</span> <span class="pre">Optional[ethereum.homestead.eth_types.Account]]</span></em><a class="headerlink" href="#ethereum.homestead.state.State._main_trie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.state.State._storage_tries">
+<span class="sig-name descname"><span class="pre">_storage_tries</span></span><em class="property"> <span class="pre">:Dict[ethereum.homestead.eth_types.Address,</span> <span class="pre">ethereum.homestead.trie.Trie[ethereum.base_types.Bytes,</span> <span class="pre">ethereum.base_types.U256]]</span></em><a class="headerlink" href="#ethereum.homestead.state.State._storage_tries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.state.State._snapshots">
+<span class="sig-name descname"><span class="pre">_snapshots</span></span><em class="property"> <span class="pre">:List[Tuple[ethereum.homestead.trie.Trie[ethereum.homestead.eth_types.Address,</span> <span class="pre">Optional[ethereum.homestead.eth_types.Account]],</span> <span class="pre">Dict[ethereum.homestead.eth_types.Address,</span> <span class="pre">ethereum.homestead.trie.Trie[ethereum.base_types.Bytes,</span> <span class="pre">ethereum.base_types.U256]]]]</span></em><a class="headerlink" href="#ethereum.homestead.state.State._snapshots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="close-state">
+<h4>close_state<a class="headerlink" href="#close-state" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.close_state">
+<span class="sig-name descname"><span class="pre">close_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.close_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Free resources held by the state. Used by optimized implementations to
+release file descriptors.</p>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">close_state</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span>
+    <span class="k">del</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span>
+    <span class="k">del</span> <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span>
+</pre></div>
+</div>
+</section>
+<section id="begin-transaction">
+<h4>begin_transaction<a class="headerlink" href="#begin-transaction" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.begin_transaction">
+<span class="sig-name descname"><span class="pre">begin_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.begin_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a state transaction.</p>
+<p>Transactions are entirely implicit and can be nested. It is not possible to
+calculate the state root during a transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><em>State</em></a>) – The state.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">copy_trie</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">),</span>
+            <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">copy_trie</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="commit-transaction">
+<h4>commit_transaction<a class="headerlink" href="#commit-transaction" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.commit_transaction">
+<span class="sig-name descname"><span class="pre">commit_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.commit_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commit a state transaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><em>State</em></a>) – The state.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">commit_transaction</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="rollback-transaction">
+<h4>rollback_transaction<a class="headerlink" href="#rollback-transaction" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.rollback_transaction">
+<span class="sig-name descname"><span class="pre">rollback_transaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.rollback_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rollback a state transaction, resetting the state to the point when the
+corresponding <cite>start_transaction()</cite> call was made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><em>State</em></a>) – The state.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rollback_transaction</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="get-account">
+<h4>get_account<a class="headerlink" href="#get-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.get_account">
+<span class="sig-name descname"><span class="pre">get_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Account" title="ethereum.homestead.eth_types.Account"><span class="pre">ethereum.homestead.eth_types.Account</span></a><a class="headerlink" href="#ethereum.homestead.state.get_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the <cite>Account</cite> object at an address. Returns <cite>EMPTY_ACCOUNT</cite> if there
+is no account at the address.</p>
+<p>Use <cite>get_account_optional()</cite> if you care about the difference between a
+non-existent account and <cite>EMPTY_ACCOUNT</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address to lookup.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>account</strong> – Account at address.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Account</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_account</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Account</span><span class="p">:</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">trie_get</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">Account</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">account</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">EMPTY_ACCOUNT</span>
+</pre></div>
+</div>
+</section>
+<section id="get-account-optional">
+<h4>get_account_optional<a class="headerlink" href="#get-account-optional" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.get_account_optional">
+<span class="sig-name descname"><span class="pre">get_account_optional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Account" title="ethereum.homestead.eth_types.Account"><span class="pre">ethereum.homestead.eth_types.Account</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.homestead.state.get_account_optional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the <cite>Account</cite> object at an address. Returns <cite>None</cite> (rather than
+<cite>EMPTY_ACCOUNT</cite>) if there is no account at the address.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address to lookup.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>account</strong> – Account at address.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Account</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_account_optional</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Account</span><span class="p">]:</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">trie_get</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">account</span>
+</pre></div>
+</div>
+</section>
+<section id="set-account">
+<h4>set_account<a class="headerlink" href="#set-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.set_account">
+<span class="sig-name descname"><span class="pre">set_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">account</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Account" title="ethereum.homestead.eth_types.Account"><span class="pre">ethereum.homestead.eth_types.Account</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.set_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <cite>Account</cite> object at an address. Setting to <cite>None</cite> deletes
+the account (but not its storage, see <cite>destroy_account()</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address to set.</p></li>
+<li><p><strong>account</strong> (<cite>Account</cite>) – Account to set at address.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_account</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">account</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Account</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">trie_set</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">account</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="destroy-account">
+<h4>destroy_account<a class="headerlink" href="#destroy-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.destroy_account">
+<span class="sig-name descname"><span class="pre">destroy_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.destroy_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Completely remove the account at <cite>address</cite> and all of its storage.</p>
+<p>This function is made available exclusively for the <cite>SELFDESTRUCT</cite>
+opcode. It is expected that <cite>SELFDESTRUCT</cite> will be disabled in a future
+hardfork and this function will be removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address of account to destroy.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">destroy_account</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">address</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">[</span><span class="n">address</span><span class="p">]</span>
+    <span class="n">set_account</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="get-storage">
+<h4>get_storage<a class="headerlink" href="#get-storage" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.get_storage">
+<span class="sig-name descname"><span class="pre">get_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a><a class="headerlink" href="#ethereum.homestead.state.get_storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a value at a storage key on an account. Returns <cite>U256(0)</cite> if the
+storage key has not been set previously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address of the account.</p></li>
+<li><p><strong>key</strong> (<cite>Bytes</cite>) – Key to lookup.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>value</strong> – Value at the key.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>U256</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_storage</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">U256</span><span class="p">:</span>
+    <span class="n">trie</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">trie_get</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">U256</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+</section>
+<section id="set-storage">
+<h4>set_storage<a class="headerlink" href="#set-storage" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.set_storage">
+<span class="sig-name descname"><span class="pre">set_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.set_storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a value at a storage key on an account. Setting to <cite>U256(0)</cite> deletes
+the key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<cite>State</cite>) – The state</p></li>
+<li><p><strong>address</strong> (<cite>Address</cite>) – Address of the account.</p></li>
+<li><p><strong>key</strong> (<cite>Bytes</cite>) – Key to set.</p></li>
+<li><p><strong>value</strong> (<cite>U256</cite>) – Value to set at the key.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_storage</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">U256</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">trie_get</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="n">trie</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">trie</span> <span class="o">=</span> <span class="n">Trie</span><span class="p">(</span><span class="n">secured</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">[</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">trie</span>
+    <span class="n">trie_set</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trie</span><span class="o">.</span><span class="n">_data</span> <span class="o">==</span> <span class="p">{}:</span>
+        <span class="k">del</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">[</span><span class="n">address</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="storage-root">
+<h4>storage_root<a class="headerlink" href="#storage-root" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.storage_root">
+<span class="sig-name descname"><span class="pre">storage_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Root" title="ethereum.homestead.eth_types.Root"><span class="pre">ethereum.homestead.eth_types.Root</span></a><a class="headerlink" href="#ethereum.homestead.state.storage_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the storage root of an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The state</p></li>
+<li><p><strong>address</strong> – Address of the account.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>root</strong> – Storage root of the account.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Root</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">storage_root</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span> <span class="o">==</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">address</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">root</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_storage_tries</span><span class="p">[</span><span class="n">address</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">EMPTY_TRIE_ROOT</span>
+</pre></div>
+</div>
+</section>
+<section id="state-root">
+<h4>state_root<a class="headerlink" href="#state-root" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.state_root">
+<span class="sig-name descname"><span class="pre">state_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Root" title="ethereum.homestead.eth_types.Root"><span class="pre">ethereum.homestead.eth_types.Root</span></a><a class="headerlink" href="#ethereum.homestead.state.state_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the state root.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> – The current state.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>root</strong> – The state root.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Root</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">state_root</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">_snapshots</span> <span class="o">==</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">get_storage_root</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Root</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">storage_root</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">root</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">_main_trie</span><span class="p">,</span> <span class="n">get_storage_root</span><span class="o">=</span><span class="n">get_storage_root</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="account-exists">
+<h4>account_exists<a class="headerlink" href="#account-exists" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.account_exists">
+<span class="sig-name descname"><span class="pre">account_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ethereum.homestead.state.account_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if an account exists in the state trie</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The state</p></li>
+<li><p><strong>address</strong> – Address of the account that needs to be checked.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>account_exists</strong> – True if account exists in the state trie, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">account_exists</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">get_account_optional</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="account-has-code-or-nonce">
+<h4>account_has_code_or_nonce<a class="headerlink" href="#account-has-code-or-nonce" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.account_has_code_or_nonce">
+<span class="sig-name descname"><span class="pre">account_has_code_or_nonce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ethereum.homestead.state.account_has_code_or_nonce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if an account has non zero nonce or non empty code</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The state</p></li>
+<li><p><strong>address</strong> – Address of the account that needs to be checked.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>has_code_or_nonce</strong> – True if if an account has non zero nonce or non empty code,
+False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">account_has_code_or_nonce</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">account</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">account</span><span class="o">.</span><span class="n">nonce</span> <span class="o">!=</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">account</span><span class="o">.</span><span class="n">code</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="modify-state">
+<h4>modify_state<a class="headerlink" href="#modify-state" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.modify_state">
+<span class="sig-name descname"><span class="pre">modify_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Account" title="ethereum.homestead.eth_types.Account"><span class="pre">ethereum.homestead.eth_types.Account</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.modify_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify an <cite>Account</cite> in the <cite>State</cite>.</p>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modify_state</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Account</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">set_account</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">modify</span><span class="p">(</span><span class="n">get_account</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">),</span> <span class="n">f</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="move-ether">
+<h4>move_ether<a class="headerlink" href="#move-ether" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.move_ether">
+<span class="sig-name descname"><span class="pre">move_ether</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender_address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient_address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.move_ether" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move funds between accounts.</p>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">move_ether</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="n">sender_address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+    <span class="n">recipient_address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="n">U256</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">reduce_sender_balance</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">sender</span><span class="o">.</span><span class="n">balance</span> <span class="o">&gt;=</span> <span class="n">amount</span><span class="p">)</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">balance</span> <span class="o">-=</span> <span class="n">amount</span>
+
+    <span class="k">def</span> <span class="nf">increase_recipient_balance</span><span class="p">(</span><span class="n">recipient</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">recipient</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">amount</span>
+
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">sender_address</span><span class="p">,</span> <span class="n">reduce_sender_balance</span><span class="p">)</span>
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">recipient_address</span><span class="p">,</span> <span class="n">increase_recipient_balance</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="set-account-balance">
+<h4>set_account_balance<a class="headerlink" href="#set-account-balance" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.set_account_balance">
+<span class="sig-name descname"><span class="pre">set_account_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.set_account_balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the balance of an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The current state.</p></li>
+<li><p><strong>address</strong> – Address of the account whose nonce needs to be incremented.</p></li>
+<li><p><strong>amount</strong> – The amount that needs to set in balance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_account_balance</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">amount</span><span class="p">:</span> <span class="n">U256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">set_balance</span><span class="p">(</span><span class="n">account</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="n">amount</span>
+
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">set_balance</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="touch-account">
+<h4>touch_account<a class="headerlink" href="#touch-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.touch_account">
+<span class="sig-name descname"><span class="pre">touch_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.touch_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an account to state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The current state.</p></li>
+<li><p><strong>address</strong> – The address of the account that need to initialised.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">touch_account</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">account_exists</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="n">set_account</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">EMPTY_ACCOUNT</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="increment-nonce">
+<h4>increment_nonce<a class="headerlink" href="#increment-nonce" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.increment_nonce">
+<span class="sig-name descname"><span class="pre">increment_nonce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.increment_nonce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the nonce of an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The current state.</p></li>
+<li><p><strong>address</strong> – Address of the account whose nonce needs to be incremented.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">increment_nonce</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">increase_nonce</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">nonce</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">increase_nonce</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="set-code">
+<h4>set_code<a class="headerlink" href="#set-code" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.set_code">
+<span class="sig-name descname"><span class="pre">set_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.set_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets Account code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The current state.</p></li>
+<li><p><strong>address</strong> – Address of the account whose code needs to be update.</p></li>
+<li><p><strong>code</strong> – The bytecode that needs to be set.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_code</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">write_code</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">write_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-ether">
+<h4>create_ether<a class="headerlink" href="#create-ether" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.state.create_ether">
+<span class="sig-name descname"><span class="pre">create_ether</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.homestead.state.State" title="ethereum.homestead.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.state.create_ether" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add newly created ether to an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The current state.</p></li>
+<li><p><strong>address</strong> – Address of the account to which ether is added.</p></li>
+<li><p><strong>amount</strong> – The amount of ether to be added to the account of interest.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_ether</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">amount</span><span class="p">:</span> <span class="n">U256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">increase_balance</span><span class="p">(</span><span class="n">account</span><span class="p">:</span> <span class="n">Account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">amount</span>
+
+    <span class="n">modify_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">increase_balance</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+      <li>Previous: <a href="../spec/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.spec</span></code></a></li>
+      <li>Next: <a href="../trie/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.trie</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/homestead/state/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

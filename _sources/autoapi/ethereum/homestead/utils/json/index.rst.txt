@@ -1,0 +1,101 @@
+:mod:`ethereum.homestead.utils.json`
+====================================
+
+.. py:module:: ethereum.homestead.utils.json
+
+Homestead Utilities Json
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Json specific utilities used in this homestead version of specification.
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   ethereum.homestead.utils.json.json_to_transactions
+   ethereum.homestead.utils.json.json_to_header
+   ethereum.homestead.utils.json.json_to_block
+
+
+
+Module Details
+---------------
+
+json_to_transactions
+~~~~~~~~~~~~~~~~~~~~
+
+
+.. function:: json_to_transactions(json_data: Dict[Any, Any]) -> Tuple[ethereum.homestead.eth_types.Transaction, Ellipsis]
+   :noindexentry:
+
+   Convert json data to tuple of transaction objects.
+
+   :param json_data: The transactions data where the values are hexadecimals.
+
+   :returns: **transactions** -- The transaction objects obtained from the json data.
+   :rtype: `Tuple[Transaction, ...]`
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/utils/json.py
+   :language: python
+   :pyobject: json_to_transactions
+
+json_to_header
+~~~~~~~~~~~~~~
+
+
+.. function:: json_to_header(json_data: Dict[Any, Any]) -> ethereum.homestead.eth_types.Header
+   :noindexentry:
+
+   Convert json data to block header.
+
+   :param json_data: The header data where the values are hexadecimals.
+
+   :returns: **header** -- The header object obtained from the json data.
+   :rtype: `Header`
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/utils/json.py
+   :language: python
+   :pyobject: json_to_header
+
+json_to_block
+~~~~~~~~~~~~~
+
+
+.. function:: json_to_block(block_json_data: Dict[Any, Any], ommers: Tuple[ethereum.homestead.eth_types.Header, Ellipsis]) -> ethereum.homestead.eth_types.Block
+   :noindexentry:
+
+   Convert json data to a block object with the help of ommer objects.
+
+   :param block_json_data: The block json data where the values are hexadecimals, which is used
+                           to derive the header and the transactions.
+   :param ommers: The ommer headers required to form the current block object.
+
+   :returns: **header** -- The header object obtained from the json data.
+   :rtype: `Header`
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/utils/json.py
+   :language: python
+   :pyobject: json_to_block

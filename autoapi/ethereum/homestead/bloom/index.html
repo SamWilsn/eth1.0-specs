@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.bloom &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.eth_types" href="../eth_types/index.html" />
+    <link rel="prev" title="ethereum.homestead.vm.stack" href="../vm/stack/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.bloom">
+<span id="ethereum-homestead-bloom"></span><h1><a class="reference internal" href="#module-ethereum.homestead.bloom" title="ethereum.homestead.bloom"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.bloom</span></code></a><a class="headerlink" href="#module-ethereum.homestead.bloom" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-logs-bloom">
+<h2>Ethereum Logs Bloom<a class="headerlink" href="#ethereum-logs-bloom" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#add-to-bloom" id="id5">add_to_bloom</a></p></li>
+<li><p><a class="reference internal" href="#logs-bloom" id="id6">logs_bloom</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Logs Bloom related functionalities used in Ethereum.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.bloom.add_to_bloom" title="ethereum.homestead.bloom.add_to_bloom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_bloom</span></code></a></p></td>
+<td><p>Add a bloom entry to the bloom filter (<cite>bloom</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.bloom.logs_bloom" title="ethereum.homestead.bloom.logs_bloom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logs_bloom</span></code></a></p></td>
+<td><p>Obtain the logs bloom from a list of log entries.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="add-to-bloom">
+<h4>add_to_bloom<a class="headerlink" href="#add-to-bloom" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.bloom.add_to_bloom">
+<span class="sig-name descname"><span class="pre">add_to_bloom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bloom</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytearray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bloom_entry</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.bloom.add_to_bloom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a bloom entry to the bloom filter (<cite>bloom</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bloom</strong> – The bloom filter.</p></li>
+<li><p><strong>bloom_entry</strong> – An entry which is to be added to bloom filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_bloom</span><span class="p">(</span><span class="n">bloom</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">bloom_entry</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># TODO: This functionality hasn&#39;t been tested rigorously yet.</span>
+    <span class="nb">hash</span> <span class="o">=</span> <span class="n">keccak256</span><span class="p">(</span><span class="n">bloom_entry</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="c1"># Obtain the least significant 11 bits from the pair of bytes</span>
+        <span class="c1"># (16 bits), and set this bit in bloom bytearray.</span>
+        <span class="c1"># The obtained bit is 0-indexed in the bloom filter from the least</span>
+        <span class="c1"># significant bit to the most significant bit.</span>
+        <span class="n">bit_to_set</span> <span class="o">=</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="nb">hash</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0x07FF</span>
+        <span class="c1"># Below is the index of the bit in the bytearray (where 0-indexed</span>
+        <span class="c1"># byte is the most significant byte)</span>
+        <span class="n">bit_index</span> <span class="o">=</span> <span class="mh">0x07FF</span> <span class="o">-</span> <span class="n">bit_to_set</span>
+
+        <span class="n">byte_index</span> <span class="o">=</span> <span class="n">bit_index</span> <span class="o">//</span> <span class="mi">8</span>
+        <span class="n">bit_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">7</span> <span class="o">-</span> <span class="p">(</span><span class="n">bit_index</span> <span class="o">%</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">bloom</span><span class="p">[</span><span class="n">byte_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">bloom</span><span class="p">[</span><span class="n">byte_index</span><span class="p">]</span> <span class="o">|</span> <span class="n">bit_value</span>
+</pre></div>
+</div>
+</section>
+<section id="logs-bloom">
+<h4>logs_bloom<a class="headerlink" href="#logs-bloom" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.bloom.logs_bloom">
+<span class="sig-name descname"><span class="pre">logs_bloom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Log" title="ethereum.homestead.eth_types.Log"><span class="pre">ethereum.homestead.eth_types.Log</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#ethereum.homestead.eth_types.Bloom" title="ethereum.homestead.eth_types.Bloom"><span class="pre">ethereum.homestead.eth_types.Bloom</span></a><a class="headerlink" href="#ethereum.homestead.bloom.logs_bloom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the logs bloom from a list of log entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>logs</strong> – List of logs for which the logs bloom is to be obtained.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>logs_bloom</strong> – The logs bloom obtained which is 256 bytes with some bits set as per
+the caller address and the log topics.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Bloom</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logs_bloom</span><span class="p">(</span><span class="n">logs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Log</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Bloom</span><span class="p">:</span>
+    <span class="c1"># TODO: Logs bloom functionality hasn&#39;t been tested rigorously yet. The</span>
+    <span class="c1"># required test cases need `CALL` opcode to be implemented.</span>
+    <span class="n">bloom</span><span class="p">:</span> <span class="nb">bytearray</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">256</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">logs</span><span class="p">:</span>
+        <span class="n">add_to_bloom</span><span class="p">(</span><span class="n">bloom</span><span class="p">,</span> <span class="n">log</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">log</span><span class="o">.</span><span class="n">topics</span><span class="p">:</span>
+            <span class="n">add_to_bloom</span><span class="p">(</span><span class="n">bloom</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Bloom</span><span class="p">(</span><span class="n">bloom</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+      <li>Previous: <a href="../vm/stack/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.stack</span></code></a></li>
+      <li>Next: <a href="../eth_types/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.eth_types</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/homestead/bloom/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

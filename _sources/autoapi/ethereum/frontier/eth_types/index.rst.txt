@@ -33,6 +33,15 @@ Classes
 
 
 
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   ethereum.frontier.eth_types.encode_account
+
+
 
 Attributes
 ~~~~~~~~~~
@@ -62,7 +71,7 @@ Address
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 31-31
+   :lines: 32-32
 
 
 Root
@@ -76,7 +85,7 @@ Root
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 32-32
+   :lines: 33-33
 
 
 Bloom
@@ -90,7 +99,7 @@ Bloom
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 34-34
+   :lines: 35-35
 
 
 TX_BASE_COST
@@ -104,7 +113,7 @@ TX_BASE_COST
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 36-36
+   :lines: 37-37
 
 
 TX_DATA_COST_PER_NON_ZERO
@@ -118,7 +127,7 @@ TX_DATA_COST_PER_NON_ZERO
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 37-37
+   :lines: 38-38
 
 
 TX_DATA_COST_PER_ZERO
@@ -132,7 +141,7 @@ TX_DATA_COST_PER_ZERO
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 38-38
+   :lines: 39-39
 
 
 Transaction
@@ -252,8 +261,27 @@ EMPTY_ACCOUNT
 
 .. undocinclude:: /../src/ethereum/frontier/eth_types.py
    :language: python
-   :lines: 71-74
+   :lines: 72-75
 
+
+encode_account
+~~~~~~~~~~~~~~
+
+
+.. function:: encode_account(raw_account_data: Account, storage_root: ethereum.base_types.Bytes) -> ethereum.base_types.Bytes
+   :noindexentry:
+
+   Encode `Account` dataclass.
+
+   Storage is not stored in the `Account` dataclass, so `Accounts` cannot be
+   encoded with providing a storage root.
+
+
+
+
+.. undocinclude:: /../src/ethereum/frontier/eth_types.py
+   :language: python
+   :pyobject: encode_account
 
 Header
 ~~~~~~

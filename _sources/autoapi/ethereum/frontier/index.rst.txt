@@ -28,7 +28,6 @@ Submodules
    bloom/index.rst
    eth_types/index.rst
    genesis/index.rst
-   rlp/index.rst
    spec/index.rst
    state/index.rst
    trie/index.rst

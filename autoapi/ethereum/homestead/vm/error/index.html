@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.vm.error &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.vm.gas" href="../gas/index.html" />
+    <link rel="prev" title="ethereum.homestead.vm.precompiled_contracts.sha256" href="../precompiled_contracts/sha256/index.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.vm.error">
+<span id="ethereum-homestead-vm-error"></span><h1><a class="reference internal" href="#module-ethereum.homestead.vm.error" title="ethereum.homestead.vm.error"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.error</span></code></a><a class="headerlink" href="#module-ethereum.homestead.vm.error" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm-errors">
+<h2>Ethereum Virtual Machine (EVM) Errors<a class="headerlink" href="#ethereum-virtual-machine-evm-errors" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#stackunderflowerror" id="id3">StackUnderflowError</a></p></li>
+<li><p><a class="reference internal" href="#stackoverflowerror" id="id4">StackOverflowError</a></p></li>
+<li><p><a class="reference internal" href="#outofgaserror" id="id5">OutOfGasError</a></p></li>
+<li><p><a class="reference internal" href="#invalidopcode" id="id6">InvalidOpcode</a></p></li>
+<li><p><a class="reference internal" href="#invalidjumpdesterror" id="id7">InvalidJumpDestError</a></p></li>
+<li><p><a class="reference internal" href="#stackdepthlimiterror" id="id8">StackDepthLimitError</a></p></li>
+<li><p><a class="reference internal" href="#insufficientfunds" id="id9">InsufficientFunds</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Errors which cause the EVM to halt exceptionally.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="stackunderflowerror">
+<h4>StackUnderflowError<a class="headerlink" href="#stackunderflowerror" title="Permalink to this headline">¶</a></h4>
+<p>Occurs when a pop is executed on an empty stack.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.StackUnderflowError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">StackUnderflowError</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.StackUnderflowError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="stackoverflowerror">
+<h4>StackOverflowError<a class="headerlink" href="#stackoverflowerror" title="Permalink to this headline">¶</a></h4>
+<p>Occurs when a push is executed on a stack at max capacity.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.StackOverflowError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">StackOverflowError</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.StackOverflowError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="outofgaserror">
+<h4>OutOfGasError<a class="headerlink" href="#outofgaserror" title="Permalink to this headline">¶</a></h4>
+<p>Occurs when an operation costs more than the amount of gas left in the
+frame.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.OutOfGasError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">OutOfGasError</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.OutOfGasError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="invalidopcode">
+<h4>InvalidOpcode<a class="headerlink" href="#invalidopcode" title="Permalink to this headline">¶</a></h4>
+<p>Raised when an invalid opcode is encountered.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.InvalidOpcode">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">InvalidOpcode</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.InvalidOpcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="invalidjumpdesterror">
+<h4>InvalidJumpDestError<a class="headerlink" href="#invalidjumpdesterror" title="Permalink to this headline">¶</a></h4>
+<p>Occurs when the destination of a jump operation doesn’t meet any of the
+following criteria:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The jump destination is less than the length of the code.</p></li>
+<li><p>The jump destination should have the <cite>JUMPDEST</cite> opcode (0x5B).</p></li>
+<li><p>The jump destination shouldn’t be part of the data corresponding to
+<cite>PUSH-N</cite> opcodes.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.InvalidJumpDestError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">InvalidJumpDestError</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.InvalidJumpDestError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="stackdepthlimiterror">
+<h4>StackDepthLimitError<a class="headerlink" href="#stackdepthlimiterror" title="Permalink to this headline">¶</a></h4>
+<p>Raised when the message depth is greater than <cite>1024</cite></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.StackDepthLimitError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">StackDepthLimitError</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.StackDepthLimitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="insufficientfunds">
+<h4>InsufficientFunds<a class="headerlink" href="#insufficientfunds" title="Permalink to this headline">¶</a></h4>
+<p>Raised when an account has insufficient funds to transfer the
+requested value.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.error.InsufficientFunds">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-name descname"><span class="pre">InsufficientFunds</span></span><a class="headerlink" href="#ethereum.homestead.vm.error.InsufficientFunds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">API Reference</a><ul>
+  <li><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm</span></code></a><ul>
+      <li>Previous: <a href="../precompiled_contracts/sha256/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.sha256</span></code></a></li>
+      <li>Next: <a href="../gas/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.gas</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../_sources/autoapi/ethereum/homestead/vm/error/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

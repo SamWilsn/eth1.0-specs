@@ -26,6 +26,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
   
 
     <div class="document">
@@ -46,24 +54,26 @@
 <li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
 <ul>
 <li><p><a class="reference internal" href="#classes" id="id3">Classes</a></p></li>
-<li><p><a class="reference internal" href="#attributes" id="id4">Attributes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id4">Functions</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id5">Attributes</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#module-details" id="id5">Module Details</a></p>
+<li><p><a class="reference internal" href="#module-details" id="id6">Module Details</a></p>
 <ul>
-<li><p><a class="reference internal" href="#address" id="id6">Address</a></p></li>
-<li><p><a class="reference internal" href="#root" id="id7">Root</a></p></li>
-<li><p><a class="reference internal" href="#bloom" id="id8">Bloom</a></p></li>
-<li><p><a class="reference internal" href="#tx-base-cost" id="id9">TX_BASE_COST</a></p></li>
-<li><p><a class="reference internal" href="#tx-data-cost-per-non-zero" id="id10">TX_DATA_COST_PER_NON_ZERO</a></p></li>
-<li><p><a class="reference internal" href="#tx-data-cost-per-zero" id="id11">TX_DATA_COST_PER_ZERO</a></p></li>
-<li><p><a class="reference internal" href="#transaction" id="id12">Transaction</a></p></li>
-<li><p><a class="reference internal" href="#account" id="id13">Account</a></p></li>
-<li><p><a class="reference internal" href="#empty-account" id="id14">EMPTY_ACCOUNT</a></p></li>
-<li><p><a class="reference internal" href="#header" id="id15">Header</a></p></li>
-<li><p><a class="reference internal" href="#block" id="id16">Block</a></p></li>
-<li><p><a class="reference internal" href="#log" id="id17">Log</a></p></li>
-<li><p><a class="reference internal" href="#receipt" id="id18">Receipt</a></p></li>
+<li><p><a class="reference internal" href="#address" id="id7">Address</a></p></li>
+<li><p><a class="reference internal" href="#root" id="id8">Root</a></p></li>
+<li><p><a class="reference internal" href="#bloom" id="id9">Bloom</a></p></li>
+<li><p><a class="reference internal" href="#tx-base-cost" id="id10">TX_BASE_COST</a></p></li>
+<li><p><a class="reference internal" href="#tx-data-cost-per-non-zero" id="id11">TX_DATA_COST_PER_NON_ZERO</a></p></li>
+<li><p><a class="reference internal" href="#tx-data-cost-per-zero" id="id12">TX_DATA_COST_PER_ZERO</a></p></li>
+<li><p><a class="reference internal" href="#transaction" id="id13">Transaction</a></p></li>
+<li><p><a class="reference internal" href="#account" id="id14">Account</a></p></li>
+<li><p><a class="reference internal" href="#empty-account" id="id15">EMPTY_ACCOUNT</a></p></li>
+<li><p><a class="reference internal" href="#encode-account" id="id16">encode_account</a></p></li>
+<li><p><a class="reference internal" href="#header" id="id17">Header</a></p></li>
+<li><p><a class="reference internal" href="#block" id="id18">Block</a></p></li>
+<li><p><a class="reference internal" href="#log" id="id19">Log</a></p></li>
+<li><p><a class="reference internal" href="#receipt" id="id20">Receipt</a></p></li>
 </ul>
 </li>
 </ul>
@@ -99,6 +109,20 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.Receipt" title="ethereum.frontier.eth_types.Receipt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Receipt</span></code></a></p></td>
 <td><p>Result of a transaction.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.frontier.eth_types.encode_account" title="ethereum.frontier.eth_types.encode_account"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode_account</span></code></a></p></td>
+<td><p>Encode <cite>Account</cite> dataclass.</p></td>
 </tr>
 </tbody>
 </table>
@@ -293,6 +317,28 @@
     <span class="n">nonce</span><span class="o">=</span><span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
     <span class="n">balance</span><span class="o">=</span><span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
     <span class="n">code</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(),</span>
+</pre></div>
+</div>
+</section>
+<section id="encode-account">
+<h4>encode_account<a class="headerlink" href="#encode-account" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.frontier.eth_types.encode_account">
+<span class="sig-name descname"><span class="pre">encode_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_account_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.frontier.eth_types.Account" title="ethereum.frontier.eth_types.Account"><span class="pre">Account</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.frontier.eth_types.encode_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode <cite>Account</cite> dataclass.</p>
+<p>Storage is not stored in the <cite>Account</cite> dataclass, so <cite>Accounts</cite> cannot be
+encoded with providing a storage root.</p>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encode_account</span><span class="p">(</span><span class="n">raw_account_data</span><span class="p">:</span> <span class="n">Account</span><span class="p">,</span> <span class="n">storage_root</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">raw_account_data</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+            <span class="n">raw_account_data</span><span class="o">.</span><span class="n">balance</span><span class="p">,</span>
+            <span class="n">storage_root</span><span class="p">,</span>
+            <span class="n">keccak256</span><span class="p">(</span><span class="n">raw_account_data</span><span class="o">.</span><span class="n">code</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </section>

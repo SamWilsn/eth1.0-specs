@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="ethereum.frontier.state" href="../state/index.html" />
-    <link rel="prev" title="ethereum.frontier.rlp" href="../rlp/index.html" />
+    <link rel="prev" title="ethereum.frontier.genesis" href="../genesis/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
@@ -26,6 +26,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
   
 
     <div class="document">
@@ -926,9 +934,7 @@ execution is instantiated.</p>
 
     <span class="n">ensure</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">27</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">28</span><span class="p">)</span>
     <span class="n">ensure</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">SECP256K1N</span><span class="p">)</span>
-
-    <span class="c1"># TODO: this causes error starting in block 46169 (or 46170?)</span>
-    <span class="c1"># assert 0&lt;s_int and s_int&lt;(SECP256K1N//2+1)</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">s</span> <span class="ow">and</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">SECP256K1N</span><span class="p">)</span>
 
     <span class="n">public_key</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">secp256k1_recover</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">27</span><span class="p">,</span> <span class="n">signing_hash</span><span class="p">(</span><span class="n">tx</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">public_key</span><span class="p">)[</span><span class="mi">12</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span>
@@ -1069,10 +1075,10 @@ execution is instantiated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>number</strong> – Block number of the block</p></li>
-<li><p><strong>timestamp</strong> – Timestmap of the block</p></li>
-<li><p><strong>parent_timestamp</strong> – Timestanp of the parent block</p></li>
-<li><p><strong>parent_difficulty</strong> – difficulty of the parent block</p></li>
+<li><p><strong>number</strong> – Block number of the block.</p></li>
+<li><p><strong>timestamp</strong> – Timestamp of the block.</p></li>
+<li><p><strong>parent_timestamp</strong> – Timestamp of the parent block.</p></li>
+<li><p><strong>parent_difficulty</strong> – difficulty of the parent block.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1158,7 +1164,7 @@ execution is instantiated.</p>
   <li><a href="../../../index.html">API Reference</a><ul>
   <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
   <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier</span></code></a><ul>
-      <li>Previous: <a href="../rlp/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.rlp</span></code></a></li>
+      <li>Previous: <a href="../genesis/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.genesis</span></code></a></li>
       <li>Next: <a href="../state/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.frontier.state</span></code></a></li>
   </ul></li>
   </ul></li>

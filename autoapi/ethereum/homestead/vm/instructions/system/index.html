@@ -1,0 +1,640 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.vm.instructions.system &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.vm.precompiled_contracts" href="../../precompiled_contracts/index.html" />
+    <link rel="prev" title="ethereum.homestead.vm.instructions.storage" href="../storage/index.html" />
+   
+  <link rel="stylesheet" href="../../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.vm.instructions.system">
+<span id="ethereum-homestead-vm-instructions-system"></span><h1><a class="reference internal" href="#module-ethereum.homestead.vm.instructions.system" title="ethereum.homestead.vm.instructions.system"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.system</span></code></a><a class="headerlink" href="#module-ethereum.homestead.vm.instructions.system" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm-system-instructions">
+<h2>Ethereum Virtual Machine (EVM) System Instructions<a class="headerlink" href="#ethereum-virtual-machine-evm-system-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#create" id="id5">create</a></p></li>
+<li><p><a class="reference internal" href="#return" id="id6">return</a></p></li>
+<li><p><a class="reference internal" href="#call" id="id7">call</a></p></li>
+<li><p><a class="reference internal" href="#callcode" id="id8">callcode</a></p></li>
+<li><p><a class="reference internal" href="#selfdestruct" id="id9">selfdestruct</a></p></li>
+<li><p><a class="reference internal" href="#delegatecall" id="id10">delegatecall</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Implementations of the EVM system related instructions.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.create" title="ethereum.homestead.vm.instructions.system.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a></p></td>
+<td><p>Creates a new account with associated code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.return_" title="ethereum.homestead.vm.instructions.system.return_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_</span></code></a></p></td>
+<td><p>Halts execution returning output data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.call" title="ethereum.homestead.vm.instructions.system.call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call</span></code></a></p></td>
+<td><p>Message-call into an account.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.callcode" title="ethereum.homestead.vm.instructions.system.callcode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callcode</span></code></a></p></td>
+<td><p>Message-call into this account with alternative account’s code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.selfdestruct" title="ethereum.homestead.vm.instructions.system.selfdestruct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selfdestruct</span></code></a></p></td>
+<td><p>Halt execution and register account for later deletion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.system.delegatecall" title="ethereum.homestead.vm.instructions.system.delegatecall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delegatecall</span></code></a></p></td>
+<td><p>Message-call into this account with an alternative account’s code,</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="create">
+<h4>create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new account with associated code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># This import causes a circular import error</span>
+    <span class="c1"># if it&#39;s not moved inside this method</span>
+    <span class="kn">from</span> <span class="nn">...vm.interpreter</span> <span class="kn">import</span> <span class="n">STACK_DEPTH_LIMIT</span><span class="p">,</span> <span class="n">process_create_message</span>
+
+    <span class="n">endowment</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="n">extend_memory_gas_cost</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span>
+    <span class="p">)</span>
+    <span class="n">total_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">GAS_CREATE</span><span class="p">,</span>
+        <span class="n">extend_memory_gas_cost</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">total_gas_cost</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span><span class="p">)</span>
+    <span class="n">sender_address</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">sender_address</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">balance</span> <span class="o">&lt;</span> <span class="n">endowment</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">STACK_DEPTH_LIMIT</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">call_data</span> <span class="o">=</span> <span class="n">memory_read_bytes</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span>
+    <span class="p">)</span>
+
+    <span class="n">increment_nonce</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">)</span>
+
+    <span class="n">create_message_gas</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">create_message_gas</span><span class="p">)</span>
+
+    <span class="n">contract_address</span> <span class="o">=</span> <span class="n">compute_contract_address</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">,</span>
+        <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">)</span><span class="o">.</span><span class="n">nonce</span> <span class="o">-</span> <span class="n">U256</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">is_collision</span> <span class="o">=</span> <span class="n">account_has_code_or_nonce</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">contract_address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_collision</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span>
+
+    <span class="n">child_message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span>
+        <span class="n">caller</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">Bytes0</span><span class="p">(),</span>
+        <span class="n">gas</span><span class="o">=</span><span class="n">create_message_gas</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">endowment</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">code</span><span class="o">=</span><span class="n">call_data</span><span class="p">,</span>
+        <span class="n">current_target</span><span class="o">=</span><span class="n">contract_address</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">code_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">should_transfer_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">child_evm</span> <span class="o">=</span> <span class="n">process_create_message</span><span class="p">(</span><span class="n">child_message</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">has_erred</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">))</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">gas_left</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">refund_counter</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">refund_counter</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">logs</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">logs</span>
+</pre></div>
+</div>
+</section>
+<section id="return">
+<h4><a class="reference internal" href="#return">return</a><a class="headerlink" href="#return" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.return_">
+<span class="sig-name descname"><span class="pre">return_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.return_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halts execution returning output data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">return_</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">memory_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">gas_cost</span> <span class="o">=</span> <span class="n">GAS_ZERO</span> <span class="o">+</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_cost</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span><span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">memory_read_bytes</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_position</span><span class="p">,</span> <span class="n">memory_size</span>
+    <span class="p">)</span>
+    <span class="c1"># HALT the execution</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="call">
+<h4>call<a class="headerlink" href="#call" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message-call into an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">ethereum.homestead.vm.interpreter</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">STACK_DEPTH_LIMIT</span><span class="p">,</span>
+        <span class="n">process_message</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">gas</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_input_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_input_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_output_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_output_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="n">call_gas_fee</span> <span class="o">=</span> <span class="n">calculate_call_gas_cost</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">gas</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">message_call_gas_fee</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">gas</span><span class="p">,</span>
+        <span class="n">calculate_message_call_gas_stipend</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">call_gas_fee</span><span class="p">)</span>
+
+    <span class="n">gas_input_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_input_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span><span class="p">)</span>
+    <span class="n">gas_output_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_output_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span><span class="p">)</span>
+    <span class="n">call_data</span> <span class="o">=</span> <span class="n">memory_read_bytes</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+    <span class="n">sender_balance</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">balance</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">sender_balance</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">message_call_gas_fee</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">STACK_DEPTH_LIMIT</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">message_call_gas_fee</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">code</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">to</span><span class="p">)</span><span class="o">.</span><span class="n">code</span>
+    <span class="n">child_message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span>
+        <span class="n">caller</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">gas</span><span class="o">=</span><span class="n">message_call_gas_fee</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">call_data</span><span class="p">,</span>
+        <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span>
+        <span class="n">current_target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">code_address</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">should_transfer_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">child_evm</span> <span class="o">=</span> <span class="n">process_message</span><span class="p">(</span><span class="n">child_message</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">has_erred</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">actual_output_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">memory_output_size</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">)))</span>
+    <span class="n">memory_write</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span>
+        <span class="n">memory_output_start_position</span><span class="p">,</span>
+        <span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">[:</span><span class="n">actual_output_size</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">gas_left</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">refund_counter</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">refund_counter</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">logs</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">logs</span>
+</pre></div>
+</div>
+</section>
+<section id="callcode">
+<h4>callcode<a class="headerlink" href="#callcode" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.callcode">
+<span class="sig-name descname"><span class="pre">callcode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.callcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message-call into this account with alternative account’s code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">callcode</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">ethereum.homestead.vm.interpreter</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">STACK_DEPTH_LIMIT</span><span class="p">,</span>
+        <span class="n">process_message</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">gas</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">code_address</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_input_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_input_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_output_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_output_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+
+    <span class="n">call_gas_fee</span> <span class="o">=</span> <span class="n">calculate_call_gas_cost</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">gas</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">message_call_gas_fee</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">gas</span><span class="p">,</span>
+        <span class="n">calculate_message_call_gas_stipend</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">call_gas_fee</span><span class="p">)</span>
+
+    <span class="n">gas_input_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_input_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span><span class="p">)</span>
+    <span class="n">gas_output_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_output_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span><span class="p">)</span>
+    <span class="n">call_data</span> <span class="o">=</span> <span class="n">memory_read_bytes</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+    <span class="n">sender_balance</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">balance</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">sender_balance</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">message_call_gas_fee</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">STACK_DEPTH_LIMIT</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">message_call_gas_fee</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">code</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">code_address</span><span class="p">)</span><span class="o">.</span><span class="n">code</span>
+    <span class="n">child_message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span>
+        <span class="n">caller</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">gas</span><span class="o">=</span><span class="n">message_call_gas_fee</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">call_data</span><span class="p">,</span>
+        <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span>
+        <span class="n">current_target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">code_address</span><span class="o">=</span><span class="n">code_address</span><span class="p">,</span>
+        <span class="n">should_transfer_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">child_evm</span> <span class="o">=</span> <span class="n">process_message</span><span class="p">(</span><span class="n">child_message</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">has_erred</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">actual_output_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">memory_output_size</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">)))</span>
+    <span class="n">memory_write</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span>
+        <span class="n">memory_output_start_position</span><span class="p">,</span>
+        <span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">[:</span><span class="n">actual_output_size</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">gas_left</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">refund_counter</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">refund_counter</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">logs</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">logs</span>
+</pre></div>
+</div>
+</section>
+<section id="selfdestruct">
+<h4>selfdestruct<a class="headerlink" href="#selfdestruct" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.selfdestruct">
+<span class="sig-name descname"><span class="pre">selfdestruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.selfdestruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halt execution and register account for later deletion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">selfdestruct</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">beneficiary</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">originator</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+    <span class="n">beneficiary_balance</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">beneficiary</span><span class="p">)</span><span class="o">.</span><span class="n">balance</span>
+    <span class="n">originator_balance</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">originator</span><span class="p">)</span><span class="o">.</span><span class="n">balance</span>
+
+    <span class="c1"># First Transfer to beneficiary</span>
+    <span class="n">set_account_balance</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">beneficiary</span><span class="p">,</span> <span class="n">beneficiary_balance</span> <span class="o">+</span> <span class="n">originator_balance</span>
+    <span class="p">)</span>
+    <span class="c1"># Next, Zero the balance of the address being deleted (must come after</span>
+    <span class="c1"># sending to beneficiary in case the contract named itself as the</span>
+    <span class="c1"># beneficiary).</span>
+    <span class="n">set_account_balance</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">originator</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1"># register account for deletion</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">originator</span><span class="p">)</span>
+
+    <span class="c1"># HALT the execution</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="delegatecall">
+<h4>delegatecall<a class="headerlink" href="#delegatecall" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.system.delegatecall">
+<span class="sig-name descname"><span class="pre">delegatecall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.system.delegatecall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message-call into this account with an alternative account’s code,
+but persisting the current values for sender.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delegatecall</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">ethereum.homestead.vm.interpreter</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">STACK_DEPTH_LIMIT</span><span class="p">,</span>
+        <span class="n">process_message</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">gas</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">code_address</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_input_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_input_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">memory_output_start_position</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">memory_output_size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span>
+
+    <span class="n">call_gas_fee</span> <span class="o">=</span> <span class="n">GAS_CALL</span> <span class="o">+</span> <span class="n">gas</span>
+    <span class="n">message_call_gas_fee</span> <span class="o">=</span> <span class="n">gas</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">call_gas_fee</span><span class="p">)</span>
+
+    <span class="n">gas_input_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_input_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span><span class="p">)</span>
+    <span class="n">gas_output_memory</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">gas_output_memory</span><span class="p">)</span>
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_output_start_position</span><span class="p">,</span> <span class="n">memory_output_size</span><span class="p">)</span>
+    <span class="n">call_data</span> <span class="o">=</span> <span class="n">memory_read_bytes</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_input_start_position</span><span class="p">,</span> <span class="n">memory_input_size</span>
+    <span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">STACK_DEPTH_LIMIT</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">message_call_gas_fee</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">code</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">code_address</span><span class="p">)</span><span class="o">.</span><span class="n">code</span>
+    <span class="n">child_message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span>
+        <span class="n">caller</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">caller</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">gas</span><span class="o">=</span><span class="n">message_call_gas_fee</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">call_data</span><span class="p">,</span>
+        <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span>
+        <span class="n">current_target</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+        <span class="n">depth</span><span class="o">=</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">code_address</span><span class="o">=</span><span class="n">code_address</span><span class="p">,</span>
+        <span class="n">should_transfer_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">child_evm</span> <span class="o">=</span> <span class="n">process_message</span><span class="p">(</span><span class="n">child_message</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">has_erred</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">actual_output_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">memory_output_size</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">)))</span>
+    <span class="n">memory_write</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span>
+        <span class="n">memory_output_start_position</span><span class="p">,</span>
+        <span class="n">child_evm</span><span class="o">.</span><span class="n">output</span><span class="p">[:</span><span class="n">actual_output_size</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">gas_left</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">refund_counter</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">refund_counter</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child_evm</span><span class="o">.</span><span class="n">accounts_to_delete</span><span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">logs</span> <span class="o">+=</span> <span class="n">child_evm</span><span class="o">.</span><span class="n">logs</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../../index.html">API Reference</a><ul>
+  <li><a href="../../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions</span></code></a><ul>
+      <li>Previous: <a href="../storage/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.storage</span></code></a></li>
+      <li>Next: <a href="../../precompiled_contracts/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../../_sources/autoapi/ethereum/homestead/vm/instructions/system/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

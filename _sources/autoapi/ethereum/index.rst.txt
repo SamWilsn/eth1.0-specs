@@ -15,9 +15,8 @@ Subpackages
    :titlesonly:
    :maxdepth: 3
 
-   banana/index.rst
    frontier/index.rst
-   orange/index.rst
+   homestead/index.rst
    utils/index.rst
 
 
@@ -30,6 +29,7 @@ Submodules
    base_types/index.rst
    crypto/index.rst
    ethash/index.rst
+   rlp/index.rst
 
 
 Package Contents

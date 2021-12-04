@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.rlp &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Comparisons" href="../../../diffs/index.html" />
+    <link rel="prev" title="ethereum.ethash" href="../ethash/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.rlp">
+<span id="ethereum-rlp"></span><h1><a class="reference internal" href="#module-ethereum.rlp" title="ethereum.rlp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.rlp</span></code></a><a class="headerlink" href="#module-ethereum.rlp" title="Permalink to this headline">¶</a></h1>
+<section id="recursive-length-prefix-rlp-encoding">
+<h2>Recursive Length Prefix (RLP) Encoding<a class="headerlink" href="#recursive-length-prefix-rlp-encoding" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id2">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id3">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id4">Functions</a></p></li>
+<li><p><a class="reference internal" href="#attributes" id="id5">Attributes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id6">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rlp" id="id7">RLP</a></p></li>
+<li><p><a class="reference internal" href="#encode" id="id8">encode</a></p></li>
+<li><p><a class="reference internal" href="#encode-bytes" id="id9">encode_bytes</a></p></li>
+<li><p><a class="reference internal" href="#encode-sequence" id="id10">encode_sequence</a></p></li>
+<li><p><a class="reference internal" href="#get-joined-encodings" id="id11">get_joined_encodings</a></p></li>
+<li><p><a class="reference internal" href="#decode" id="id12">decode</a></p></li>
+<li><p><a class="reference internal" href="#t" id="id13">T</a></p></li>
+<li><p><a class="reference internal" href="#decode-to" id="id14">decode_to</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id15">_decode_to</a></p></li>
+<li><p><a class="reference internal" href="#decode-to-bytes" id="id16">decode_to_bytes</a></p></li>
+<li><p><a class="reference internal" href="#decode-to-sequence" id="id17">decode_to_sequence</a></p></li>
+<li><p><a class="reference internal" href="#decode-joined-encodings" id="id18">decode_joined_encodings</a></p></li>
+<li><p><a class="reference internal" href="#decode-item-length" id="id19">decode_item_length</a></p></li>
+<li><p><a class="reference internal" href="#rlp-hash" id="id20">rlp_hash</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Defines the serialization and deserialization format used throughout Ethereum.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.encode" title="ethereum.rlp.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a></p></td>
+<td><p>Encodes <cite>raw_data</cite> into a sequence of bytes using RLP.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.encode_bytes" title="ethereum.rlp.encode_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode_bytes</span></code></a></p></td>
+<td><p>Encodes <cite>raw_bytes</cite>, a sequence of bytes, using RLP.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.encode_sequence" title="ethereum.rlp.encode_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode_sequence</span></code></a></p></td>
+<td><p>Encodes a list of RLP encodable objects (<cite>raw_sequence</cite>) using RLP.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.get_joined_encodings" title="ethereum.rlp.get_joined_encodings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_joined_encodings</span></code></a></p></td>
+<td><p>Obtain concatenation of rlp encoding for each item in the sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.decode" title="ethereum.rlp.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a></p></td>
+<td><p>Decodes an integer, byte sequence, or list of RLP encodable objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.decode_to" title="ethereum.rlp.decode_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_to</span></code></a></p></td>
+<td><p>Decode the bytes in <cite>encoded_data</cite> to an object of type <cite>cls</cite>. <cite>cls</cite> can be</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp._decode_to" title="ethereum.rlp._decode_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_decode_to</span></code></a></p></td>
+<td><p>Decode the rlp structure in <cite>encoded_data</cite> to an object of type <cite>cls</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.decode_to_bytes" title="ethereum.rlp.decode_to_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_to_bytes</span></code></a></p></td>
+<td><p>Decodes a rlp encoded byte stream assuming that the decoded data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.decode_to_sequence" title="ethereum.rlp.decode_to_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_to_sequence</span></code></a></p></td>
+<td><p>Decodes a rlp encoded byte stream assuming that the decoded data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.decode_joined_encodings" title="ethereum.rlp.decode_joined_encodings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_joined_encodings</span></code></a></p></td>
+<td><p>Decodes <cite>joined_encodings</cite>, which is a concatenation of RLP encoded</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.decode_item_length" title="ethereum.rlp.decode_item_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode_item_length</span></code></a></p></td>
+<td><p>Find the length of the rlp encoding for the first object in the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.rlp_hash" title="ethereum.rlp.rlp_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rlp_hash</span></code></a></p></td>
+<td><p>Obtain the keccak-256 hash of the rlp encoding of the passed in data.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RLP</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.rlp.T" title="ethereum.rlp.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="rlp">
+<h4>RLP<a class="headerlink" href="#rlp" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.rlp.RLP">
+<span class="sig-name descname"><span class="pre">RLP</span></span><a class="headerlink" href="#ethereum.rlp.RLP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RLP</span> <span class="o">=</span> <span class="n">Any</span>
+</pre></div>
+</div>
+</section>
+<section id="encode">
+<h4>encode<a class="headerlink" href="#encode" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.rlp.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes <cite>raw_data</cite> into a sequence of bytes using RLP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw_data</strong> – A <cite>Bytes</cite>, <cite>Uint</cite>, <cite>Uint256</cite> or sequence of <cite>RLP</cite> encodable
+objects.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encoded</strong> – The RLP encoded bytes representing <cite>raw_data</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">raw_data</span><span class="p">:</span> <span class="n">RLP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytearray</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">encode_bytes</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="p">(</span><span class="n">Uint</span><span class="p">,</span> <span class="n">U256</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">encode</span><span class="p">(</span><span class="n">raw_data</span><span class="o">.</span><span class="n">to_be_bytes</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">encode_bytes</span><span class="p">(</span><span class="n">raw_data</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">encode_sequence</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">is_dataclass</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">encode</span><span class="p">(</span><span class="n">astuple</span><span class="p">(</span><span class="n">raw_data</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;RLP Encoding of type </span><span class="si">{}</span><span class="s2"> is not supported&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_data</span><span class="p">))</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="encode-bytes">
+<h4>encode_bytes<a class="headerlink" href="#encode-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.encode_bytes">
+<span class="sig-name descname"><span class="pre">encode_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_bytes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.rlp.encode_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes <cite>raw_bytes</cite>, a sequence of bytes, using RLP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw_bytes</strong> – Bytes to encode with RLP.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encoded</strong> – The RLP encoded bytes representing <cite>raw_bytes</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="n">len_raw_data</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">len_raw_data</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">raw_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">raw_bytes</span>
+    <span class="k">elif</span> <span class="n">len_raw_data</span> <span class="o">&lt;</span> <span class="mh">0x38</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bytes</span><span class="p">([</span><span class="mh">0x80</span> <span class="o">+</span> <span class="n">len_raw_data</span><span class="p">])</span> <span class="o">+</span> <span class="n">raw_bytes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># length of raw data represented as big endian bytes</span>
+        <span class="n">len_raw_data_as_be</span> <span class="o">=</span> <span class="n">len_raw_data</span><span class="o">.</span><span class="n">to_be_bytes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">bytes</span><span class="p">([</span><span class="mh">0xB7</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">len_raw_data_as_be</span><span class="p">)])</span>
+            <span class="o">+</span> <span class="n">len_raw_data_as_be</span>
+            <span class="o">+</span> <span class="n">raw_bytes</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="encode-sequence">
+<h4>encode_sequence<a class="headerlink" href="#encode-sequence" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.encode_sequence">
+<span class="sig-name descname"><span class="pre">encode_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sequence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.rlp.encode_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a list of RLP encodable objects (<cite>raw_sequence</cite>) using RLP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw_sequence</strong> – Sequence of RLP encodable objects.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encoded</strong> – The RLP encoded bytes representing <cite>raw_sequence</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encode_sequence</span><span class="p">(</span><span class="n">raw_sequence</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">RLP</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="n">joined_encodings</span> <span class="o">=</span> <span class="n">get_joined_encodings</span><span class="p">(</span><span class="n">raw_sequence</span><span class="p">)</span>
+    <span class="n">len_joined_encodings</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">joined_encodings</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">len_joined_encodings</span> <span class="o">&lt;</span> <span class="mh">0x38</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Bytes</span><span class="p">([</span><span class="mh">0xC0</span> <span class="o">+</span> <span class="n">len_joined_encodings</span><span class="p">])</span> <span class="o">+</span> <span class="n">joined_encodings</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">len_joined_encodings_as_be</span> <span class="o">=</span> <span class="n">len_joined_encodings</span><span class="o">.</span><span class="n">to_be_bytes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">Bytes</span><span class="p">([</span><span class="mh">0xF7</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">len_joined_encodings_as_be</span><span class="p">)])</span>
+            <span class="o">+</span> <span class="n">len_joined_encodings_as_be</span>
+            <span class="o">+</span> <span class="n">joined_encodings</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="get-joined-encodings">
+<h4>get_joined_encodings<a class="headerlink" href="#get-joined-encodings" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.get_joined_encodings">
+<span class="sig-name descname"><span class="pre">get_joined_encodings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_sequence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.rlp.get_joined_encodings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain concatenation of rlp encoding for each item in the sequence
+raw_sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw_sequence</strong> – Sequence to encode with RLP.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>joined_encodings</strong> – The concatenated RLP encoded bytes for each item in sequence
+raw_sequence.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_joined_encodings</span><span class="p">(</span><span class="n">raw_sequence</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">RLP</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">raw_sequence</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="decode">
+<h4>decode<a class="headerlink" href="#decode" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a><a class="headerlink" href="#ethereum.rlp.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes an integer, byte sequence, or list of RLP encodable objects
+from the byte sequence <cite>encoded_data</cite>, using RLP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>encoded_data</strong> – A sequence of bytes, in RLP form.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded_data</strong> – Object decoded from <cite>encoded_data</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>RLP</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RLP</span><span class="p">:</span>
+    <span class="c1"># Raising error as there can never be empty encoded data for any</span>
+    <span class="c1"># given raw data (including empty raw data)</span>
+    <span class="c1"># RLP Encoding(b&#39;&#39;) -&gt; [0x80]  # noqa: SC100</span>
+    <span class="c1"># RLP Encoding([])  -&gt; [0xc0]  # noqa: SC100</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">encoded_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mh">0xBF</span><span class="p">:</span>
+        <span class="c1"># This means that the raw data is of type bytes</span>
+        <span class="k">return</span> <span class="n">decode_to_bytes</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># This means that the raw data is of type sequence</span>
+        <span class="k">return</span> <span class="n">decode_to_sequence</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="t">
+<h4>T<a class="headerlink" href="#t" title="Permalink to this headline">¶</a></h4>
+<dl class="py data">
+<dt class="sig sig-object py" id="ethereum.rlp.T">
+<span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#ethereum.rlp.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-to">
+<h4>decode_to<a class="headerlink" href="#decode-to" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode_to">
+<span class="sig-name descname"><span class="pre">decode_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.T" title="ethereum.rlp.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoded_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.rlp.T" title="ethereum.rlp.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.rlp.decode_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the bytes in <cite>encoded_data</cite> to an object of type <cite>cls</cite>. <cite>cls</cite> can be
+a <cite>Bytes</cite> subclass, a dataclass, <cite>Uint</cite>, <cite>U256</cite> or <cite>Tuple[cls]</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> (<cite>Type[T]</cite>) – The type to decode to.</p></li>
+<li><p><strong>encoded_data</strong> – A sequence of bytes, in RLP form.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded_data</strong> – Object decoded from <cite>encoded_data</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>T</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_to</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">encoded_data</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">_decode_to</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">decode</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h4>_decode_to<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp._decode_to">
+<span class="sig-name descname"><span class="pre">_decode_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.T" title="ethereum.rlp.T"><span class="pre">T</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_rlp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#ethereum.rlp.T" title="ethereum.rlp.T"><span class="pre">T</span></a><a class="headerlink" href="#ethereum.rlp._decode_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the rlp structure in <cite>encoded_data</cite> to an object of type <cite>cls</cite>.
+<cite>cls</cite> can be a <cite>Bytes</cite> subclass, a dataclass, <cite>Uint</cite>, <cite>U256</cite> or
+<cite>Tuple[cls]</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> (<cite>Type[T]</cite>) – The type to decode to.</p></li>
+<li><p><strong>raw_rlp</strong> – A decode rlp structure.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded_data</strong> – Object decoded from <cite>encoded_data</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>T</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_decode_to</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">raw_rlp</span><span class="p">:</span> <span class="n">RLP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Uint</span><span class="p">,</span> <span class="o">...</span><span class="p">]))</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_name</span> <span class="o">==</span> <span class="s2">&quot;Tuple&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore # noqa: E501</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">raw_item</span> <span class="ow">in</span> <span class="n">raw_rlp</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_decode_to</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__args__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">raw_item</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="bp">cls</span> <span class="o">==</span> <span class="n">Union</span><span class="p">[</span><span class="n">Bytes0</span><span class="p">,</span> <span class="n">Bytes20</span><span class="p">]:</span>
+        <span class="c1"># We can&#39;t support Union types in general, so we support this one</span>
+        <span class="c1"># (which appears in the Transaction type) as a special case</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="n">Bytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Bytes0</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Bytes20</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;RLP Decoding to type </span><span class="si">{}</span><span class="s2"> is not supported&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Bytes</span><span class="p">):</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="n">Bytes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">raw_rlp</span>
+    <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="p">(</span><span class="n">Uint</span><span class="p">,</span> <span class="n">U256</span><span class="p">)):</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="n">Bytes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="n">is_dataclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_rlp</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># FIXME: Add length check</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">rlp_item</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">),</span> <span class="n">raw_rlp</span><span class="p">):</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_decode_to</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">rlp_item</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;RLP Decoding to type </span><span class="si">{}</span><span class="s2"> is not supported&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-to-bytes">
+<h4>decode_to_bytes<a class="headerlink" href="#decode-to-bytes" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode_to_bytes">
+<span class="sig-name descname"><span class="pre">decode_to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_bytes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a><a class="headerlink" href="#ethereum.rlp.decode_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a rlp encoded byte stream assuming that the decoded data
+should be of type <cite>bytes</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>encoded_bytes</strong> – RLP encoded byte stream.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded</strong> – RLP decoded Bytes data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>eth1spec.base_types.Bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_to_bytes</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">encoded_bytes</span>
+    <span class="k">elif</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mh">0xB7</span><span class="p">:</span>
+        <span class="n">len_raw_data</span> <span class="o">=</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x80</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">len_raw_data</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">))</span>
+        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">len_raw_data</span><span class="p">]</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">len_raw_data</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">raw_data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># This is the index in the encoded data at which decoded data</span>
+        <span class="c1"># starts from.</span>
+        <span class="n">decoded_data_start_idx</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0xB7</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">decoded_data_start_idx</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">))</span>
+        <span class="c1"># Expectation is that the big endian bytes shouldn&#39;t start with 0</span>
+        <span class="c1"># while trying to decode using RLP, in which case is an error.</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">len_decoded_data</span> <span class="o">=</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span>
+            <span class="n">encoded_bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">decoded_data_start_idx</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">len_decoded_data</span> <span class="o">&gt;=</span> <span class="mh">0x38</span><span class="p">)</span>
+        <span class="n">decoded_data_end_idx</span> <span class="o">=</span> <span class="n">decoded_data_start_idx</span> <span class="o">+</span> <span class="n">len_decoded_data</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">decoded_data_end_idx</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_bytes</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">encoded_bytes</span><span class="p">[</span><span class="n">decoded_data_start_idx</span><span class="p">:</span><span class="n">decoded_data_end_idx</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-to-sequence">
+<h4>decode_to_sequence<a class="headerlink" href="#decode-to-sequence" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode_to_sequence">
+<span class="sig-name descname"><span class="pre">decode_to_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_sequence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.rlp.decode_to_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a rlp encoded byte stream assuming that the decoded data
+should be of type <cite>Sequence</cite> of objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>encoded_sequence</strong> – An RLP encoded Sequence.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded</strong> – Sequence of objects decoded from <cite>encoded_sequence</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Sequence[RLP]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_to_sequence</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">RLP</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mh">0xF7</span><span class="p">:</span>
+        <span class="n">len_joined_encodings</span> <span class="o">=</span> <span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0xC0</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">len_joined_encodings</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">))</span>
+        <span class="n">joined_encodings</span> <span class="o">=</span> <span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">len_joined_encodings</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">joined_encodings_start_idx</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0xF7</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">joined_encodings_start_idx</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">))</span>
+        <span class="c1"># Expectation is that the big endian bytes shouldn&#39;t start with 0</span>
+        <span class="c1"># while trying to decode using RLP, in which case is an error.</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">len_joined_encodings</span> <span class="o">=</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span>
+            <span class="n">encoded_sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">joined_encodings_start_idx</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">len_joined_encodings</span> <span class="o">&gt;=</span> <span class="mh">0x38</span><span class="p">)</span>
+        <span class="n">joined_encodings_end_idx</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">joined_encodings_start_idx</span> <span class="o">+</span> <span class="n">len_joined_encodings</span>
+        <span class="p">)</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">joined_encodings_end_idx</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">))</span>
+        <span class="n">joined_encodings</span> <span class="o">=</span> <span class="n">encoded_sequence</span><span class="p">[</span>
+            <span class="n">joined_encodings_start_idx</span><span class="p">:</span><span class="n">joined_encodings_end_idx</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">decode_joined_encodings</span><span class="p">(</span><span class="n">joined_encodings</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-joined-encodings">
+<h4>decode_joined_encodings<a class="headerlink" href="#decode-joined-encodings" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode_joined_encodings">
+<span class="sig-name descname"><span class="pre">decode_joined_encodings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joined_encodings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#ethereum.rlp.decode_joined_encodings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes <cite>joined_encodings</cite>, which is a concatenation of RLP encoded
+objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>joined_encodings</strong> – concatenation of RLP encoded objects</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decoded</strong> – A list of objects decoded from <cite>joined_encodings</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>List[RLP]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_joined_encodings</span><span class="p">(</span><span class="n">joined_encodings</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">RLP</span><span class="p">]:</span>
+    <span class="n">decoded_sequence</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">item_start_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">item_start_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">joined_encodings</span><span class="p">):</span>
+        <span class="n">encoded_item_length</span> <span class="o">=</span> <span class="n">decode_item_length</span><span class="p">(</span>
+            <span class="n">joined_encodings</span><span class="p">[</span><span class="n">item_start_idx</span><span class="p">:]</span>
+        <span class="p">)</span>
+        <span class="n">ensure</span><span class="p">(</span>
+            <span class="n">item_start_idx</span> <span class="o">+</span> <span class="n">encoded_item_length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">joined_encodings</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">encoded_item</span> <span class="o">=</span> <span class="n">joined_encodings</span><span class="p">[</span>
+            <span class="n">item_start_idx</span> <span class="p">:</span> <span class="n">item_start_idx</span> <span class="o">+</span> <span class="n">encoded_item_length</span>
+        <span class="p">]</span>
+        <span class="n">decoded_sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded_item</span><span class="p">))</span>
+        <span class="n">item_start_idx</span> <span class="o">+=</span> <span class="n">encoded_item_length</span>
+
+    <span class="k">return</span> <span class="n">decoded_sequence</span>
+</pre></div>
+</div>
+</section>
+<section id="decode-item-length">
+<h4>decode_item_length<a class="headerlink" href="#decode-item-length" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.decode_item_length">
+<span class="sig-name descname"><span class="pre">decode_item_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../base_types/index.html#ethereum.base_types.Bytes" title="ethereum.base_types.Bytes"><span class="pre">ethereum.base_types.Bytes</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#ethereum.rlp.decode_item_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the length of the rlp encoding for the first object in the
+encoded sequence.
+Here <cite>encoded_data</cite> refers to concatenation of rlp encoding for each
+item in a sequence.</p>
+<p>NOTE - This is a helper function not described in the spec. It was
+introduced as the spec doesn’t discuss about decoding the RLP encoded
+data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>encoded_data</strong> – RLP encoded data for a sequence of objects.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rlp_length</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>int</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_item_length</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">:</span> <span class="n">Bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="c1"># Can&#39;t decode item length for empty encoding</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">first_rlp_byte</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># This is the length of the big endian representation of the length of</span>
+    <span class="c1"># rlp encoded object byte stream.</span>
+    <span class="n">length_length</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">decoded_data_length</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># This occurs only when the raw_data is a single byte whose value &lt; 128</span>
+    <span class="k">if</span> <span class="n">first_rlp_byte</span> <span class="o">&lt;</span> <span class="mh">0x80</span><span class="p">:</span>
+        <span class="c1"># We return 1 here, as the end formula</span>
+        <span class="c1"># 1 + length_length + decoded_data_length would be invalid for</span>
+        <span class="c1"># this case.</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="c1"># This occurs only when the raw_data is a byte stream with length &lt; 56</span>
+    <span class="c1"># and doesn&#39;t fall into the above cases</span>
+    <span class="k">elif</span> <span class="n">first_rlp_byte</span> <span class="o">&lt;=</span> <span class="mh">0xB7</span><span class="p">:</span>
+        <span class="n">decoded_data_length</span> <span class="o">=</span> <span class="n">first_rlp_byte</span> <span class="o">-</span> <span class="mh">0x80</span>
+    <span class="c1"># This occurs only when the raw_data is a byte stream and doesn&#39;t fall</span>
+    <span class="c1"># into the above cases</span>
+    <span class="k">elif</span> <span class="n">first_rlp_byte</span> <span class="o">&lt;=</span> <span class="mh">0xBF</span><span class="p">:</span>
+        <span class="n">length_length</span> <span class="o">=</span> <span class="n">first_rlp_byte</span> <span class="o">-</span> <span class="mh">0xB7</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">length_length</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">))</span>
+        <span class="c1"># Expectation is that the big endian bytes shouldn&#39;t start with 0</span>
+        <span class="c1"># while trying to decode using RLP, in which case is an error.</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">decoded_data_length</span> <span class="o">=</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span>
+            <span class="n">encoded_data</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">length_length</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="c1"># This occurs only when the raw_data is a sequence of objects with</span>
+    <span class="c1"># length(concatenation of encoding of each object) &lt; 56</span>
+    <span class="k">elif</span> <span class="n">first_rlp_byte</span> <span class="o">&lt;=</span> <span class="mh">0xF7</span><span class="p">:</span>
+        <span class="n">decoded_data_length</span> <span class="o">=</span> <span class="n">first_rlp_byte</span> <span class="o">-</span> <span class="mh">0xC0</span>
+    <span class="c1"># This occurs only when the raw_data is a sequence of objects and</span>
+    <span class="c1"># doesn&#39;t fall into the above cases.</span>
+    <span class="k">elif</span> <span class="n">first_rlp_byte</span> <span class="o">&lt;=</span> <span class="mh">0xFF</span><span class="p">:</span>
+        <span class="n">length_length</span> <span class="o">=</span> <span class="n">first_rlp_byte</span> <span class="o">-</span> <span class="mh">0xF7</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">length_length</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">))</span>
+        <span class="c1"># Expectation is that the big endian bytes shouldn&#39;t start with 0</span>
+        <span class="c1"># while trying to decode using RLP, in which case is an error.</span>
+        <span class="n">ensure</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">decoded_data_length</span> <span class="o">=</span> <span class="n">Uint</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span>
+            <span class="n">encoded_data</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">length_length</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">length_length</span> <span class="o">+</span> <span class="n">decoded_data_length</span>
+</pre></div>
+</div>
+</section>
+<section id="rlp-hash">
+<h4>rlp_hash<a class="headerlink" href="#rlp-hash" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.rlp.rlp_hash">
+<span class="sig-name descname"><span class="pre">rlp_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#ethereum.rlp.RLP" title="ethereum.rlp.RLP"><span class="pre">RLP</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../crypto/index.html#ethereum.crypto.Hash32" title="ethereum.crypto.Hash32"><span class="pre">ethereum.crypto.Hash32</span></a><a class="headerlink" href="#ethereum.rlp.rlp_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the keccak-256 hash of the rlp encoding of the passed in data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – The data for which we need the rlp hash.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>hash</strong> – The rlp hash of the passed in data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Hash32</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rlp_hash</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">RLP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hash32</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">keccak256</span><span class="p">(</span><span class="n">encode</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+      <li>Previous: <a href="../ethash/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.ethash</span></code></a></li>
+      <li>Next: <a href="../../../diffs/index.html" title="next chapter">Comparisons</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/ethereum/rlp/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

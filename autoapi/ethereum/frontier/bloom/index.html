@@ -26,6 +26,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
   
 
     <div class="document">
@@ -58,7 +66,10 @@
 </div>
 <section id="introduction">
 <h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
-<p>Logs Bloom related functionalities used in Ethereum.</p>
+<p>This modules defines functions for calculating bloom filters of logs. For the
+general theory of bloom filters see e.g. <a class="reference external" href="https://en.wikipedia.org/wiki/Bloom_filter">Wikipedia</a>. Bloom filters are used to allow
+for efficient searching of logs by address and/or topic, by rapidly
+eliminating blocks and reciepts from their search.</p>
 </section>
 <section id="module-contents">
 <h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
@@ -74,7 +85,7 @@
 <td><p>Add a bloom entry to the bloom filter (<cite>bloom</cite>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethereum.frontier.bloom.logs_bloom" title="ethereum.frontier.bloom.logs_bloom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logs_bloom</span></code></a></p></td>
-<td><p>Obtain the logs bloom from a list of log entries.</p></td>
+<td><p>Calculate the Bloom filter for a set of logs.</p></td>
 </tr>
 </tbody>
 </table>
@@ -88,6 +99,9 @@
 <dt class="sig sig-object py" id="ethereum.frontier.bloom.add_to_bloom">
 <span class="sig-name descname"><span class="pre">add_to_bloom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bloom</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytearray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bloom_entry</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.frontier.bloom.add_to_bloom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a bloom entry to the bloom filter (<cite>bloom</cite>).</p>
+<p>The number of hash functions used is 3. They are calculated by taking the
+least significant 11 bits from the first 3 16-bit words of the
+<cite>keccak_256()</cite> hash of <cite>bloom_entry</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -99,7 +113,6 @@
 </dd></dl>
 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_bloom</span><span class="p">(</span><span class="n">bloom</span><span class="p">:</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">bloom_entry</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="c1"># TODO: This functionality hasn&#39;t been tested rigorously yet.</span>
     <span class="nb">hash</span> <span class="o">=</span> <span class="n">keccak256</span><span class="p">(</span><span class="n">bloom_entry</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
@@ -123,13 +136,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="ethereum.frontier.bloom.logs_bloom">
 <span class="sig-name descname"><span class="pre">logs_bloom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../eth_types/index.html#ethereum.frontier.eth_types.Log" title="ethereum.frontier.eth_types.Log"><span class="pre">ethereum.frontier.eth_types.Log</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../eth_types/index.html#ethereum.frontier.eth_types.Bloom" title="ethereum.frontier.eth_types.Bloom"><span class="pre">ethereum.frontier.eth_types.Bloom</span></a><a class="headerlink" href="#ethereum.frontier.bloom.logs_bloom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Obtain the logs bloom from a list of log entries.</p>
+<dd><p>Calculate the Bloom filter for a set of logs.</p>
+<p>The address and each topic of a log are added to the bloom filter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>logs</strong> – List of logs for which the logs bloom is to be obtained.</p>
+<dd class="field-odd"><p><strong>logs</strong> – List of logs for which the logs bloom is to be calculated.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>logs_bloom</strong> – The logs bloom obtained which is 256 bytes with some bits set as per
+<dd class="field-even"><p><strong>logs_bloom</strong> – The logs bloom calculated which is 256 bytes with some bits set as per
 the caller address and the log topics.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -139,8 +153,6 @@ the caller address and the log topics.</p>
 </dd></dl>
 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logs_bloom</span><span class="p">(</span><span class="n">logs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Log</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Bloom</span><span class="p">:</span>
-    <span class="c1"># TODO: Logs bloom functionality hasn&#39;t been tested rigorously yet. The</span>
-    <span class="c1"># required test cases need `CALL` opcode to be implemented.</span>
     <span class="n">bloom</span><span class="p">:</span> <span class="nb">bytearray</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">256</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">logs</span><span class="p">:</span>

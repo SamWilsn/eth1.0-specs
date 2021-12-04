@@ -26,6 +26,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
   
 
     <div class="document">
@@ -55,9 +63,10 @@
 <li><p><a class="reference internal" href="#hex-to-bytes" id="id7">hex_to_bytes</a></p></li>
 <li><p><a class="reference internal" href="#hex-to-bytes8" id="id8">hex_to_bytes8</a></p></li>
 <li><p><a class="reference internal" href="#hex-to-bytes32" id="id9">hex_to_bytes32</a></p></li>
-<li><p><a class="reference internal" href="#hex-to-hash" id="id10">hex_to_hash</a></p></li>
-<li><p><a class="reference internal" href="#hex-to-uint" id="id11">hex_to_uint</a></p></li>
-<li><p><a class="reference internal" href="#hex-to-u256" id="id12">hex_to_u256</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-bytes256" id="id10">hex_to_bytes256</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-hash" id="id11">hex_to_hash</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-uint" id="id12">hex_to_uint</a></p></li>
+<li><p><a class="reference internal" href="#hex-to-u256" id="id13">hex_to_u256</a></p></li>
 </ul>
 </li>
 </ul>
@@ -91,13 +100,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_bytes32" title="ethereum.utils.hexadecimal.hex_to_bytes32"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_bytes32</span></code></a></p></td>
 <td><p>Convert hex string to 32 bytes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_hash" title="ethereum.utils.hexadecimal.hex_to_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_hash</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_bytes256" title="ethereum.utils.hexadecimal.hex_to_bytes256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_bytes256</span></code></a></p></td>
+<td><p>Convert hex string to 256 bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_hash" title="ethereum.utils.hexadecimal.hex_to_hash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_hash</span></code></a></p></td>
 <td><p>Convert hex string to hash32 (32 bytes).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_uint" title="ethereum.utils.hexadecimal.hex_to_uint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_uint</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_uint" title="ethereum.utils.hexadecimal.hex_to_uint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_uint</span></code></a></p></td>
 <td><p>Convert hex string to Uint.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_u256" title="ethereum.utils.hexadecimal.hex_to_u256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_u256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.utils.hexadecimal.hex_to_u256" title="ethereum.utils.hexadecimal.hex_to_u256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hex_to_u256</span></code></a></p></td>
 <td><p>Convert hex string to U256.</p></td>
 </tr>
 </tbody>
@@ -227,6 +239,32 @@ passed hex string if it isn’t prefixed with 0x.</p>
 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_bytes32</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes32</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">Bytes32</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="hex-to-bytes256">
+<h4>hex_to_bytes256<a class="headerlink" href="#hex-to-bytes256" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.utils.hexadecimal.hex_to_bytes256">
+<span class="sig-name descname"><span class="pre">hex_to_bytes256</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../base_types/index.html#ethereum.base_types.Bytes256" title="ethereum.base_types.Bytes256"><span class="pre">ethereum.base_types.Bytes256</span></a><a class="headerlink" href="#ethereum.utils.hexadecimal.hex_to_bytes256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex string to 256 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hex_string</strong> – The hexadecimal string to be converted to 256 bytes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>256_byte_stream</strong> – 256-byte stream corresponding to the given hexadecimal string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>bytes</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hex_to_bytes256</span><span class="p">(</span><span class="n">hex_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bytes256</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Bytes256</span><span class="p">(</span>
+        <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">remove_hex_prefix</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </section>

@@ -1,0 +1,127 @@
+:mod:`ethereum.homestead.vm.error`
+==================================
+
+.. py:module:: ethereum.homestead.vm.error
+
+Ethereum Virtual Machine (EVM) Errors
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Errors which cause the EVM to halt exceptionally.
+
+
+Module Contents
+---------------
+
+
+StackUnderflowError
+~~~~~~~~~~~~~~~~~~~
+
+
+Occurs when a pop is executed on an empty stack.
+
+
+.. exception:: StackUnderflowError
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+StackOverflowError
+~~~~~~~~~~~~~~~~~~
+
+
+Occurs when a push is executed on a stack at max capacity.
+
+
+.. exception:: StackOverflowError
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+OutOfGasError
+~~~~~~~~~~~~~
+
+
+Occurs when an operation costs more than the amount of gas left in the
+frame.
+
+
+.. exception:: OutOfGasError
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+InvalidOpcode
+~~~~~~~~~~~~~
+
+
+Raised when an invalid opcode is encountered.
+
+
+.. exception:: InvalidOpcode
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+InvalidJumpDestError
+~~~~~~~~~~~~~~~~~~~~
+
+
+Occurs when the destination of a jump operation doesn't meet any of the
+following criteria:
+
+  * The jump destination is less than the length of the code.
+  * The jump destination should have the `JUMPDEST` opcode (0x5B).
+  * The jump destination shouldn't be part of the data corresponding to
+    `PUSH-N` opcodes.
+
+
+.. exception:: InvalidJumpDestError
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+StackDepthLimitError
+~~~~~~~~~~~~~~~~~~~~
+
+
+Raised when the message depth is greater than `1024`
+
+
+.. exception:: StackDepthLimitError
+
+
+   Bases: :py:obj:`Exception`
+
+
+
+InsufficientFunds
+~~~~~~~~~~~~~~~~~
+
+
+Raised when an account has insufficient funds to transfer the
+requested value.
+
+
+.. exception:: InsufficientFunds
+
+
+   Bases: :py:obj:`Exception`
+
+

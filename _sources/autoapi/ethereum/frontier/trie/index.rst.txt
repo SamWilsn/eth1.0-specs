@@ -78,7 +78,7 @@ EMPTY_TRIE_ROOT
 
 .. undocinclude:: /../src/ethereum/frontier/trie.py
    :language: python
-   :lines: 53-55
+   :lines: 59-61
 
 
 Node
@@ -92,7 +92,7 @@ Node
 
 .. undocinclude:: /../src/ethereum/frontier/trie.py
    :language: python
-   :lines: 59-59
+   :lines: 65-65
 
 
 K
@@ -106,7 +106,7 @@ K
 
 .. undocinclude:: /../src/ethereum/frontier/trie.py
    :language: python
-   :lines: 60-60
+   :lines: 66-66
 
 
 V
@@ -120,7 +120,7 @@ V
 
 .. undocinclude:: /../src/ethereum/frontier/trie.py
    :language: python
-   :lines: 61-69
+   :lines: 67-75
 
 
 LeafNode
@@ -142,7 +142,7 @@ Leaf node in the Merkle Trie
    
 
    .. py:attribute:: value
-      :annotation: :ethereum.frontier.rlp.RLP
+      :annotation: :ethereum.rlp.RLP
 
       
 
@@ -167,7 +167,7 @@ Extension node in the Merkle Trie
    
 
    .. py:attribute:: subnode
-      :annotation: :ethereum.frontier.rlp.RLP
+      :annotation: :ethereum.rlp.RLP
 
       
 
@@ -185,14 +185,14 @@ Branch node in the Merkle Trie
    
 
    .. py:attribute:: subnodes
-      :annotation: :List[ethereum.frontier.rlp.RLP]
+      :annotation: :List[ethereum.rlp.RLP]
 
       
 
    
 
    .. py:attribute:: value
-      :annotation: :ethereum.frontier.rlp.RLP
+      :annotation: :ethereum.rlp.RLP
 
       
 
@@ -209,14 +209,14 @@ InternalNode
 
 .. undocinclude:: /../src/ethereum/frontier/trie.py
    :language: python
-   :lines: 100-100
+   :lines: 106-106
 
 
 encode_internal_node
 ~~~~~~~~~~~~~~~~~~~~
 
 
-.. function:: encode_internal_node(node: Optional[InternalNode]) -> ethereum.frontier.rlp.RLP
+.. function:: encode_internal_node(node: Optional[InternalNode]) -> ethereum.rlp.RLP
    :noindexentry:
 
    Encodes a Merkle Trie node into its RLP form. The RLP will then be

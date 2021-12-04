@@ -1,0 +1,78 @@
+:mod:`ethereum.homestead.vm.instructions.storage`
+=================================================
+
+.. py:module:: ethereum.homestead.vm.instructions.storage
+
+Ethereum Virtual Machine (EVM) Storage Instructions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Implementations of the EVM storage related instructions.
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   ethereum.homestead.vm.instructions.storage.sload
+   ethereum.homestead.vm.instructions.storage.sstore
+
+
+
+Module Details
+---------------
+
+sload
+~~~~~
+
+
+.. function:: sload(evm: ethereum.homestead.vm.Evm) -> None
+   :noindexentry:
+
+   Loads to the stack, the value corresponding to a certain key from the
+   storage of the current account.
+
+   :param evm: The current EVM frame.
+
+   :raises ethereum.homestead.vm.error.StackUnderflowError: If `len(stack)` is less than `1`.
+   :raises ethereum.homestead.vm.error.OutOfGasError: If `evm.gas_left` is less than `50`.
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/vm/instructions/storage.py
+   :language: python
+   :pyobject: sload
+
+sstore
+~~~~~~
+
+
+.. function:: sstore(evm: ethereum.homestead.vm.Evm) -> None
+   :noindexentry:
+
+   Stores a value at a certain key in the current context's storage.
+
+   :param evm: The current EVM frame.
+
+   :raises ethereum.homestead.vm.error.StackUnderflowError: If `len(stack)` is less than `2`.
+   :raises ethereum.homestead.vm.error.OutOfGasError: If `evm.gas_left` is less than `20000`.
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/vm/instructions/storage.py
+   :language: python
+   :pyobject: sstore

@@ -1,0 +1,76 @@
+:mod:`ethereum.homestead.bloom`
+===============================
+
+.. py:module:: ethereum.homestead.bloom
+
+Ethereum Logs Bloom
+^^^^^^^^^^^^^^^^^^^
+
+.. contents:: Table of Contents
+    :backlinks: none
+    :local:
+
+Introduction
+------------
+
+Logs Bloom related functionalities used in Ethereum.
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+   :nosignatures:
+
+   ethereum.homestead.bloom.add_to_bloom
+   ethereum.homestead.bloom.logs_bloom
+
+
+
+Module Details
+---------------
+
+add_to_bloom
+~~~~~~~~~~~~
+
+
+.. function:: add_to_bloom(bloom: bytearray, bloom_entry: bytes) -> None
+   :noindexentry:
+
+   Add a bloom entry to the bloom filter (`bloom`).
+
+   :param bloom: The bloom filter.
+   :param bloom_entry: An entry which is to be added to bloom filter.
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/bloom.py
+   :language: python
+   :pyobject: add_to_bloom
+
+logs_bloom
+~~~~~~~~~~
+
+
+.. function:: logs_bloom(logs: Tuple[ethereum.homestead.eth_types.Log, Ellipsis]) -> ethereum.homestead.eth_types.Bloom
+   :noindexentry:
+
+   Obtain the logs bloom from a list of log entries.
+
+   :param logs: List of logs for which the logs bloom is to be obtained.
+
+   :returns: **logs_bloom** -- The logs bloom obtained which is 256 bytes with some bits set as per
+             the caller address and the log topics.
+   :rtype: `Bloom`
+
+
+
+
+.. undocinclude:: /../src/ethereum/homestead/bloom.py
+   :language: python
+   :pyobject: logs_bloom

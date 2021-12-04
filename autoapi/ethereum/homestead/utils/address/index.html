@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.utils.address &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.utils.hexadecimal" href="../hexadecimal/index.html" />
+    <link rel="prev" title="ethereum.homestead.utils" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.utils.address">
+<span id="ethereum-homestead-utils-address"></span><h1><a class="reference internal" href="#module-ethereum.homestead.utils.address" title="ethereum.homestead.utils.address"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.utils.address</span></code></a><a class="headerlink" href="#module-ethereum.homestead.utils.address" title="Permalink to this headline">¶</a></h1>
+<section id="homestead-utility-functions-for-addresses">
+<h2>Homestead Utility Functions For Addresses<a class="headerlink" href="#homestead-utility-functions-for-addresses" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#to-address" id="id5">to_address</a></p></li>
+<li><p><a class="reference internal" href="#compute-contract-address" id="id6">compute_contract_address</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Address specific functions used in this homestead version of specification.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.utils.address.to_address" title="ethereum.homestead.utils.address.to_address"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_address</span></code></a></p></td>
+<td><p>Convert a Uint or U256 value to a valid address (20 bytes).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.utils.address.compute_contract_address" title="ethereum.homestead.utils.address.compute_contract_address"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_contract_address</span></code></a></p></td>
+<td><p>Computes address of the new account that needs to be created.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="to-address">
+<h4>to_address<a class="headerlink" href="#to-address" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.utils.address.to_address">
+<span class="sig-name descname"><span class="pre">to_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../../../base_types/index.html#ethereum.base_types.U256" title="ethereum.base_types.U256"><span class="pre">ethereum.base_types.U256</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a><a class="headerlink" href="#ethereum.homestead.utils.address.to_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a Uint or U256 value to a valid address (20 bytes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – The string to be converted to bytes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>address</strong> – The obtained address.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>Address</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_address</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Uint</span><span class="p">,</span> <span class="n">U256</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Address</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">to_be_bytes32</span><span class="p">()[</span><span class="o">-</span><span class="mi">20</span><span class="p">:])</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-contract-address">
+<h4>compute_contract_address<a class="headerlink" href="#compute-contract-address" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.utils.address.compute_contract_address">
+<span class="sig-name descname"><span class="pre">compute_contract_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonce</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../../base_types/index.html#ethereum.base_types.Uint" title="ethereum.base_types.Uint"><span class="pre">ethereum.base_types.Uint</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../../eth_types/index.html#ethereum.homestead.eth_types.Address" title="ethereum.homestead.eth_types.Address"><span class="pre">ethereum.homestead.eth_types.Address</span></a><a class="headerlink" href="#ethereum.homestead.utils.address.compute_contract_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes address of the new account that needs to be created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> – The address of the account that wants to create the new account.</p></li>
+<li><p><strong>nonce</strong> – The transaction count of the account that wants to create the new
+account.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>address</strong> – The computed address of the new account.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>ethereum.homestead.eth_types.Address</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_contract_address</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="n">Address</span><span class="p">,</span> <span class="n">nonce</span><span class="p">:</span> <span class="n">Uint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Address</span><span class="p">:</span>
+    <span class="n">computed_address</span> <span class="o">=</span> <span class="n">keccak256</span><span class="p">(</span><span class="n">rlp</span><span class="o">.</span><span class="n">encode</span><span class="p">([</span><span class="n">address</span><span class="p">,</span> <span class="n">nonce</span><span class="p">]))</span>
+    <span class="n">canonical_address</span> <span class="o">=</span> <span class="n">computed_address</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span>
+    <span class="n">padded_address</span> <span class="o">=</span> <span class="n">canonical_address</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="n">padded_address</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">API Reference</a><ul>
+  <li><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.utils</span></code></a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.utils</span></code></a></li>
+      <li>Next: <a href="../hexadecimal/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.utils.hexadecimal</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../_sources/autoapi/ethereum/homestead/utils/address/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

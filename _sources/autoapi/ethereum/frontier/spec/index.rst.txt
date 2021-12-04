@@ -563,10 +563,10 @@ calculate_block_difficulty
 
    Computes difficulty of a block using its header and parent header.
 
-   :param number: Block number of the block
-   :param timestamp: Timestmap of the block
-   :param parent_timestamp: Timestanp of the parent block
-   :param parent_difficulty: difficulty of the parent block
+   :param number: Block number of the block.
+   :param timestamp: Timestamp of the block.
+   :param parent_timestamp: Timestamp of the parent block.
+   :param parent_difficulty: difficulty of the parent block.
 
    :returns: **difficulty** -- Computed difficulty for a block.
    :rtype: `ethereum.base_types.Uint`

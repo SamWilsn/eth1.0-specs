@@ -31,6 +31,7 @@ Functions
    ethereum.utils.hexadecimal.hex_to_bytes
    ethereum.utils.hexadecimal.hex_to_bytes8
    ethereum.utils.hexadecimal.hex_to_bytes32
+   ethereum.utils.hexadecimal.hex_to_bytes256
    ethereum.utils.hexadecimal.hex_to_hash
    ethereum.utils.hexadecimal.hex_to_uint
    ethereum.utils.hexadecimal.hex_to_u256
@@ -145,6 +146,27 @@ hex_to_bytes32
 .. undocinclude:: /../src/ethereum/utils/hexadecimal.py
    :language: python
    :pyobject: hex_to_bytes32
+
+hex_to_bytes256
+~~~~~~~~~~~~~~~
+
+
+.. function:: hex_to_bytes256(hex_string: str) -> ethereum.base_types.Bytes256
+   :noindexentry:
+
+   Convert hex string to 256 bytes.
+
+   :param hex_string: The hexadecimal string to be converted to 256 bytes.
+
+   :returns: **256_byte_stream** -- 256-byte stream corresponding to the given hexadecimal string.
+   :rtype: `bytes`
+
+
+
+
+.. undocinclude:: /../src/ethereum/utils/hexadecimal.py
+   :language: python
+   :pyobject: hex_to_bytes256
 
 hex_to_hash
 ~~~~~~~~~~~

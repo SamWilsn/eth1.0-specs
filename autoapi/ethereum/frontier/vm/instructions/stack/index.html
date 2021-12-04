@@ -26,6 +26,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
   
 
     <div class="document">
@@ -442,7 +450,7 @@ to the top of stack.</p></li>
 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dup_n</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">,</span> <span class="n">item_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_VERY_LOW</span><span class="p">)</span>
-    <span class="n">ensure</span><span class="p">(</span><span class="n">item_number</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">ensure</span><span class="p">(</span><span class="n">item_number</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">),</span> <span class="n">exception_class</span><span class="o">=</span><span class="n">StackUnderflowError</span><span class="p">)</span>
 
     <span class="n">data_to_duplicate</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">item_number</span><span class="p">]</span>
     <span class="n">stack</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">data_to_duplicate</span><span class="p">)</span>

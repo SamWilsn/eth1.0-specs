@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.vm &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.vm.instructions" href="instructions/index.html" />
+    <link rel="prev" title="ethereum.homestead.utils.message" href="../utils/message/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.vm">
+<span id="ethereum-homestead-vm"></span><h1><a class="reference internal" href="#module-ethereum.homestead.vm" title="ethereum.homestead.vm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm</span></code></a><a class="headerlink" href="#module-ethereum.homestead.vm" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm">
+<h2>Ethereum Virtual Machine (EVM)<a class="headerlink" href="#ethereum-virtual-machine-evm" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#subpackages" id="id2">Subpackages</a></p></li>
+<li><p><a class="reference internal" href="#submodules" id="id3">Submodules</a></p></li>
+<li><p><a class="reference internal" href="#package-contents" id="id4">Package Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes" id="id5">Classes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#package-details" id="id6">Package Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#environment" id="id7">Environment</a></p></li>
+<li><p><a class="reference internal" href="#message" id="id8">Message</a></p></li>
+<li><p><a class="reference internal" href="#evm" id="id9">Evm</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>The abstract computer which runs the code stored in an
+<cite>eth1spec.eth_types.Account</cite>.</p>
+</section>
+<section id="subpackages">
+<h3>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instructions/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instructions/arithmetic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.arithmetic</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/bitwise/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.bitwise</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/block/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.block</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/comparison/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.comparison</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/control_flow/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.control_flow</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/environment/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.environment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/keccak/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.keccak</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/log/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.log</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.memory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.stack</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/storage/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.storage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions/system/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.system</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled_contracts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="precompiled_contracts/ecrecover/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.ecrecover</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompiled_contracts/identity/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.identity</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompiled_contracts/mapping/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.mapping</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompiled_contracts/ripemd160/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.ripemd160</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompiled_contracts/sha256/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.precompiled_contracts.sha256</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="error/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.error</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="gas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.gas</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpreter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.interpreter</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.memory</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.runtime</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="stack/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.stack</span></code></a></li>
+</ul>
+</div>
+</section>
+<section id="package-contents">
+<h3>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h4>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.Environment" title="ethereum.homestead.vm.Environment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Environment</span></code></a></p></td>
+<td><p>Items external to the virtual machine itself, provided by the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.Message" title="ethereum.homestead.vm.Message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Message</span></code></a></p></td>
+<td><p>Items that are used by contract creation or message call.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Evm</span></code></a></p></td>
+<td><p>The internal state of the virtual machine.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="package-details">
+<h3>Package Details<a class="headerlink" href="#package-details" title="Permalink to this headline">¶</a></h3>
+<section id="environment">
+<h4>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h4>
+<p>Items external to the virtual machine itself, provided by the environment.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Environment</span></span><a class="headerlink" href="#ethereum.homestead.vm.Environment" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.caller">
+<span class="sig-name descname"><span class="pre">caller</span></span><em class="property"> <span class="pre">:ethereum.homestead.eth_types.Address</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.caller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.block_hashes">
+<span class="sig-name descname"><span class="pre">block_hashes</span></span><em class="property"> <span class="pre">:List[ethereum.crypto.Hash32]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.block_hashes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><em class="property"> <span class="pre">:ethereum.homestead.eth_types.Address</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.origin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.coinbase">
+<span class="sig-name descname"><span class="pre">coinbase</span></span><em class="property"> <span class="pre">:ethereum.homestead.eth_types.Address</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.coinbase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.number">
+<span class="sig-name descname"><span class="pre">number</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.gas_limit">
+<span class="sig-name descname"><span class="pre">gas_limit</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.gas_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.gas_price">
+<span class="sig-name descname"><span class="pre">gas_price</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.gas_price" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.time">
+<span class="sig-name descname"><span class="pre">time</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.difficulty">
+<span class="sig-name descname"><span class="pre">difficulty</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.difficulty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Environment.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"> <span class="pre">:ethereum.homestead.state.State</span></em><a class="headerlink" href="#ethereum.homestead.vm.Environment.state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="message">
+<h4>Message<a class="headerlink" href="#message" title="Permalink to this headline">¶</a></h4>
+<p>Items that are used by contract creation or message call.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Message</span></span><a class="headerlink" href="#ethereum.homestead.vm.Message" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.caller">
+<span class="sig-name descname"><span class="pre">caller</span></span><em class="property"> <span class="pre">:ethereum.homestead.eth_types.Address</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.caller" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.target">
+<span class="sig-name descname"><span class="pre">target</span></span><em class="property"> <span class="pre">:Union[ethereum.base_types.Bytes0,</span> <span class="pre">ethereum.homestead.eth_types.Address]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.current_target">
+<span class="sig-name descname"><span class="pre">current_target</span></span><em class="property"> <span class="pre">:ethereum.homestead.eth_types.Address</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.current_target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.gas">
+<span class="sig-name descname"><span class="pre">gas</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.gas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.code_address">
+<span class="sig-name descname"><span class="pre">code_address</span></span><em class="property"> <span class="pre">:Optional[ethereum.homestead.eth_types.Address]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.code_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Message.should_transfer_value">
+<span class="sig-name descname"><span class="pre">should_transfer_value</span></span><em class="property"> <span class="pre">:bool</span></em><a class="headerlink" href="#ethereum.homestead.vm.Message.should_transfer_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="evm">
+<h4>Evm<a class="headerlink" href="#evm" title="Permalink to this headline">¶</a></h4>
+<p>The internal state of the virtual machine.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Evm</span></span><a class="headerlink" href="#ethereum.homestead.vm.Evm" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><em class="property"> <span class="pre">:ethereum.base_types.Uint</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.pc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.stack">
+<span class="sig-name descname"><span class="pre">stack</span></span><em class="property"> <span class="pre">:List[ethereum.base_types.U256]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.memory">
+<span class="sig-name descname"><span class="pre">memory</span></span><em class="property"> <span class="pre">:bytearray</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.gas_left">
+<span class="sig-name descname"><span class="pre">gas_left</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.gas_left" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.env">
+<span class="sig-name descname"><span class="pre">env</span></span><em class="property"> <span class="pre">:Environment</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.valid_jump_destinations">
+<span class="sig-name descname"><span class="pre">valid_jump_destinations</span></span><em class="property"> <span class="pre">:Set[ethereum.base_types.Uint]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.valid_jump_destinations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.logs">
+<span class="sig-name descname"><span class="pre">logs</span></span><em class="property"> <span class="pre">:Tuple[ethereum.homestead.eth_types.Log,</span> <span class="pre">Ellipsis]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.refund_counter">
+<span class="sig-name descname"><span class="pre">refund_counter</span></span><em class="property"> <span class="pre">:ethereum.base_types.U256</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.refund_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.running">
+<span class="sig-name descname"><span class="pre">running</span></span><em class="property"> <span class="pre">:bool</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.running" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"> <span class="pre">:Message</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.output">
+<span class="sig-name descname"><span class="pre">output</span></span><em class="property"> <span class="pre">:ethereum.base_types.Bytes</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.accounts_to_delete">
+<span class="sig-name descname"><span class="pre">accounts_to_delete</span></span><em class="property"> <span class="pre">:Set[ethereum.homestead.eth_types.Address]</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.accounts_to_delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.Evm.has_erred">
+<span class="sig-name descname"><span class="pre">has_erred</span></span><em class="property"> <span class="pre">:bool</span></em><a class="headerlink" href="#ethereum.homestead.vm.Evm.has_erred" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+      <li>Previous: <a href="../utils/message/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.utils.message</span></code></a></li>
+      <li>Next: <a href="instructions/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/ethereum/homestead/vm/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

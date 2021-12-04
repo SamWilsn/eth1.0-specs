@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ethereum.homestead.vm.instructions.environment &#8212; Ethereum Specification  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/custom.css" />
+    <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="ethereum.homestead.vm.instructions.keccak" href="../keccak/index.html" />
+    <link rel="prev" title="ethereum.homestead.vm.instructions.control_flow" href="../control_flow/index.html" />
+   
+  <link rel="stylesheet" href="../../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+<div id="disclaimer">
+    The documentation tools are undergoing heavy development and may introduce
+    subtle bugs while rendering, especially in hard fork comparisons. Until this
+    warning is removed, <em>always</em> double check against the
+    <a href="https://github.com/ethereum/execution-specs/">original source</a>.
+</div>
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ethereum.homestead.vm.instructions.environment">
+<span id="ethereum-homestead-vm-instructions-environment"></span><h1><a class="reference internal" href="#module-ethereum.homestead.vm.instructions.environment" title="ethereum.homestead.vm.instructions.environment"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.environment</span></code></a><a class="headerlink" href="#module-ethereum.homestead.vm.instructions.environment" title="Permalink to this headline">¶</a></h1>
+<section id="ethereum-virtual-machine-evm-environmental-instructions">
+<h2>Ethereum Virtual Machine (EVM) Environmental Instructions<a class="headerlink" href="#ethereum-virtual-machine-evm-environmental-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#module-contents" id="id2">Module Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#functions" id="id3">Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-details" id="id4">Module Details</a></p>
+<ul>
+<li><p><a class="reference internal" href="#address" id="id5">address</a></p></li>
+<li><p><a class="reference internal" href="#balance" id="id6">balance</a></p></li>
+<li><p><a class="reference internal" href="#origin" id="id7">origin</a></p></li>
+<li><p><a class="reference internal" href="#caller" id="id8">caller</a></p></li>
+<li><p><a class="reference internal" href="#callvalue" id="id9">callvalue</a></p></li>
+<li><p><a class="reference internal" href="#calldataload" id="id10">calldataload</a></p></li>
+<li><p><a class="reference internal" href="#calldatasize" id="id11">calldatasize</a></p></li>
+<li><p><a class="reference internal" href="#calldatacopy" id="id12">calldatacopy</a></p></li>
+<li><p><a class="reference internal" href="#codesize" id="id13">codesize</a></p></li>
+<li><p><a class="reference internal" href="#codecopy" id="id14">codecopy</a></p></li>
+<li><p><a class="reference internal" href="#gasprice" id="id15">gasprice</a></p></li>
+<li><p><a class="reference internal" href="#extcodesize" id="id16">extcodesize</a></p></li>
+<li><p><a class="reference internal" href="#extcodecopy" id="id17">extcodecopy</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Implementations of the EVM environment related instructions.</p>
+</section>
+<section id="module-contents">
+<h3>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h3>
+<section id="functions">
+<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.address" title="ethereum.homestead.vm.instructions.environment.address"><code class="xref py py-obj docutils literal notranslate"><span class="pre">address</span></code></a></p></td>
+<td><p>Pushes the address of the current executing account to the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.balance" title="ethereum.homestead.vm.instructions.environment.balance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">balance</span></code></a></p></td>
+<td><p>Pushes the balance of the given account onto the stack.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.origin" title="ethereum.homestead.vm.instructions.environment.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a></p></td>
+<td><p>Pushes the address of the original transaction sender to the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.caller" title="ethereum.homestead.vm.instructions.environment.caller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">caller</span></code></a></p></td>
+<td><p>Pushes the address of the caller onto the stack.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.callvalue" title="ethereum.homestead.vm.instructions.environment.callvalue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callvalue</span></code></a></p></td>
+<td><p>Push the value (in wei) sent with the call onto the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.calldataload" title="ethereum.homestead.vm.instructions.environment.calldataload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calldataload</span></code></a></p></td>
+<td><p>Push a word (32 bytes) of the input data belonging to the current</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.calldatasize" title="ethereum.homestead.vm.instructions.environment.calldatasize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calldatasize</span></code></a></p></td>
+<td><p>Push the size of input data in current environment onto the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.calldatacopy" title="ethereum.homestead.vm.instructions.environment.calldatacopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calldatacopy</span></code></a></p></td>
+<td><p>Copy a portion of the input data in current environment to memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.codesize" title="ethereum.homestead.vm.instructions.environment.codesize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codesize</span></code></a></p></td>
+<td><p>Push the size of code running in current environment onto the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.codecopy" title="ethereum.homestead.vm.instructions.environment.codecopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codecopy</span></code></a></p></td>
+<td><p>Copy a portion of the code in current environment to memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.gasprice" title="ethereum.homestead.vm.instructions.environment.gasprice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gasprice</span></code></a></p></td>
+<td><p>Push the gas price used in current environment onto the stack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.extcodesize" title="ethereum.homestead.vm.instructions.environment.extcodesize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extcodesize</span></code></a></p></td>
+<td><p>Push the code size of a given account onto the stack.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethereum.homestead.vm.instructions.environment.extcodecopy" title="ethereum.homestead.vm.instructions.environment.extcodecopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extcodecopy</span></code></a></p></td>
+<td><p>Copy a portion of an account’s code to memory.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-details">
+<h3>Module Details<a class="headerlink" href="#module-details" title="Permalink to this headline">¶</a></h3>
+<section id="address">
+<h4>address<a class="headerlink" href="#address" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.address">
+<span class="sig-name descname"><span class="pre">address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the address of the current executing account to the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">current_target</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="balance">
+<h4>balance<a class="headerlink" href="#balance" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.balance">
+<span class="sig-name descname"><span class="pre">balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the balance of the given account onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>1</cite>.</p></li>
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>20</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">balance</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># TODO: There are no test cases against this function. Need to write</span>
+    <span class="c1"># custom test cases.</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_EXTERNAL</span><span class="p">)</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="c1"># Non-existent accounts default to EMPTY_ACCOUNT, which has balance 0.</span>
+    <span class="n">balance</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">balance</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">balance</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="origin">
+<h4>origin<a class="headerlink" href="#origin" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.origin">
+<span class="sig-name descname"><span class="pre">origin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the address of the original transaction sender to the stack.
+The origin address can only be an EOA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">origin</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="caller">
+<h4>caller<a class="headerlink" href="#caller" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.caller">
+<span class="sig-name descname"><span class="pre">caller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.caller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pushes the address of the caller onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">caller</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">caller</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="callvalue">
+<h4>callvalue<a class="headerlink" href="#callvalue" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.callvalue">
+<span class="sig-name descname"><span class="pre">callvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.callvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the value (in wei) sent with the call onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">callvalue</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="calldataload">
+<h4>calldataload<a class="headerlink" href="#calldataload" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.calldataload">
+<span class="sig-name descname"><span class="pre">calldataload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.calldataload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push a word (32 bytes) of the input data belonging to the current
+environment onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>1</cite>.</p></li>
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>3</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calldataload</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_VERY_LOW</span><span class="p">)</span>
+
+    <span class="c1"># Converting start_index to Uint from U256 as start_index + 32 can</span>
+    <span class="c1"># overflow U256.</span>
+    <span class="n">start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">start_index</span> <span class="p">:</span> <span class="n">start_index</span> <span class="o">+</span> <span class="mi">32</span><span class="p">]</span>
+    <span class="c1"># Right pad with 0 so that there are overall 32 bytes.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="o">.</span><span class="n">from_be_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="calldatasize">
+<h4>calldatasize<a class="headerlink" href="#calldatasize" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.calldatasize">
+<span class="sig-name descname"><span class="pre">calldatasize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.calldatasize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the size of input data in current environment onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calldatasize</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="calldatacopy">
+<h4>calldatacopy<a class="headerlink" href="#calldatacopy" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.calldatacopy">
+<span class="sig-name descname"><span class="pre">calldatacopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.calldatacopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a portion of the input data in current environment to memory.</p>
+<p>This will also expand the memory, in case that the memory is insufficient
+to store the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>3</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calldatacopy</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Converting below to Uint as though the start indices may belong to U256,</span>
+    <span class="c1"># the ending indices may overflow U256.</span>
+    <span class="n">memory_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">data_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="n">ceil32</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">size</span><span class="p">))</span> <span class="o">//</span> <span class="mi">32</span>
+    <span class="n">copy_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_multiply</span><span class="p">(</span>
+        <span class="n">GAS_COPY</span><span class="p">,</span>
+        <span class="n">words</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">memory_extend_gas_cost</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span>
+    <span class="p">)</span>
+    <span class="n">total_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">GAS_VERY_LOW</span><span class="p">,</span>
+        <span class="n">copy_gas_cost</span><span class="p">,</span>
+        <span class="n">memory_extend_gas_cost</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">total_gas_cost</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data_start_index</span> <span class="p">:</span> <span class="n">data_start_index</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+    <span class="c1"># But it is possible that data_start_index + size won&#39;t exist in evm.data</span>
+    <span class="c1"># in which case we need to right pad the above obtained bytes with 0.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">memory_write</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="codesize">
+<h4>codesize<a class="headerlink" href="#codesize" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.codesize">
+<span class="sig-name descname"><span class="pre">codesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.codesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the size of code running in current environment onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">codesize</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">code</span><span class="p">)))</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="codecopy">
+<h4>codecopy<a class="headerlink" href="#codecopy" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.codecopy">
+<span class="sig-name descname"><span class="pre">codecopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.codecopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a portion of the code in current environment to memory.</p>
+<p>This will also expand the memory, in case that the memory is insufficient
+to store the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>3</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">codecopy</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Converting below to Uint as though the start indices may belong to U256,</span>
+    <span class="c1"># the ending indices may not belong to U256.</span>
+    <span class="n">memory_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">code_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="n">ceil32</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">size</span><span class="p">))</span> <span class="o">//</span> <span class="mi">32</span>
+    <span class="n">copy_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_multiply</span><span class="p">(</span>
+        <span class="n">GAS_COPY</span><span class="p">,</span>
+        <span class="n">words</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">memory_extend_gas_cost</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span>
+    <span class="p">)</span>
+    <span class="n">total_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">GAS_VERY_LOW</span><span class="p">,</span>
+        <span class="n">copy_gas_cost</span><span class="p">,</span>
+        <span class="n">memory_extend_gas_cost</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">total_gas_cost</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">evm</span><span class="o">.</span><span class="n">code</span><span class="p">[</span><span class="n">code_start_index</span> <span class="p">:</span> <span class="n">code_start_index</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+    <span class="c1"># But it is possible that code_start_index + size - 1 won&#39;t exist in</span>
+    <span class="c1"># evm.code in which case we need to right pad the above obtained bytes</span>
+    <span class="c1"># with 0.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">memory_write</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="gasprice">
+<h4>gasprice<a class="headerlink" href="#gasprice" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.gasprice">
+<span class="sig-name descname"><span class="pre">gasprice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.gasprice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the gas price used in current environment onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>2</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gasprice</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_BASE</span><span class="p">)</span>
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">gas_price</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="extcodesize">
+<h4>extcodesize<a class="headerlink" href="#extcodesize" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.extcodesize">
+<span class="sig-name descname"><span class="pre">extcodesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.extcodesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the code size of a given account onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>1</cite>.</p></li>
+<li><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.OutOfGasError" title="ethereum.homestead.vm.error.OutOfGasError"><strong>ethereum.homestead.vm.error.OutOfGasError</strong></a> – If <cite>evm.gas_left</cite> is less than <cite>20</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extcodesize</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># TODO: There are no test cases against this function. Need to write</span>
+    <span class="c1"># custom test cases.</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">GAS_EXTERNAL</span><span class="p">)</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="c1"># Non-existent accounts default to EMPTY_ACCOUNT, which has empty code.</span>
+    <span class="n">codesize</span> <span class="o">=</span> <span class="n">U256</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+
+    <span class="n">push</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">,</span> <span class="n">codesize</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="extcodecopy">
+<h4>extcodecopy<a class="headerlink" href="#extcodecopy" title="Permalink to this headline">¶</a></h4>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethereum.homestead.vm.instructions.environment.extcodecopy">
+<span class="sig-name descname"><span class="pre">extcodecopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../index.html#ethereum.homestead.vm.Evm" title="ethereum.homestead.vm.Evm"><span class="pre">ethereum.homestead.vm.Evm</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ethereum.homestead.vm.instructions.environment.extcodecopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a portion of an account’s code to memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evm</strong> – The current EVM frame.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../error/index.html#ethereum.homestead.vm.error.StackUnderflowError" title="ethereum.homestead.vm.error.StackUnderflowError"><strong>ethereum.homestead.vm.error.StackUnderflowError</strong></a> – If <cite>len(stack)</cite> is less than <cite>4</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extcodecopy</span><span class="p">(</span><span class="n">evm</span><span class="p">:</span> <span class="n">Evm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># TODO: There are no test cases against this function. Need to write</span>
+    <span class="c1"># custom test cases.</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="n">to_address</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+
+    <span class="n">memory_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">code_start_index</span> <span class="o">=</span> <span class="n">Uint</span><span class="p">(</span><span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">))</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="n">ceil32</span><span class="p">(</span><span class="n">Uint</span><span class="p">(</span><span class="n">size</span><span class="p">))</span> <span class="o">//</span> <span class="mi">32</span>
+    <span class="n">copy_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_multiply</span><span class="p">(</span>
+        <span class="n">GAS_COPY</span><span class="p">,</span>
+        <span class="n">words</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">memory_extend_gas_cost</span> <span class="o">=</span> <span class="n">calculate_gas_extend_memory</span><span class="p">(</span>
+        <span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span>
+    <span class="p">)</span>
+    <span class="n">total_gas_cost</span> <span class="o">=</span> <span class="n">u256_safe_add</span><span class="p">(</span>
+        <span class="n">GAS_EXTERNAL</span><span class="p">,</span>
+        <span class="n">copy_gas_cost</span><span class="p">,</span>
+        <span class="n">memory_extend_gas_cost</span><span class="p">,</span>
+        <span class="n">exception_type</span><span class="o">=</span><span class="n">OutOfGasError</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span> <span class="o">=</span> <span class="n">subtract_gas</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">gas_left</span><span class="p">,</span> <span class="n">total_gas_cost</span><span class="p">)</span>
+
+    <span class="n">evm</span><span class="o">.</span><span class="n">pc</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Non-existent accounts default to EMPTY_ACCOUNT, which has empty code.</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">code</span>
+
+    <span class="n">extend_memory</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="n">code_start_index</span> <span class="p">:</span> <span class="n">code_start_index</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+    <span class="c1"># But it is possible that code_start_index + size won&#39;t exist in evm.code</span>
+    <span class="c1"># in which case we need to right pad the above obtained bytes with 0.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">memory_write</span><span class="p">(</span><span class="n">evm</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">memory_start_index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../../index.html">Ethereum Specification</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../../index.html#ethereum-specification">Ethereum Specification</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../../../../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Comparisons:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../diffs/index.html">Comparisons</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../../index.html">API Reference</a><ul>
+  <li><a href="../../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum</span></code></a><ul>
+  <li><a href="../../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead</span></code></a><ul>
+  <li><a href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm</span></code></a><ul>
+  <li><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions</span></code></a><ul>
+      <li>Previous: <a href="../control_flow/index.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.control_flow</span></code></a></li>
+      <li>Next: <a href="../keccak/index.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethereum.homestead.vm.instructions.keccak</span></code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Ethereum.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../../_sources/autoapi/ethereum/homestead/vm/instructions/environment/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
