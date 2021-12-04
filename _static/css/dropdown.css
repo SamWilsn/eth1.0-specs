@@ -82,6 +82,8 @@
     margin-left: -1px;
     border: 1px solid #ccc;
     border-top: none;
+
+    z-index: 1;
 }
 
 .submenu > li > a {
