@@ -35,16 +35,7 @@ def modexp(evm: Evm) -> None:
         evm.output = Bytes()
         return
 
-    mult_complexity = get_mult_complexity(
-        Uint(max(base_length, modulus_length))
-    )
-    # This is an estimate of the bit length of exp
-    adjusted_exp_length = Uint(8 * max(0, int(exp_length) - 32))
-
-    if (
-        evm.gas_left
-        < mult_complexity * max(1, adjusted_exp_length) // GQUADDIVISOR
-    ):
+    if evm.gas_left < gas_cost(base_length, modulus_length, exp_length, 0):
         # This check must be done now to prevent loading of absurdly long
         # arguments. It is an underestimate, because adjusted_exp_length may
         # increase later.
@@ -66,10 +57,7 @@ def modexp(evm: Evm) -> None:
     )
     modulus = Uint.from_be_bytes(modulus_data)
 
-    adjusted_exp_length = Uint(
-        max(adjusted_exp_length, int(exp.bit_length()) - 1)
-    )
-    gas_used = mult_complexity * max(1, adjusted_exp_length) // GQUADDIVISOR
+    gas_used = gas_cost(base_length, modulus_length, exp_length, exp)
 
     # NOTE: It is in principle possible for the conversion to U256 to overflow
     # here. However, for this to happen without triggering the earlier check
@@ -84,13 +72,27 @@ def modexp(evm: Evm) -> None:
         )
 
 
-def get_mult_complexity(x: Uint) -> Uint:
-    """
-    Estimate the complexity of performing Karatsuba multiplication.
-    """
-    if x <= 64:
-        return x**2
-    elif x <= 1024:
-        return x**2 // 4 + 96 * x - 3072
+def complexity(base_length, modulus_length):
+    max_length = max(base_length, modulus_length)
+    words = (max_length + 7) // 8
+    return words**2
+
+
+def iterations(exponent_length, exponent):
+    if exponent_length <= 32 and exponent == 0:
+        count = 0
+    elif exponent_length <= 32:
+        count = exponent.bit_length() - 1
     else:
-        return x**2 // 16 + 480 * x - 199680
+        length_part = 8 * (exponent_length - 32)
+        bits_part = (exponent & (2**256 - 1)).bit_length() - 1
+        count = length_part + bits_part
+
+    return max(count, 1)
+
+
+def gas_cost(base_length, modulus_length, exponent_length, exponent):
+    multiplication_complexity = complexity(base_length, modulus_length)
+    iteration_count = iterations(exponent_length, exponent)
+    cost = multiplication_complexity * (iteration_count // GQUADDIVISOR)
+    return max(200, cost)

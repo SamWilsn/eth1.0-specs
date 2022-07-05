@@ -303,7 +303,6 @@ pre155
 bn128
 modexp
 GQUADDIVISOR
-mult
 BNF
 BNF2
 BNF12
