@@ -335,7 +335,6 @@ def check_transaction(
 
 
 def make_receipt(
-    tx: Transaction,
     error: Optional[Exception],
     cumulative_gas_used: Uint,
     logs: Tuple[Log, ...],
@@ -480,9 +479,7 @@ def apply_body(
         gas_used, logs, error = process_transaction(env, tx)
         gas_available -= gas_used
 
-        receipt = make_receipt(
-            tx, error, (block_gas_limit - gas_available), logs
-        )
+        receipt = make_receipt(error, (block_gas_limit - gas_available), logs)
 
         trie_set(
             receipts_trie,
