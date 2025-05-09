@@ -1,8 +1,8 @@
 import os
 import shutil
 import tarfile
-from pathlib import Path
-from typing import Final, Optional, Set
+from pathlib import Path, PurePosixPath
+from typing import Callable, Final, Optional, Set
 
 import git
 import requests_cache
@@ -21,7 +21,7 @@ try:
     from xdist import get_xdist_worker_id  # type: ignore[import-untyped]
 except ImportError:
 
-    def get_xdist_worker_id(request_or_session: object) -> str:
+    def get_xdist_worker_id(request_or_session: object) -> str:  # noqa: U100
         return "master"
 
 
@@ -67,6 +67,19 @@ def pytest_configure(config: Config) -> None:
         ethereum.trace.set_evm_trace(new_trace_function)
 
 
+def _strip_components(
+    n: int,
+) -> Callable[[tarfile.TarInfo, str], tarfile.TarInfo]:
+    def modify(info: tarfile.TarInfo, _path: str) -> tarfile.TarInfo:
+        path = PurePosixPath(info.path)
+        parts = list(path.parts)[:n]
+        prefix = PurePosixPath().joinpath(*parts)
+        info.path = str(path.relative_to(prefix))
+        return info
+
+    return modify
+
+
 class _FixturesDownloader:
     cache: Final[SQLiteCache]
     session: Final[CachedSession]
@@ -84,7 +97,9 @@ class _FixturesDownloader:
         )
         self.keep_cache_keys = set()
 
-    def fetch_http(self, url: str, location: str) -> None:
+    def fetch_http(
+        self, url: str, location: str, strip_components: int
+    ) -> None:
         path = self.root.joinpath(location)
         print(f"Downloading {location}...")
 
@@ -105,7 +120,10 @@ class _FixturesDownloader:
             with tarfile.open(fileobj=response.raw, mode="r:gz") as tar:
                 shutil.rmtree(path, ignore_errors=True)
                 print(f"Extracting {location}...")
-                tar.extractall(path)
+                strip_filter = None
+                if strip_components > 0:
+                    strip_filter = _strip_components(strip_components)
+                tar.extractall(path, filter=strip_filter)
 
     def fetch_git(self, url: str, location: str, commit_hash: str) -> None:
         path = self.root.joinpath(location)
@@ -185,10 +203,15 @@ def pytest_sessionstart(session: Session) -> None:  # noqa: U100
                     props["url"], fixture_path, props["commit_hash"]
                 )
             else:
-                downloader.fetch_http(props["url"], fixture_path)
+                strip_components = int(props.get("strip_components", 0))
+                downloader.fetch_http(
+                    props["url"], fixture_path, strip_components
+                )
 
 
-def pytest_sessionfinish(session: Session, exitstatus: int) -> None:
+def pytest_sessionfinish(
+    session: Session, exitstatus: int  # noqa: U100
+) -> None:
     if get_xdist_worker_id(session) != "master":
         return
 
