@@ -1,9 +1,9 @@
 import json
 import os
 import sys
+from glob import glob
 from io import StringIO
 from typing import Dict, Generator, Optional, Tuple
-from glob import glob
 
 import pytest
 
