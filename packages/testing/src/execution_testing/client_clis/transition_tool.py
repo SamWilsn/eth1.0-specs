@@ -191,9 +191,16 @@ class TransitionTool(EthereumCLI):
                 timestamp=self.env.timestamp,
             )
 
-        @property
-        def fork_name_if_supports_blob_params(self) -> str:
-            """Return the fork name."""
+        def fork_name_if_supports_blob_params(
+            self, supports_blob_params: bool
+        ) -> str:
+            """
+            Return the fork name that is the base for the BPO fork in order
+            to be able to pass the BPO parameters separately afterwards
+            if the transition tool supports that scheme.
+            """
+            if not supports_blob_params:
+                return self.fork_name
             fork = self.fork.fork_at(
                 block_number=self.env.number,
                 timestamp=self.env.timestamp,
@@ -235,11 +242,15 @@ class TransitionTool(EthereumCLI):
                 blob_params=self.blob_params,
             )
 
-        def get_request_data(self) -> TransitionToolRequest:
+        def get_request_data(
+            self, supports_blob_params: bool
+        ) -> TransitionToolRequest:
             """Convert the data to a TransitionToolRequest object."""
             return TransitionToolRequest(
                 state=TransitionToolContext(
-                    fork=self.fork_name,
+                    fork=self.fork_name_if_supports_blob_params(
+                        supports_blob_params
+                    ),
                     chain_id=self.chain_id,
                     reward=self.reward,
                 ),
@@ -281,9 +292,9 @@ class TransitionTool(EthereumCLI):
         args = [
             str(self.binary),
             "--state.fork",
-            t8n_data.fork_name_if_supports_blob_params
-            if self.supports_blob_params
-            else t8n_data.fork_name,
+            t8n_data.fork_name_if_supports_blob_params(
+                self.supports_blob_params
+            ),
             "--input.alloc",
             input_paths["alloc"],
             "--input.env",
@@ -462,7 +473,7 @@ class TransitionTool(EthereumCLI):
         """
         Execute the transition tool sending inputs and outputs via a server.
         """
-        request_data = t8n_data.get_request_data()
+        request_data = t8n_data.get_request_data(self.supports_blob_params)
         request_data_json = request_data.model_dump(
             mode="json", **model_dump_config
         )

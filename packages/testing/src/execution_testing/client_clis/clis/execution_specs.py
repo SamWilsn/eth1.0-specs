@@ -7,12 +7,12 @@ import tempfile
 from io import StringIO
 from pathlib import Path
 from typing import Any, ClassVar, Dict, Optional
-from typing_extensions import override
 
 import ethereum
 from ethereum_spec_tools.evm_tools import create_parser
 from ethereum_spec_tools.evm_tools.t8n import T8N, ForkCache
 from ethereum_spec_tools.evm_tools.utils import get_supported_forks
+from typing_extensions import override
 
 from execution_testing.client_clis.cli_types import TransitionToolOutput
 from execution_testing.client_clis.file_utils import (
@@ -73,7 +73,9 @@ class ExecutionSpecsTransitionTool(TransitionTool):
         Evaluate using the EELS T8N entry point.
         """
         del slow_request
-        request_data = transition_tool_data.get_request_data()
+        request_data = transition_tool_data.get_request_data(
+            self.supports_blob_params
+        )
         request_data_json = request_data.model_dump(
             mode="json", **model_dump_config
         )
@@ -124,25 +126,22 @@ class ExecutionSpecsTransitionTool(TransitionTool):
         )
 
         if debug_output_path:
-            dump_files_to_directory(
-                debug_output_path,
-                {
-                    "input/alloc.json": request_data.input.alloc,
-                    "input/env.json": request_data.input.env,
-                    "input/txs.json": [
-                        tx.model_dump(mode="json", **model_dump_config)
-                        for tx in request_data.input.txs
-                    ],
-                },
-            )
-
-            dump_files_to_directory(
-                debug_output_path,
-                {
-                    "output/alloc.json": output.alloc,
-                    "output/result.json": output.result,
-                },
-            )
+            dump_files = {
+                "input/alloc.json": request_data.input.alloc,
+                "input/env.json": request_data.input.env,
+                "input/txs.json": [
+                    tx.model_dump(mode="json", **model_dump_config)
+                    for tx in request_data.input.txs
+                ],
+                "input/request_data.json": request_data,
+                "output/alloc.json": output.alloc,
+                "output/result.json": output.result,
+            }
+            if transition_tool_data.blob_params:
+                dump_files["input/blob_params.json"] = (
+                    transition_tool_data.blob_params
+                )
+            dump_files_to_directory(debug_output_path, dump_files)
 
         if self.trace:
             self.collect_traces(
