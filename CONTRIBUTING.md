@@ -105,6 +105,9 @@ This specification aims to be:
       """
       ```
 
+- Write function and method docstrings in the imperative mood.
+    - **Good:** Build the house using the provided lumber.
+    - **Bad:** Builds the house using the provided lumber.
 - Format using markdown.
 - Link to relevant standards and EIPs using reference-style links.
 
@@ -115,6 +118,7 @@ This specification aims to be:
     [EIP-7976]: https://eips.ethereum.org/EIPS/eip-7976
     """
     ```
+
 - Don't begin with an article ("the"/"a") or a pronoun ("it", "they", etc.).
 - Don't include the function's signature.
 
@@ -128,12 +132,6 @@ This specification aims to be:
         - More readable than a raw number, but still a literal expression that doesn't convey _why_ this value was chosen.
     - **Bad:** `TX_MAX_GAS = Uint(16_777_216)`
         - A magic number with no context.
-
-##### Functions
-
-- The first paragraph should be a brief summary of what the function does, written in the imperative mood.
-    - **Good:** Build the house using the provided lumber.
-    - **Bad:** Builds the house using the provided lumber.
 
 ### Changes across various Forks
 
