@@ -94,10 +94,13 @@ This specification aims to be:
 ##### Constants
 
 - Do not include constant values in docstrings, neither as literals nor as expressions. It's too easy to change a constant's value and forget to update its docstring.
-- Construct the constant's value from more basic components when doing so provides meaningful context.
+- Construct the constant's value from other constants or meaningful expressions in order to provide meaningful context.
     - **Great:** `TARGET_BLOB_GAS_PER_BLOCK = GAS_PER_BLOB * BLOB_SCHEDULE_TARGET`
-    - **Good:** `TX_MAX_GAS = Uint(2 ** 24)`
-    - **Bad:** `TX_MAS_GAS = Uint(16_777_216)`
+        - Composed from named constants; the reader immediately understands what the value represents.
+    - **Acceptable:** `TX_MAX_GAS = Uint(2 ** 24)`
+        - More readable than a raw number, but still a literal expression that doesn't convey _why_ this value was chosen.
+    - **Bad:** `TX_MAX_GAS = Uint(16_777_216)`
+        - A magic number with no context.
 
 ##### Functions
 
