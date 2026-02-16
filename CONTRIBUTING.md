@@ -93,7 +93,7 @@ This specification aims to be:
 
 ##### Constants
 
-- Do not include the value of the constant in the docstring (not verbatim and not a decomposition). It's too easy to change the constant and forget to change the docstring.
+- Do not include constant values in docstrings, neither as literals nor as expressions. It's too easy to change a constant's value and forget to update its docstring.
 - Construct the constant's value from more basic components when doing so provides meaningful context.
     - **Great:** `TARGET_BLOB_GAS_PER_BLOCK = GAS_PER_BLOB * BLOB_SCHEDULE_TARGET`
     - **Good:** `TX_MAX_GAS = Uint(2 ** 24)`
