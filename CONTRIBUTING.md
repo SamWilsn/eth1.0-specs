@@ -85,11 +85,38 @@ This specification aims to be:
 
 #### Docstrings
 
-- Don't include the function's signature.
-- Format using markdown.
-- Don't begin with an article ("the"/"a") or a pronoun ("it", "they", etc.).
 - Write in complete sentences, providing background and context for the associated code.
-- Link to relevant standards/EIPs.
+- Prefer a one-line summary when possible. Use a multi-line docstring with a blank line after the summary when more detail is needed.
+    - **One-line:**
+
+      ```python
+      """Return the pathname of the KOS root directory."""
+      ```
+
+    - **Multi-line:**
+
+      ```python
+      """
+      Add a bloom entry to the bloom filter.
+
+      The number of hash functions used is 3. They are calculated by
+      taking the least significant 11 bits from the first 3 16-bit
+      words of the `keccak_256()` hash of `bloom_entry`.
+      """
+      ```
+
+- Format using markdown.
+- Link to relevant standards and EIPs using reference-style links.
+
+    ```python
+    """
+    Minimum gas cost per byte of calldata as per [EIP-7976].
+
+    [EIP-7976]: https://eips.ethereum.org/EIPS/eip-7976
+    """
+    ```
+- Don't begin with an article ("the"/"a") or a pronoun ("it", "they", etc.).
+- Don't include the function's signature.
 
 ##### Constants
 
