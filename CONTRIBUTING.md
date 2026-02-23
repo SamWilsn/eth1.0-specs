@@ -53,7 +53,7 @@ This specification aims to be:
     -->
 
     ```python
-    # EIP-1234: The dingus is the rate of fleep      
+    # EIP-1234: The dingus is the rate of fleep
     dingus = a + b
     dingus += c ^ d
     dingus /= fleep(e)
@@ -64,12 +64,12 @@ This specification aims to be:
     <td>
 
     ```python
-    # EIP-1234: The dingus is the rate of fleep      
+    # EIP-1234: The dingus is the rate of fleep
     dingus = a + b
-
+    
     # EIP-4567: Frobulate the dingus
     dingus = frobulate(dingus)
-
+    
     dingus += c ^ d        # <-
     dingus /= fleep(e)     # <-
     ```
