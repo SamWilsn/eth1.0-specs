@@ -85,9 +85,12 @@ This specification aims to be:
 
 #### Docstrings
 
-- Write in complete sentences, providing background and context for the associated code.
-- Prefer a one-line summary when possible. Use a multi-line docstring with a blank line after the summary when more detail is needed.
-    - **One-line:**
+- Write in complete sentences, providing necessary background and context for the associated code.
+- Function and method docstrings must use the imperative mood in the summary line.
+    - **Good:** Build the house using the provided lumber.
+    - **Bad:** Builds the house using the provided lumber.
+- Always start with a single-line summary. When more detail is needed, use a multi-line docstring with a blank line after the summary line.
+    - **One-line summary:**
 
       ```python
       """Return the pathname of the KOS root directory."""
@@ -105,21 +108,18 @@ This specification aims to be:
       """
       ```
 
-- Write function and method docstrings in the imperative mood.
-    - **Good:** Build the house using the provided lumber.
-    - **Bad:** Builds the house using the provided lumber.
 - Format using markdown.
-- Link to relevant standards and EIPs using reference-style links.
+- Links to relevant standards and EIPs may be specified using reference-style links.
 
-    ```python
-    """
-    Minimum gas cost per byte of calldata as per [EIP-7976].
+  ```python
+  """
+  Minimum gas cost per byte of calldata as per [EIP-7976].
 
-    [EIP-7976]: https://eips.ethereum.org/EIPS/eip-7976
-    """
-    ```
+  [EIP-7976]: https://eips.ethereum.org/EIPS/eip-7976
+  """
+  ```
 
-- Don't begin with an article ("the"/"a") or a pronoun ("it", "they", etc.).
+- Avoid beginning docstrings with an article ("the"/"a") or a pronoun ("it", "they", etc.).
 - Don't include the function's signature.
 
 ##### Constants
