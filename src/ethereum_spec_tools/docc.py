@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2023 Ethereum Foundation
+# Copyright (C) 2022-2023,2026 Ethereum Foundation
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,11 +21,9 @@ import dataclasses
 import logging
 import os
 from collections import defaultdict
-from functools import total_ordering
 from itertools import tee, zip_longest
 from pathlib import PurePath
 from typing import (
-    TYPE_CHECKING,
     Dict,
     Final,
     FrozenSet,
@@ -66,28 +64,7 @@ from typing_extensions import assert_never, override
 
 from .forks import Hardfork
 
-if TYPE_CHECKING:
-    from typing import Any
-
-    from _typeshed import SupportsDunderGT, SupportsDunderLT
-
-
 G = TypeVar("G")
-
-
-@total_ordering
-@dataclasses.dataclass(frozen=True)
-class _EthereumSort:
-    sort_order: int
-    path: PurePath
-
-    def __lt__(self, other: Union[PurePath, "_EthereumSort"]) -> bool:
-        if isinstance(other, _EthereumSort):
-            return (self.sort_order, self.path) < (
-                other.sort_order,
-                other.path,
-            )
-        return self.path < other
 
 
 def pairwise(iterable: Iterable[G]) -> Iterable[Tuple[G, G]]:
@@ -100,14 +77,14 @@ def pairwise(iterable: Iterable[G]) -> Iterable[Tuple[G, G]]:
 
 
 class _EthereumListingSource(ListingSource):
-    _key: Final[_EthereumSort]
+    _key: Final[Tuple[int, PurePath]]
 
     def __init__(
         self,
         relative_path: PurePath,
         output_path: PurePath,
         sources: Set[Source],
-        key: _EthereumSort,
+        key: Tuple[int, PurePath],
     ) -> None:
         super().__init__(relative_path, output_path, sources)
         self._key = key
@@ -115,7 +92,7 @@ class _EthereumListingSource(ListingSource):
     @override
     def listing_order_key(
         self,
-    ) -> Union["SupportsDunderGT[Any]", "SupportsDunderLT[Any]"]:
+    ) -> Tuple[bool, Tuple[int, PurePath], None]:
         return (self.is_leaf, self._key, None)
 
 
@@ -133,39 +110,27 @@ class EthereumListingDiscover(ListingDiscover):
         forks = Hardfork.discover([str(base / "forks")])
         self.fork_order = {f.short_name: i for i, f in enumerate(forks)}
 
+    def _fork_index(self, parent: PurePath) -> Optional[int]:
+        parts = parent.parts
+        if len(parts) == 2 and parts[0] == "diffs":
+            return self.fork_order.get(parts[1])
+        if len(parts) == 4 and parts[:3] == ("src", "ethereum", "forks"):
+            return self.fork_order.get(parts[3])
+        return None
+
     @override
     def _listing_source(
         self, source: Source, parent: PurePath
     ) -> ListingSource:
-        if isinstance(source, DiffSource):
-            return _EthereumListingSource(
-                parent,
-                parent / "index",
-                set(),
-                _EthereumSort(source._sort, parent / "index"),
-            )
-        elif isinstance(source, _EthereumListingSource):
-            return _EthereumListingSource(
-                parent,
-                parent / "index",
-                set(),
-                source._key,
-            )
-        elif (
-            len(parent.parts) == 4
-            and parent.parts[:3] == ("src", "ethereum", "forks")
-            and parent.parts[3] in self.fork_order
-        ):
-            return _EthereumListingSource(
-                parent,
-                parent / "index",
-                set(),
-                _EthereumSort(
-                    self.fork_order[parent.parts[3]], parent / "index"
-                ),
-            )
-        else:
+        index = self._fork_index(parent)
+        if index is None:
             return super()._listing_source(source, parent)
+        return _EthereumListingSource(
+            parent,
+            parent / "index",
+            set(),
+            (index, parent / "index"),
+        )
 
 
 class EthereumDiscover(Discover):
@@ -224,7 +189,7 @@ class EthereumDiscover(Discover):
             by_fork[fork][fork_relative_path] = source
 
         diff_count = 0
-        for sort, (before, after) in enumerate(pairwise(self.forks)):
+        for before, after in pairwise(self.forks):
             paths = set(by_fork[before].keys()) | set(by_fork[after].keys())
 
             for path in paths:
@@ -247,7 +212,6 @@ class EthereumDiscover(Discover):
                     after.name,
                     after_source,
                     output_path,
-                    sort=sort,
                 )
 
         if 0 == diff_count:
@@ -271,8 +235,6 @@ class DiffSource(Generic[S], Source, Listable):
     after: Optional[S]
     _output_path: PurePath
 
-    _sort: int
-
     def __init__(
         self,
         before_name: str,
@@ -280,7 +242,6 @@ class DiffSource(Generic[S], Source, Listable):
         after_name: str,
         after: Optional[S],
         output_path: PurePath,
-        sort: int,
     ) -> None:
         self.before_name = before_name
         self.before = before
@@ -289,7 +250,6 @@ class DiffSource(Generic[S], Source, Listable):
         self.after = after
 
         self._output_path = output_path
-        self._sort = sort
 
     @property
     def show_in_listing(self) -> bool:
