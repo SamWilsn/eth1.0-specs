@@ -125,6 +125,14 @@ class EthereumListingDiscover(ListingDiscover):
     chronological order.
     """
 
+    fork_order: Dict[str, int]
+
+    def __init__(self, config: PluginSettings) -> None:
+        super().__init__(config)
+        base = config.resolve_path(PurePath("src") / "ethereum")
+        forks = Hardfork.discover([str(base / "forks")])
+        self.fork_order = {f.short_name: i for i, f in enumerate(forks)}
+
     @override
     def _listing_source(
         self, source: Source, parent: PurePath
@@ -142,6 +150,19 @@ class EthereumListingDiscover(ListingDiscover):
                 parent / "index",
                 set(),
                 source._key,
+            )
+        elif (
+            len(parent.parts) == 4
+            and parent.parts[:3] == ("src", "ethereum", "forks")
+            and parent.parts[3] in self.fork_order
+        ):
+            return _EthereumListingSource(
+                parent,
+                parent / "index",
+                set(),
+                _EthereumSort(
+                    self.fork_order[parent.parts[3]], parent / "index"
+                ),
             )
         else:
             return super()._listing_source(source, parent)
