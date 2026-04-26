@@ -279,6 +279,12 @@ docs-spec:
     uv run docc --output "{{ output_dir }}/docs-spec"
     uv run python -c 'import pathlib; print("documentation available under file://{0}".format(pathlib.Path(r"{{ output_dir }}") / "docs-spec" / "index.html"))'
 
+# Generate documentation for EELS using docc, skipping the slow per-fork diff render
+[group('docs')]
+docs-spec-fast:
+    DOCC_SKIP_DIFFS=1 uv run docc --output "{{ output_dir }}/docs-spec-fast"
+    uv run python -c 'import pathlib; print("documentation available under file://{0}".format(pathlib.Path(r"{{ output_dir }}") / "docs-spec-fast" / "index.html"))'
+
 # Build HTML site documentation with mkdocs
 [group('docs')]
 docs *args:
