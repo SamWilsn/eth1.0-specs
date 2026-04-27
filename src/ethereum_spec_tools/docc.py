@@ -77,23 +77,32 @@ def pairwise(iterable: Iterable[G]) -> Iterable[Tuple[G, G]]:
 
 
 class _EthereumListingSource(ListingSource):
-    _key: Final[Tuple[int, PurePath]]
+    _sort: Final[int]
 
     def __init__(
         self,
         relative_path: PurePath,
         output_path: PurePath,
         sources: Set[Source],
-        key: Tuple[int, PurePath],
+        sort: int,
     ) -> None:
         super().__init__(relative_path, output_path, sources)
-        self._key = key
+        self._sort = sort
 
     @override
     def listing_order_key(
         self,
     ) -> Tuple[bool, Tuple[int, PurePath], None]:
-        return (self.is_leaf, self._key, None)
+        return (self.is_leaf, (self._sort, self.output_path), None)
+
+
+def _find_forks(config: PluginSettings) -> List[Hardfork]:
+    forks = config.resolve_path(PurePath("src") / "ethereum" / "forks")
+    return Hardfork.discover([str(forks)])
+
+
+def _diff_path(before: Hardfork, after: Hardfork) -> PurePath:
+    return PurePath("diffs") / before.short_name / after.short_name
 
 
 class EthereumListingDiscover(ListingDiscover):
@@ -102,20 +111,28 @@ class EthereumListingDiscover(ListingDiscover):
     chronological order.
     """
 
-    fork_order: Dict[str, int]
+    fork_order: List[PurePath]
+    diff_order: List[PurePath]
 
     def __init__(self, config: PluginSettings) -> None:
         super().__init__(config)
-        base = config.resolve_path(PurePath("src") / "ethereum")
-        forks = Hardfork.discover([str(base / "forks")])
-        self.fork_order = {f.short_name: i for i, f in enumerate(forks)}
+        forks = _find_forks(config)
+        self.fork_order = [
+            config.unresolve_path(PurePath(f.path))
+            for f in forks
+            if f.path is not None
+        ]
+        self.diff_order = [_diff_path(b, a).parent for b, a in pairwise(forks)]
 
     def _fork_index(self, parent: PurePath) -> Optional[int]:
-        parts = parent.parts
-        if len(parts) == 2 and parts[0] == "diffs":
-            return self.fork_order.get(parts[1])
-        if len(parts) == 4 and parts[:3] == ("src", "ethereum", "forks"):
-            return self.fork_order.get(parts[3])
+        for idx, fork in enumerate(self.fork_order):
+            if parent.is_relative_to(fork):
+                return idx
+
+        for idx, diff in enumerate(self.diff_order):
+            if parent.is_relative_to(diff):
+                return idx
+
         return None
 
     @override
@@ -129,7 +146,7 @@ class EthereumListingDiscover(ListingDiscover):
             parent,
             parent / "index",
             set(),
-            (index, parent / "index"),
+            -index,  # Reverse chronological order
         )
 
 
@@ -144,9 +161,7 @@ class EthereumDiscover(Discover):
 
     def __init__(self, config: PluginSettings) -> None:
         self.settings = config
-        base = config.resolve_path(PurePath("src") / "ethereum")
-        forks = base / "forks"
-        self.forks = Hardfork.discover([str(forks)])
+        self.forks = _find_forks(config)
 
     def discover(self, known: FrozenSet[T]) -> Iterator[Source]:
         """
@@ -199,12 +214,7 @@ class EthereumDiscover(Discover):
 
                 assert before_source or after_source
 
-                output_path = (
-                    PurePath("diffs")
-                    / before.short_name
-                    / after.short_name
-                    / path
-                )
+                output_path = _diff_path(before, after) / path
 
                 yield DiffSource(
                     before.name,
