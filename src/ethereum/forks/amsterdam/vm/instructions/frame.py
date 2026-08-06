@@ -276,9 +276,9 @@ def sigparam(evm: Evm) -> None:
 
     if param == U256(0x04):
         # STACK (copy operation)
-        length = pop(evm.stack)
-        data_offset = pop(evm.stack)
         memory_offset = pop(evm.stack)
+        data_offset = pop(evm.stack)
+        length = pop(evm.stack)
 
         # GAS
         words = ceil32(Uint(length)) // Uint(32)
