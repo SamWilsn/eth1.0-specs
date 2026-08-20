@@ -398,7 +398,8 @@ def execute_frame(
     Run a single frame as a top-level call and reduce its outcome.
 
     A `VERIFY` frame whose resolved target has no code runs the
-    protocol default code instead of an EVM. As with an ordinary
+    protocol default code instead of an EVM, unless that target is a
+    precompile, which dispatches in every mode. As with an ordinary
     `CALL`, a caller that cannot cover the transferred value reverts
     the frame before it executes, consuming no gas.
 
@@ -415,6 +416,7 @@ def execute_frame(
     target_account = get_account(tx_state, resolved_target)
     if (
         frame.mode == FrameMode.VERIFY
+        and resolved_target not in PRE_COMPILED_CONTRACTS
         and target_account.code_hash == EMPTY_CODE_HASH
     ):
         return FrameOutcome(

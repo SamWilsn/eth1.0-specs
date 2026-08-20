@@ -2,13 +2,14 @@
 Target resolution tests for
 [EIP-8141: Frame Transaction](https://eips.ethereum.org/EIPS/eip-8141).
 
-Only a `VERIFY` frame's codeless target runs the default code; every
-other frame runs a top-level call, which dispatches a precompile by
-address and follows an EIP-7702 designation. Each case pins the
-resolution through the frame receipt's `gas_used`.
+A frame runs a top-level call, which dispatches a precompile by
+address and follows an EIP-7702 designation; the default code is left
+to a `VERIFY` frame whose codeless target is no precompile. Each case
+pins the resolution through the frame receipt's `gas_used`.
 """
 
-from typing import Dict, Optional
+from functools import partial
+from typing import Callable, Dict, Optional
 
 import pytest
 from execution_testing import (
@@ -16,11 +17,11 @@ from execution_testing import (
     Address,
     Alloc,
     Fork,
+    Frame,
     FrameReceipt,
     Op,
     StateTestFiller,
     Transaction,
-    TransactionException,
     TransactionReceipt,
 )
 
@@ -65,6 +66,7 @@ def identity_gas(fork: Fork, data: bytes) -> int:
     [
         pytest.param(Spec.MODE_DEFAULT, id="default_mode"),
         pytest.param(Spec.MODE_SENDER, id="sender_mode"),
+        pytest.param(Spec.MODE_VERIFY, id="verify_mode"),
     ],
 )
 @pytest.mark.parametrize(
@@ -85,15 +87,27 @@ def test_precompile_target(
     """
     Execute the precompile a frame targets, charging the frame its
     input-dependent gas on top of the warm frame-entry access.
+
+    A `VERIFY` frame dispatches it too, rather than reading the empty
+    code hash a precompile account carries as the default code's cue.
+    The first frame approves both execution and payment, so routing the
+    frame under test to the default code instead would revert it — no
+    signature entry resolves to a precompile address — and reject the
+    transaction rather than merely withhold an approval.
     """
     sender = pre.fund_eoa()
-    frame = default_frame if mode == Spec.MODE_DEFAULT else sender_frame
+    builders: Dict[int, Callable[..., Frame]] = {
+        Spec.MODE_DEFAULT: default_frame,
+        Spec.MODE_SENDER: sender_frame,
+        # Only the default code approves, and the precompile displaces it.
+        Spec.MODE_VERIFY: partial(verify_frame, flags=Spec.APPROVE_NONE),
+    }
 
     tx = Transaction(
         sender=sender,
         frames=[
             verify_frame(),
-            frame(target=IDENTITY, data=data),
+            builders[mode](target=IDENTITY, data=data),
         ],
         expected_receipt=TransactionReceipt(
             payer=sender,
@@ -138,37 +152,6 @@ def test_precompile_target_rejecting_its_input(
     )
 
     state_test(pre=pre, tx=tx, post={sender: Account(nonce=1)})
-
-
-@pytest.mark.exception_test
-def test_verify_frame_precompile_target(
-    state_test: StateTestFiller,
-    pre: Alloc,
-) -> None:
-    """
-    Reject a frame transaction whose `VERIFY` frame targets a
-    precompile: the target's empty code hash routes the frame to the
-    default code, which reverts because no signature entry can resolve
-    to a precompile address.
-
-    The first frame approves both execution and payment, so the
-    approvals do not depend on the frame under test. Dispatching the
-    precompile instead would leave every approval in place and make the
-    transaction valid, rather than rejecting it for a missing approval.
-    """
-    sender = pre.fund_eoa()
-
-    tx = Transaction(
-        sender=sender,
-        frames=[
-            verify_frame(),
-            verify_frame(flags=Spec.APPROVE_NONE, target=IDENTITY),
-        ],
-        error=TransactionException.TYPE_6_INVALID_FRAME_EXECUTION,
-    )
-
-    # The rejected transaction leaves the sender's nonce untouched.
-    state_test(pre=pre, tx=tx, post={sender: Account(nonce=0)})
 
 
 @pytest.mark.parametrize(
